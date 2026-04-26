@@ -346,12 +346,12 @@
   });
 
   try {
-    await fetch('https://script.google.com/macros/s/AKfycbzAxs4IPgdXvqP5i0XrKkOh9foMyBCG5U5LJxyYu3GvYjz4bLiWdffPPo7-THICCXLt/exec', {
+    await fetch('https://script.google.com/macros/s/AKfycbzeCAxEwMhs80MyJxjfqk-q8_9T4TkmRvQfQ4BzHo0j_P-cQqnFjltOHWiXM9GAOkY/exec', {
       method: 'POST',
       mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
       body: payload
-    }
+    });
 
     document.getElementById('successMsg').style.display = 'block';
     submitBtn.innerText = '✓ تم الإرسال بنجاح';
