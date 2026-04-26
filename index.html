@@ -3,11 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Abou‑Taleb Education | الدراسة في أفضل الجامعات الخاصة بتركيا</title>
-  <!-- Google Fonts: Tajawal (عصري وواضح للغة العربية) -->
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <title>Abou‑Taleb Education | الجامعات الخاصة في تركيا</title>
+  <!-- Google Fonts: Cairo (حديث للعربية) -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <!-- Font Awesome 6 (أيقونات احترافية) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- AOS Library للتأثيرات أثناء التمرير -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -16,123 +18,108 @@
     }
 
     :root {
-      --primary: #c0392b;
-      --primary-dark: #a93226;
-      --primary-light: #e74c3c;
-      --secondary: #2c3e50;
-      --dark-bg: #0f172a;
-      --light-bg: #f8fafc;
-      --card-bg: #ffffff;
+      --primary: #C0392B;      /* الأحمر الثابت من اللوجو */
+      --primary-dark: #9a2e22;
+      --primary-light: #e65c4a;
+      --black: #1a1a1a;
+      --white: #ffffff;
+      --gray-bg: #f8fafc;
+      --gray-border: #eef2f5;
       --text-dark: #1e293b;
-      --text-light: #94a3b8;
+      --text-light: #5a6e7c;
       --shadow-sm: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
-      --shadow-md: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
-      --shadow-hover: 0 25px 30px -12px rgba(0, 0, 0, 0.15);
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --shadow-md: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+      --shadow-hover: 0 25px 35px -12px rgba(0, 0, 0, 0.2);
+      --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
     body {
-      font-family: 'Tajawal', sans-serif;
-      background: var(--light-bg);
+      font-family: 'Cairo', sans-serif;
+      background: var(--gray-bg);
       color: var(--text-dark);
       line-height: 1.6;
       scroll-behavior: smooth;
     }
 
-    /* ================= تنسيق الشريط العلوي (Navbar) ================= */
+    /* ========== شريط التنقل ========== */
     nav {
-      background: rgba(15, 23, 42, 0.95);
-      backdrop-filter: blur(12px);
+      background: rgba(26, 26, 26, 0.96);
+      backdrop-filter: blur(10px);
       padding: 0 5%;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-wrap: wrap;
-      height: 80px;
+      height: 85px;
       position: sticky;
       top: 0;
       z-index: 1000;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    /* الشعار والاسم - تم تكبير حجمهما */
     .logo {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       text-decoration: none;
     }
 
     .logo-img {
-      width: 55px; /* تكبير حجم الشعار */
-      height: 55px;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
       object-fit: cover;
-      border: 2px solid var(--primary-light);
+      border: 2px solid var(--primary);
       transition: var(--transition);
     }
     .logo-img:hover {
       transform: scale(1.05);
-      border-color: #fff;
+      border-color: var(--white);
     }
 
     .logo-text {
-      color: white;
-      font-size: 1.5rem; /* تكبير حجم النص */
+      color: var(--white);
+      font-size: 1.7rem;
       font-weight: 800;
       line-height: 1.2;
-      letter-spacing: -0.5px;
     }
     .logo-text span {
-      color: var(--primary-light);
-      font-weight: 900;
+      color: var(--primary);
     }
 
     .nav-links {
       display: flex;
-      gap: 28px;
+      gap: 32px;
     }
     .nav-links a {
       color: #e2e8f0;
-      font-size: 1rem;
-      font-weight: 500;
+      font-weight: 600;
       text-decoration: none;
       transition: var(--transition);
-      padding: 8px 0;
+      font-size: 1rem;
+      padding-bottom: 4px;
       border-bottom: 2px solid transparent;
     }
     .nav-links a:hover {
-      color: white;
-      border-bottom-color: var(--primary-light);
+      color: var(--white);
+      border-bottom-color: var(--primary);
     }
 
-    .nav-cta {
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: white;
-      padding: 10px 24px;
-      border-radius: 40px;
-      font-weight: 700;
-      border: none;
-      cursor: pointer;
-      transition: var(--transition);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    }
-    .nav-cta:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 20px -5px rgba(192, 57, 43, 0.4);
-      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
     }
 
-    /* القائمة المنسدلة للغة */
+    /* قائمة اللغة */
     .lang-wrap {
       position: relative;
     }
     .lang-btn {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(255, 255, 255, 0.2);
-      padding: 8px 16px;
+      padding: 8px 18px;
       border-radius: 40px;
-      color: #fff;
+      color: white;
       font-weight: 500;
       cursor: pointer;
       display: flex;
@@ -141,25 +128,25 @@
       transition: var(--transition);
     }
     .lang-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.15);
     }
     .lang-dropdown {
       display: none;
       position: absolute;
       top: 55px;
       right: 0;
-      background: #1e293b;
-      border-radius: 16px;
+      background: #1e1e2a;
+      border-radius: 20px;
       min-width: 180px;
-      box-shadow: var(--shadow-md);
-      z-index: 100;
       overflow: hidden;
+      box-shadow: var(--shadow-md);
+      z-index: 110;
     }
     .lang-dropdown.open {
       display: block;
     }
     .lang-option {
-      padding: 10px 16px;
+      padding: 10px 18px;
       color: #cbd5e1;
       cursor: pointer;
       transition: var(--transition);
@@ -172,24 +159,39 @@
       color: white;
     }
 
-    /* زر القائمة للهواتف */
+    .nav-cta {
+      background: var(--primary);
+      color: white;
+      padding: 10px 24px;
+      border-radius: 40px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    .nav-cta:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px -5px var(--primary);
+    }
+
     .hamburger {
       display: none;
       flex-direction: column;
-      cursor: pointer;
       gap: 5px;
+      cursor: pointer;
     }
     .hamburger span {
       width: 25px;
       height: 3px;
       background: white;
-      border-radius: 5px;
-      transition: var(--transition);
+      border-radius: 3px;
     }
     .mobile-menu {
       display: none;
-      background: #0f172a;
-      padding: 20px;
+      background: #1a1a1a;
+      padding: 20px 5%;
       flex-direction: column;
       gap: 15px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -198,23 +200,22 @@
       display: flex;
     }
     .mobile-menu a {
-      color: #cbd5e1;
+      color: #ccc;
       text-decoration: none;
       font-weight: 500;
-      padding: 8px 0;
     }
 
-    /* ================= قسم الهيرو (Hero) ================= */
+    /* ========== الهيرو ========== */
     .hero {
-      background: linear-gradient(125deg, #0f172a 0%, #1e293b 100%);
-      padding: 4rem 5%;
+      background: linear-gradient(125deg, #0b0b12 0%, #1e1e2a 100%);
+      padding: 5rem 5%;
       position: relative;
       overflow: hidden;
     }
     .hero::before {
       content: '';
       position: absolute;
-      top: -30%;
+      top: -20%;
       right: -10%;
       width: 400px;
       height: 400px;
@@ -227,7 +228,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 2rem;
+      gap: 3rem;
       position: relative;
       z-index: 2;
     }
@@ -235,57 +236,57 @@
       flex: 1;
     }
     .hero-badge {
-      display: inline-block;
       background: rgba(192, 57, 43, 0.2);
-      border: 1px solid rgba(192, 57, 43, 0.5);
-      color: #facc15;
-      padding: 6px 18px;
+      border: 1px solid rgba(192, 57, 43, 0.4);
+      color: #ffaa9a;
+      padding: 6px 20px;
       border-radius: 40px;
       font-size: 0.8rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
+      font-weight: 700;
+      display: inline-block;
+      margin-bottom: 1.2rem;
     }
     .hero h1 {
-      font-size: 2.8rem;
+      font-size: 3rem;
       font-weight: 800;
       color: white;
       line-height: 1.3;
-      margin-bottom: 1rem;
+      margin-bottom: 1.2rem;
     }
     .hero h1 span {
-      color: var(--primary-light);
-      border-bottom: 3px solid var(--primary-light);
+      color: var(--primary);
     }
     .hero p {
       color: #cbd5e1;
-      font-size: 1rem;
+      font-size: 1.05rem;
       max-width: 500px;
       margin-bottom: 2rem;
     }
     .hero-btns {
       display: flex;
-      gap: 15px;
+      gap: 16px;
       flex-wrap: wrap;
     }
     .btn-primary {
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      background: var(--primary);
       border: none;
-      padding: 12px 28px;
+      padding: 12px 32px;
       border-radius: 40px;
       color: white;
       font-weight: 700;
       cursor: pointer;
       transition: var(--transition);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 5px 15px rgba(192, 57, 43, 0.3);
     }
     .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 20px -10px rgba(192, 57, 43, 0.5);
+      background: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 15px 25px -8px rgba(192, 57, 43, 0.5);
     }
     .btn-outline {
       background: transparent;
-      border: 1.5px solid rgba(255, 255, 255, 0.3);
-      padding: 12px 28px;
+      border: 1.5px solid rgba(255, 255, 255, 0.4);
+      padding: 12px 32px;
       border-radius: 40px;
       color: white;
       font-weight: 600;
@@ -300,30 +301,28 @@
       display: flex;
       gap: 20px;
       flex-wrap: wrap;
-      justify-content: flex-start;
     }
     .stat-card {
       background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(4px);
-      border-radius: 20px;
-      padding: 15px 20px;
-      min-width: 100px;
+      backdrop-filter: blur(6px);
+      border-radius: 28px;
+      padding: 18px 24px;
       text-align: center;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      min-width: 110px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
     .stat-number {
-      font-size: 2rem;
+      font-size: 2.3rem;
       font-weight: 800;
-      color: var(--primary-light);
+      color: var(--primary);
     }
     .stat-label {
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       color: #94a3b8;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      font-weight: 500;
     }
 
-    /* الأقسام العامة */
+    /* ========== الأقسام العامة ========== */
     .section {
       padding: 5rem 5%;
     }
@@ -338,10 +337,10 @@
       background: rgba(192, 57, 43, 0.1);
       color: var(--primary);
       display: inline-block;
-      padding: 4px 16px;
+      padding: 5px 18px;
       border-radius: 40px;
-      font-size: 0.75rem;
       font-weight: 700;
+      font-size: 0.75rem;
       margin-bottom: 12px;
     }
     .sec-title {
@@ -351,11 +350,10 @@
     }
     .sec-sub {
       color: var(--text-light);
-      font-size: 1rem;
     }
 
-    /* البطاقات والخدمات */
-    .grid-3 {
+    /* ========== الخدمات ========== */
+    .services-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 30px;
@@ -363,24 +361,24 @@
       margin: 0 auto;
     }
     .service-card {
-      background: var(--card-bg);
+      background: white;
       border-radius: 28px;
       padding: 2rem 1.5rem;
       text-align: center;
       transition: var(--transition);
-      border: 1px solid #e2e8f0;
+      border: 1px solid var(--gray-border);
       box-shadow: var(--shadow-sm);
     }
     .service-card:hover {
-      transform: translateY(-8px);
+      transform: translateY(-10px);
       border-color: var(--primary);
       box-shadow: var(--shadow-hover);
     }
     .service-icon {
-      width: 70px;
-      height: 70px;
+      width: 75px;
+      height: 75px;
       background: rgba(192, 57, 43, 0.1);
-      border-radius: 20px;
+      border-radius: 25px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -396,14 +394,14 @@
     .service-title {
       font-size: 1.2rem;
       font-weight: 700;
-      margin-bottom: 8px;
+      margin-bottom: 0.5rem;
     }
     .service-desc {
       font-size: 0.85rem;
       color: var(--text-light);
     }
 
-    /* قسم الجامعات الخاصة */
+    /* ========== الجامعات الخاصة ========== */
     .unis-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -417,12 +415,12 @@
       text-align: center;
       transition: var(--transition);
       cursor: pointer;
-      border: 1px solid #e2e8f0;
+      border: 1px solid var(--gray-border);
     }
     .uni-card:hover {
       transform: scale(1.03);
       border-color: var(--primary);
-      box-shadow: 0 20px 25px -12px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 20px 25px -12px rgba(0, 0, 0, 0.15);
     }
     .uni-img {
       width: 100px;
@@ -435,16 +433,16 @@
       font-size: 0.9rem;
     }
     .uni-badge {
-      display: inline-block;
       background: rgba(192, 57, 43, 0.1);
       color: var(--primary);
-      padding: 2px 12px;
+      padding: 4px 12px;
       border-radius: 40px;
       font-size: 0.7rem;
+      display: inline-block;
       margin-top: 8px;
     }
 
-    /* أزرار التبويب (تحديثات حيوية) */
+    /* أزرار التبويب */
     .tab-nav {
       display: flex;
       justify-content: center;
@@ -455,7 +453,7 @@
     .tab-btn {
       background: white;
       border: 1px solid #cbd5e1;
-      padding: 8px 24px;
+      padding: 8px 26px;
       border-radius: 40px;
       font-weight: 600;
       cursor: pointer;
@@ -467,32 +465,32 @@
       color: white;
     }
 
-    /* نموذج التسجيل */
+    /* ========== نموذج التسجيل ========== */
     .form-wrap {
       max-width: 700px;
       margin: 0 auto;
       background: white;
-      border-radius: 32px;
-      padding: 2rem;
+      border-radius: 36px;
+      padding: 2.5rem;
       box-shadow: var(--shadow-md);
     }
     .fgrid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(2, 1fr);
       gap: 20px;
     }
     .fg input, .fg select, .fg textarea, .upload-area {
       width: 100%;
-      padding: 12px 16px;
-      border-radius: 20px;
+      padding: 12px 18px;
+      border-radius: 28px;
       border: 1px solid #e2e8f0;
-      font-family: 'Tajawal', sans-serif;
+      font-family: 'Cairo', sans-serif;
       transition: var(--transition);
     }
     .fg input:focus, .fg select:focus {
       border-color: var(--primary);
       outline: none;
-      box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.2);
+      box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.2);
     }
     .upload-area {
       background: #f8fafc;
@@ -500,7 +498,7 @@
       cursor: pointer;
     }
     .sub-btn {
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      background: var(--primary);
       width: 100%;
       padding: 14px;
       border-radius: 40px;
@@ -512,16 +510,17 @@
       transition: var(--transition);
     }
     .sub-btn:hover {
+      background: var(--primary-dark);
       transform: translateY(-2px);
-      box-shadow: 0 12px 20px -10px var(--primary);
+      box-shadow: 0 10px 20px -5px var(--primary);
     }
 
-    /* أسئلة شائعة */
+    /* ========== الأسئلة الشائعة ========== */
     .faq-item {
       background: white;
-      border-radius: 24px;
-      margin-bottom: 12px;
-      border: 1px solid #e2e8f0;
+      border-radius: 28px;
+      margin-bottom: 14px;
+      border: 1px solid var(--gray-border);
     }
     .faq-q {
       padding: 1rem 1.5rem;
@@ -537,7 +536,7 @@
       border-top: 1px solid #e2e8f0;
     }
 
-    /* تواصل */
+    /* ========== جهات الاتصال ========== */
     .contact-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -547,23 +546,22 @@
     }
     .contact-card {
       background: white;
-      border-radius: 28px;
+      border-radius: 30px;
       padding: 1.8rem;
       text-align: center;
       transition: var(--transition);
     }
     .contact-card:hover {
       transform: translateY(-5px);
+      border-color: var(--primary);
     }
-
     footer {
-      background: #0f172a;
+      background: #1a1a1a;
       color: #94a3b8;
       padding: 2rem;
       text-align: center;
     }
 
-    /* تحسين استجابة الجوال */
     @media (max-width: 768px) {
       .nav-links, .nav-right {
         display: none;
@@ -575,8 +573,8 @@
         flex-direction: column;
         text-align: center;
       }
-      .hero-stats {
-        justify-content: center;
+      .hero h1 {
+        font-size: 2rem;
       }
       .sec-title {
         font-size: 1.8rem;
@@ -591,230 +589,223 @@
   </style>
 </head>
 <body>
-
-<!-- الشريط العلوي مع الشعار الموسع -->
-<nav>
-  <a class="logo" href="#">
-    <img class="logo-img" src="https://i.ibb.co/FkgS4ZWz/Cam-Scanner-25-04-2026-20-51.jpg" alt="Abou-Taleb Logo">
-    <div class="logo-text">ABOU-TALEB<br><span>EDUCATION</span></div>
-  </a>
-  <div class="nav-links">
-    <a onclick="goTo('unis')">الجامعات</a>
-    <a onclick="goTo('services')">الخدمات</a>
-    <a onclick="goTo('apply')">التسجيل</a>
-    <a onclick="goTo('faq')">الأسئلة</a>
-  </div>
-  <div class="nav-right">
-    <div class="lang-wrap">
-      <button class="lang-btn" onclick="toggleLang(event)">🌐 العربية ▾</button>
-      <div class="lang-dropdown" id="langDropdown"></div>
+  <nav>
+    <a class="logo" href="#">
+      <img class="logo-img" src="https://i.ibb.co/FkgS4ZWz/Cam-Scanner-25-04-2026-20-51.jpg" alt="Logo">
+      <div class="logo-text">ABOU-TALEB<br><span>EDUCATION</span></div>
+    </a>
+    <div class="nav-links">
+      <a onclick="goTo('unis')">الجامعات</a>
+      <a onclick="goTo('services')">الخدمات</a>
+      <a onclick="goTo('apply')">التسجيل</a>
+      <a onclick="goTo('faq')">الأسئلة</a>
     </div>
-    <button class="nav-cta" onclick="goTo('apply')">سجل الآن</button>
-  </div>
-  <div class="hamburger" onclick="toggleMobileMenu()"><span></span><span></span><span></span></div>
-</nav>
-<div class="mobile-menu" id="mobileMenu"></div>
+    <div class="nav-right">
+      <div class="lang-wrap">
+        <button class="lang-btn" onclick="toggleLang(event)">🌐 العربية ▾</button>
+        <div class="lang-dropdown" id="langDropdown"></div>
+      </div>
+      <button class="nav-cta" onclick="goTo('apply')">سجل الآن</button>
+    </div>
+    <div class="hamburger" onclick="toggleMobileMenu()"><span></span><span></span><span></span></div>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu"></div>
 
-<!-- قسم الهيرو (مع تأثيرات مرئية) -->
-<section class="hero">
-  <div class="hero-inner">
-    <div class="hero-content">
-      <div class="hero-badge">شريكك الموثوق للتعليم في تركيا 🇹🇷</div>
-      <h1>ابدأ مستقبلك الأكاديمي <br> في <span>أفضل الجامعات التركية الخاصة</span></h1>
-      <p>نساعدك في القبول والتسجيل والسكن — الدراسة بالإنكليزية أو التركية فقط.</p>
-      <div class="hero-btns">
-        <button class="btn-primary" onclick="goTo('apply')">ابدأ تسجيلك مجاناً</button>
-        <button class="btn-outline" onclick="goTo('unis')">اكتشف جامعاتنا</button>
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-content" data-aos="fade-right">
+        <div class="hero-badge">شريكك الموثوق للتعليم في تركيا 🇹🇷</div>
+        <h1>ابدأ مستقبلك الأكاديمي <br> في <span>أفضل الجامعات التركية الخاصة</span></h1>
+        <p>نساعدك في القبول والتسجيل والسكن — الدراسة بالإنكليزية أو التركية فقط.</p>
+        <div class="hero-btns">
+          <button class="btn-primary" onclick="goTo('apply')">ابدأ تسجيلك مجاناً</button>
+          <button class="btn-outline" onclick="goTo('unis')">اكتشف جامعاتنا</button>
+        </div>
+      </div>
+      <div class="hero-stats" data-aos="fade-left">
+        <div class="stat-card"><div class="stat-number" id="stat1">+500</div><div class="stat-label">طالب مسجّل</div></div>
+        <div class="stat-card"><div class="stat-number" id="stat2">+30</div><div class="stat-label">جامعة شريكة</div></div>
+        <div class="stat-card"><div class="stat-number" id="stat3">9</div><div class="stat-label">لغات خدمة</div></div>
+        <div class="stat-card"><div class="stat-number" id="stat4">95%</div><div class="stat-label">نسبة القبول</div></div>
       </div>
     </div>
-    <div class="hero-stats" id="statsSection">
-      <div class="stat-card"><div class="stat-number" id="stat1">+500</div><div class="stat-label">طالب مسجّل</div></div>
-      <div class="stat-card"><div class="stat-number" id="stat2">+30</div><div class="stat-label">جامعة شريكة</div></div>
-      <div class="stat-card"><div class="stat-number" id="stat3">9</div><div class="stat-label">لغات خدمة</div></div>
-      <div class="stat-card"><div class="stat-number" id="stat4">95%</div><div class="stat-label">نسبة القبول</div></div>
+  </section>
+
+  <!-- الخدمات -->
+  <section class="section" id="services">
+    <div class="sec-header" data-aos="fade-up">
+      <div class="sec-tag">خدماتنا</div>
+      <div class="sec-title">كل ما تحتاجه في مكان واحد</div>
+      <div class="sec-sub">نرافقك من الاستشارة الأولى حتى بداية دراستك</div>
     </div>
-  </div>
-</section>
-
-<!-- الخدمات (بطاقات متحركة) -->
-<section class="section" id="services">
-  <div class="sec-header">
-    <div class="sec-tag">خدماتنا</div>
-    <div class="sec-title">كل ما تحتاجه في مكان واحد</div>
-    <div class="sec-sub">نرافقك من الاستشارة الأولى حتى بداية دراستك</div>
-  </div>
-  <div class="grid-3">
-    <div class="service-card"><div class="service-icon"><i class="fas fa-graduation-cap"></i></div><div class="service-title">القبول الجامعي</div><div class="service-desc">في الجامعات الخاصة بسهولة واحترافية</div></div>
-    <div class="service-card"><div class="service-icon"><i class="fas fa-chalkboard-user"></i></div><div class="service-title">الإرشاد الأكاديمي</div><div class="service-desc">نساعدك لاختيار التخصص الأنسب</div></div>
-    <div class="service-card"><div class="service-icon"><i class="fas fa-house-chimney"></i></div><div class="service-title">خدمات السكن</div><div class="service-desc">سكن آمن وقريب من جامعتك</div></div>
-    <div class="service-card"><div class="service-icon"><i class="fas fa-passport"></i></div><div class="service-title">التأشيرة والإقامة</div><div class="service-desc">إنهاء أوراقك الرسمية بسرعة</div></div>
-    <div class="service-card"><div class="service-icon"><i class="fas fa-file-signature"></i></div><div class="service-title">معادلة الشهادات</div><div class="service-desc">تصديق ومعادلة مؤهلاتك الدراسية</div></div>
-    <div class="service-card"><div class="service-icon"><i class="fas fa-plane-arrival"></i></div><div class="service-title">الاستقبال في إسطنبول</div><div class="service-desc">فريقنا يستقبلك من المطار</div></div>
-  </div>
-</section>
-
-<!-- قائمة الجامعات الخاصة (ديناميكية) -->
-<section class="section bg-gray" id="unis">
-  <div class="sec-header">
-    <div class="sec-tag">جامعاتنا الشريكة</div>
-    <div class="sec-title">أفضل الجامعات الخاصة في تركيا</div>
-  </div>
-  <div class="tab-nav">
-    <button class="tab-btn active" onclick="filterUnis('all',this)">الكل</button>
-    <button class="tab-btn" onclick="filterUnis('istanbul',this)">إسطنبول</button>
-    <button class="tab-btn" onclick="filterUnis('ankara',this)">أنقرة</button>
-  </div>
-  <div class="unis-grid" id="unisContainer"></div>
-</section>
-
-<!-- نموذج التسجيل -->
-<section class="section" id="apply">
-  <div class="sec-header">
-    <div class="sec-tag">التسجيل</div>
-    <div class="sec-title">سجّل الآن وابدأ مسيرتك</div>
-    <div class="sec-sub">أرسل طلبك وسيتواصل معك مستشارنا خلال 24 ساعة</div>
-  </div>
-  <div class="form-wrap">
-    <div class="fgrid">
-      <div class="fg"><input type="text" id="fullName" placeholder="الاسم الكامل *"></div>
-      <div class="fg"><input type="tel" id="phone" placeholder="رقم الهاتف *"></div>
-      <div class="fg"><input type="email" id="email" placeholder="البريد الإلكتروني *"></div>
-      <div class="fg"><input type="text" id="nationality" placeholder="الجنسية"></div>
-      <div class="fg"><select id="degree"><option>المؤهل الدراسي</option><option>ثانوية عامة</option><option>بكالوريوس</option><option>ماجستير</option></select></div>
-      <div class="fg"><input type="text" id="major" placeholder="التخصص المرغوب"></div>
+    <div class="services-grid" data-aos="fade-up" data-aos-delay="100">
+      <div class="service-card"><div class="service-icon"><i class="fas fa-graduation-cap"></i></div><div class="service-title">القبول الجامعي</div><div class="service-desc">في الجامعات الخاصة بكل سهولة</div></div>
+      <div class="service-card"><div class="service-icon"><i class="fas fa-chalkboard-user"></i></div><div class="service-title">الإرشاد الأكاديمي</div><div class="service-desc">اختيار التخصص المناسب لك</div></div>
+      <div class="service-card"><div class="service-icon"><i class="fas fa-house-chimney"></i></div><div class="service-title">السكن الطلابي</div><div class="service-desc">سكن آمن وقريب من جامعتك</div></div>
+      <div class="service-card"><div class="service-icon"><i class="fas fa-passport"></i></div><div class="service-title">التأشيرة والإقامة</div><div class="service-desc">إنهاء كل الأوراق الرسمية</div></div>
+      <div class="service-card"><div class="service-icon"><i class="fas fa-file-signature"></i></div><div class="service-title">معادلة الشهادات</div><div class="service-desc">تصديق ومعادلة مؤهلاتك</div></div>
+      <div class="service-card"><div class="service-icon"><i class="fas fa-plane-arrival"></i></div><div class="service-title">الاستقبال في إسطنبول</div><div class="service-desc">فريقنا يستقبلك من المطار</div></div>
     </div>
-    <button class="sub-btn" onclick="submitApplication()">إرسال الطلب</button>
-    <div id="successMsg" style="display:none; text-align:center; margin-top:16px; color:#16a34a;">✓ تم إرسال طلبك بنجاح!</div>
-  </div>
-</section>
+  </section>
 
-<!-- أسئلة شائعة -->
-<section class="section bg-gray" id="faq">
-  <div class="sec-header">
-    <div class="sec-tag">الأسئلة الشائعة</div>
-    <div class="sec-title">إجابات لأكثر الأسئلة شيوعاً</div>
-  </div>
-  <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">ما هي شروط القبول في الجامعات الخاصة؟<span>+</span></div><div class="faq-a">عادةً شهادة الثانوية العامة كافية، والجامعات الخاصة لا تشترط اختبارات إضافية.</div></div>
-  <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">هل يمكن الدراسة باللغة الإنجليزية؟<span>+</span></div><div class="faq-a">نعم، معظم البرامج متاحة باللغة الإنجليزية أو التركية.</div></div>
-  <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">كم تكلفة الدراسة في تركيا؟<span>+</span></div><div class="faq-a">تتراوح بين 3000 و 15000 دولار سنوياً حسب الجامعة والتخصص.</div></div>
-</section>
+  <!-- الجامعات الخاصة -->
+  <section class="section bg-gray" id="unis">
+    <div class="sec-header" data-aos="fade-up">
+      <div class="sec-tag">جامعاتنا الشريكة</div>
+      <div class="sec-title">أفضل الجامعات الخاصة في تركيا</div>
+    </div>
+    <div class="tab-nav" data-aos="fade-up">
+      <button class="tab-btn active" onclick="filterUnis('all',this)">الكل</button>
+      <button class="tab-btn" onclick="filterUnis('istanbul',this)">إسطنبول</button>
+      <button class="tab-btn" onclick="filterUnis('ankara',this)">أنقرة</button>
+    </div>
+    <div class="unis-grid" id="unisContainer"></div>
+  </section>
 
-<!-- التواصل -->
-<section class="section" id="contact">
-  <div class="sec-header">
-    <div class="sec-tag">تواصل معنا</div>
-    <div class="sec-title">نحن هنا لمساعدتك</div>
-  </div>
-  <div class="contact-grid">
-    <div class="contact-card"><i class="fas fa-phone-alt" style="font-size:30px; color:var(--primary);"></i><h4>واتساب</h4><p>+90 501 595 98 80</p></div>
-    <div class="contact-card"><i class="fas fa-envelope" style="font-size:30px; color:var(--primary);"></i><h4>البريد الإلكتروني</h4><p>aboutalebeducation@gmail.com</p></div>
-    <div class="contact-card"><i class="fas fa-map-marker-alt" style="font-size:30px; color:var(--primary);"></i><h4>العنوان</h4><p>Bahcelievler, Istanbul, Turkey</p></div>
-  </div>
-</section>
+  <!-- نموذج التسجيل -->
+  <section class="section" id="apply">
+    <div class="sec-header" data-aos="fade-up">
+      <div class="sec-tag">التسجيل</div>
+      <div class="sec-title">سجّل الآن وابدأ مسيرتك</div>
+      <div class="sec-sub">أرسل طلبك وسيتواصل معك مستشارنا خلال 24 ساعة</div>
+    </div>
+    <div class="form-wrap" data-aos="fade-up" data-aos-delay="100">
+      <div class="fgrid">
+        <div class="fg"><input type="text" id="fullName" placeholder="الاسم الكامل *"></div>
+        <div class="fg"><input type="tel" id="phone" placeholder="رقم الهاتف *"></div>
+        <div class="fg"><input type="email" id="email" placeholder="البريد الإلكتروني *"></div>
+        <div class="fg"><input type="text" id="nationality" placeholder="الجنسية"></div>
+        <div class="fg"><select id="degree"><option>المؤهل الدراسي</option><option>ثانوية عامة</option><option>بكالوريوس</option><option>ماجستير</option></select></div>
+        <div class="fg"><input type="text" id="major" placeholder="التخصص المرغوب"></div>
+      </div>
+      <button class="sub-btn" onclick="submitApplication()">إرسال الطلب</button>
+      <div id="successMsg" style="display:none; text-align:center; margin-top:16px; color:#16a34a;">✓ تم إرسال طلبك بنجاح!</div>
+    </div>
+  </section>
 
-<footer>© 2025 Abou-Taleb Education — جميع الحقوق محفوظة — الدراسة بالإنكليزية أو التركية فقط</footer>
+  <!-- الأسئلة الشائعة -->
+  <section class="section bg-gray" id="faq">
+    <div class="sec-header" data-aos="fade-up">
+      <div class="sec-tag">الأسئلة الشائعة</div>
+      <div class="sec-title">إجابات لأكثر الأسئلة شيوعاً</div>
+    </div>
+    <div class="faq-item" data-aos="fade-up" data-aos-delay="50"><div class="faq-q" onclick="toggleFaq(this)">ما هي شروط القبول في الجامعات الخاصة؟<span>+</span></div><div class="faq-a">عادةً شهادة الثانوية العامة كافية، والجامعات الخاصة لا تشترط اختبارات إضافية.</div></div>
+    <div class="faq-item" data-aos="fade-up" data-aos-delay="100"><div class="faq-q" onclick="toggleFaq(this)">هل يمكن الدراسة باللغة الإنجليزية؟<span>+</span></div><div class="faq-a">نعم، معظم البرامج متاحة باللغة الإنجليزية أو التركية.</div></div>
+    <div class="faq-item" data-aos="fade-up" data-aos-delay="150"><div class="faq-q" onclick="toggleFaq(this)">كم تكلفة الدراسة في تركيا؟<span>+</span></div><div class="faq-a">تتراوح بين 3000 و 15000 دولار سنوياً حسب الجامعة والتخصص.</div></div>
+  </section>
 
-<script>
-  // قائمة الجامعات الخاصة (لقد تم الحفاظ على الأسماء وصورك)
-  const universitiesList = [
-    { name: "Acıbadem Mehmet Ali Aydınlar Üniversitesi", city: "istanbul", img: "ACIBADEM MEHMET ALI_ç AYDINLAR U_êNI_çVERSI_çTESI_ç.png" },
-    { name: "Altınbaş Üniversitesi", city: "istanbul", img: "ALTINBAS_د U_êNI_çVERSI_çTESI_ç.png" },
-    { name: "Ankara Bilim Üniversitesi", city: "ankara", img: "ANKARA BI_çLI_çM U_êNI_çVERSI_çTESI_ç.png" },
-    { name: "Ankara Medipol Üniversitesi", city: "ankara", img: "ANKARA MEDI_çPOL U_êNI_çVERSI_çTESI_ç.png" },
-    { name: "Atılım Üniversitesi", city: "ankara", img: "ATILIM U_êNI_çVERSI_çTESI_ç.png" },
-    { name: "Bahçeşehir Üniversitesi", city: "istanbul", img: "BAHC_دES_دEHI_çR U_êNI_çVERSI_çTESI_ç.png" },
-    { name: "Bezmialem Vakıf Üniversitesi", city: "istanbul", img: "BEZM-I_ç A_éLEM VAKIF U_êNI_çVERSI_çTESI_ç.png" },
-    { name: "Biruni Üniversitesi", city: "istanbul", img: "BI_çRUNI_ç U_êNI_çVERSI_çTESI_ç.png" },
-    { name: "Doğuş Üniversitesi", city: "istanbul", img: "DOG__US_د U_êNI_çVERSI_çTESI_ç.png" },
-    { name: "Fatih Sultan Mehmet Vakıf Üniversitesi", city: "istanbul", img: "FATI_çH SULTAN MEHMET VAKIF U_êNI_çVERSI_çTESI_ç.png" },
-    { name: "Fenerbahçe Üniversitesi", city: "istanbul", img: "FENERBAHC_دE U_êNI_çVERSI_çTESI_ç.png" },
-    { name: "Haliç Üniversitesi", city: "istanbul", img: "HALI_çC_د U_êNI_çVERSI_çTESI_ç.png" },
-    { name: "İbn Haldun Üniversitesi", city: "istanbul", img: "I_çBN HALDUN U_êNI_çVERSI_çTESI_ç.png" },
-    { name: "İstanbul Aydın Üniversitesi", city: "istanbul", img: "I_çSTANBUL AYDIN U_êNI_çVERSI_çTESI_ç.png" },
-    { name: "İstanbul Galata Üniversitesi", city: "istanbul", img: "I_çSTANBUL GALATA U_êNI_çVERSI_çTESI_ç.png" },
-    { name: "İstanbul Gedik Üniversitesi", city: "istanbul", img: "I_çSTANBUL GEDI_çK U_êNI_çVERSI_çTESI_ç.png" },
-    { name: "İstanbul Gelişim Üniversitesi", city: "istanbul", img: "I_çSTANBUL GELI_çS_دI_çM U_êNI_çVERSI_çTESI_ç.png" },
-    { name: "İstanbul Kent Üniversitesi", city: "istanbul", img: "I_çSTANBUL KENT U_êNI_çVERSI_çTESI_ç.png" },
-    { name: "İstanbul Medipol Üniversitesi", city: "istanbul", img: "I_çSTANBUL MEDI_çPOL U_êNI_çVERSI_çTESI_ç.png" },
-    { name: "İstanbul Nişantaşı Üniversitesi", city: "istanbul", img: "I_çSTANBUL NI_çS_دANTAS_دI U_êNI_çVERSI_çTESI_ç.png" },
-    { name: "İstanbul Okan Üniversitesi", city: "istanbul", img: "I_çSTANBUL OKAN U_êNI_çVERSI_çTESI_ç.png" },
-    { name: "İstanbul Sabahattin Zaim Üniversitesi", city: "istanbul", img: "I_çSTANBUL SABAHATTI_çN ZAI_çM U_êNI_çVERSI_çTESI_ç.png" },
-    { name: "İstanbul Topkapı Üniversitesi", city: "istanbul", img: "I_çSTANBUL TOPKAPI U_êNI_çVERSI_çTESI_ç.png" },
-    { name: "İstanbul Yeni Yüzyıl Üniversitesi", city: "istanbul", img: "I_çSTANBUL YENI_ç YU_êZYIL U_êNI_çVERSI_çTESI_ç.png" },
-    { name: "İstinye Üniversitesi", city: "istanbul", img: "I_çSTI_çNYE U_êNI_çVERSI_çTESI_ç.png" },
-    { name: "Maltepe Üniversitesi", city: "istanbul", img: "MALTEPE U_êNI_çVERSI_çTESI_ç.png" },
-    { name: "OSTİM Teknik Üniversitesi", city: "ankara", img: "OSTI_çM TEKNI_çK U_êNI_çVERSI_çTESI_ç.png" },
-    { name: "Özyeğin Üniversitesi", city: "istanbul", img: "O_êZYEG__I_çN U_êNI_çVERSI_çTESI_ç.png" },
-    { name: "Üsküdar Üniversitesi", city: "istanbul", img: "U_êSKU_êDAR U_êNI_çVERSI_çTESI_ç.png" },
-    { name: "Yeditepe Üniversitesi", city: "istanbul", img: "YEDI_çTEPE U_êNI_çVERSI_çTESI_ç.png" }
-  ];
+  <!-- التواصل -->
+  <section class="section" id="contact">
+    <div class="sec-header" data-aos="fade-up">
+      <div class="sec-tag">تواصل معنا</div>
+      <div class="sec-title">نحن هنا لمساعدتك</div>
+    </div>
+    <div class="contact-grid" data-aos="fade-up" data-aos-delay="100">
+      <div class="contact-card"><i class="fas fa-phone-alt" style="font-size:30px; color:var(--primary);"></i><h4>واتساب</h4><p>+90 501 595 98 80</p></div>
+      <div class="contact-card"><i class="fas fa-envelope" style="font-size:30px; color:var(--primary);"></i><h4>البريد الإلكتروني</h4><p>aboutalebeducation@gmail.com</p></div>
+      <div class="contact-card"><i class="fas fa-map-marker-alt" style="font-size:30px; color:var(--primary);"></i><h4>العنوان</h4><p>Bahcelievler, Istanbul, Turkey</p></div>
+    </div>
+  </section>
 
-  // دالة عرض الجامعات
-  function renderUniversities(cityFilter = 'all') {
-    const container = document.getElementById('unisContainer');
-    if (!container) return;
-    container.innerHTML = '';
-    const filtered = universitiesList.filter(u => cityFilter === 'all' || u.city === cityFilter);
-    filtered.forEach(uni => {
-      const card = document.createElement('div');
-      card.className = 'uni-card';
-      card.innerHTML = `
-        <img class="uni-img" src="images/${uni.img}" alt="${uni.name}" onerror="this.src='https://placehold.co/100x100?text=Logo'">
-        <div class="uni-name">${uni.name}</div>
-        <div class="uni-badge">خاصة</div>
-      `;
-      container.appendChild(card);
-    });
-  }
+  <footer>© 2025 Abou-Taleb Education — جميع الحقوق محفوظة — الدراسة بالإنكليزية أو التركية فقط</footer>
 
-  window.filterUnis = (city, btn) => {
-    renderUniversities(city);
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    if (btn) btn.classList.add('active');
-  };
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 800, once: true });
 
-  // إضافة اعدادات عدادات متحركة عند التمرير (تأثير حيوي)
-  function startCounters() {
-    const counters = document.querySelectorAll('.stat-number');
-    counters.forEach(counter => {
-      const updateCounter = () => {
+    // قائمة الجامعات الخاصة (نفس الأسماء)
+    const universitiesList = [
+      { name: "Acıbadem Mehmet Ali Aydınlar Üniversitesi", city: "istanbul", img: "ACIBADEM MEHMET ALI_ç AYDINLAR U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "Altınbaş Üniversitesi", city: "istanbul", img: "ALTINBAS_د U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "Ankara Bilim Üniversitesi", city: "ankara", img: "ANKARA BI_çLI_çM U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "Ankara Medipol Üniversitesi", city: "ankara", img: "ANKARA MEDI_çPOL U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "Atılım Üniversitesi", city: "ankara", img: "ATILIM U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "Bahçeşehir Üniversitesi", city: "istanbul", img: "BAHC_دES_دEHI_çR U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "Bezmialem Vakıf Üniversitesi", city: "istanbul", img: "BEZM-I_ç A_éLEM VAKIF U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "Biruni Üniversitesi", city: "istanbul", img: "BI_çRUNI_ç U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "Doğuş Üniversitesi", city: "istanbul", img: "DOG__US_د U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "Fatih Sultan Mehmet Vakıf Üniversitesi", city: "istanbul", img: "FATI_çH SULTAN MEHMET VAKIF U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "Fenerbahçe Üniversitesi", city: "istanbul", img: "FENERBAHC_دE U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "Haliç Üniversitesi", city: "istanbul", img: "HALI_çC_د U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "İbn Haldun Üniversitesi", city: "istanbul", img: "I_çBN HALDUN U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "İstanbul Aydın Üniversitesi", city: "istanbul", img: "I_çSTANBUL AYDIN U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "İstanbul Galata Üniversitesi", city: "istanbul", img: "I_çSTANBUL GALATA U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "İstanbul Gedik Üniversitesi", city: "istanbul", img: "I_çSTANBUL GEDI_çK U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "İstanbul Gelişim Üniversitesi", city: "istanbul", img: "I_çSTANBUL GELI_çS_دI_çM U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "İstanbul Kent Üniversitesi", city: "istanbul", img: "I_çSTANBUL KENT U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "İstanbul Medipol Üniversitesi", city: "istanbul", img: "I_çSTANBUL MEDI_çPOL U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "İstanbul Nişantaşı Üniversitesi", city: "istanbul", img: "I_çSTANBUL NI_çS_دANTAS_دI U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "İstanbul Okan Üniversitesi", city: "istanbul", img: "I_çSTANBUL OKAN U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "İstanbul Sabahattin Zaim Üniversitesi", city: "istanbul", img: "I_çSTANBUL SABAHATTI_çN ZAI_çM U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "İstanbul Topkapı Üniversitesi", city: "istanbul", img: "I_çSTANBUL TOPKAPI U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "İstanbul Yeni Yüzyıl Üniversitesi", city: "istanbul", img: "I_çSTANBUL YENI_ç YU_êZYIL U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "İstinye Üniversitesi", city: "istanbul", img: "I_çSTI_çNYE U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "Maltepe Üniversitesi", city: "istanbul", img: "MALTEPE U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "OSTİM Teknik Üniversitesi", city: "ankara", img: "OSTI_çM TEKNI_çK U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "Özyeğin Üniversitesi", city: "istanbul", img: "O_êZYEG__I_çN U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "Üsküdar Üniversitesi", city: "istanbul", img: "U_êSKU_êDAR U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "Yeditepe Üniversitesi", city: "istanbul", img: "YEDI_çTEPE U_êNI_çVERSI_çTESI_ç.png" }
+    ];
+
+    function renderUniversities(filter = 'all') {
+      const container = document.getElementById('unisContainer');
+      if (!container) return;
+      container.innerHTML = '';
+      const filtered = universitiesList.filter(u => filter === 'all' || u.city === filter);
+      filtered.forEach(uni => {
+        const card = document.createElement('div');
+        card.className = 'uni-card';
+        card.innerHTML = `
+          <img class="uni-img" src="images/${uni.img}" alt="${uni.name}" onerror="this.src='https://placehold.co/100x100?text=Logo'">
+          <div class="uni-name">${uni.name}</div>
+          <div class="uni-badge">خاصة</div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    window.filterUnis = (city, btn) => {
+      renderUniversities(city);
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+    };
+
+    // عدادات متحركة
+    function startCounters() {
+      const counters = document.querySelectorAll('.stat-number');
+      counters.forEach(counter => {
         const target = parseInt(counter.innerText);
         let count = 0;
-        const increment = target / 100;
+        const increment = target / 80;
         const update = setInterval(() => {
           count += increment;
           if (count >= target) {
             clearInterval(update);
-            counter.innerText = target + (target > 30 ? '+' : '');
+            counter.innerText = target;
           } else {
             counter.innerText = Math.ceil(count);
           }
-        }, 20);
-      };
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            updateCounter();
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.5 });
-      observer.observe(counter);
-    });
-  }
+        }, 30);
+      });
+    }
 
-  // دوال عامة
-  function goTo(id) { document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }); }
-  function toggleMobileMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
-  function toggleFaq(el) { const panel = el.nextElementSibling; panel.style.display = panel.style.display === 'block' ? 'none' : 'block'; el.querySelector('span').innerText = panel.style.display === 'block' ? '−' : '+'; }
-  function submitApplication() { const name = document.getElementById('fullName').value; if (!name) alert('يرجى إدخال الاسم'); else { document.getElementById('successMsg').style.display = 'block'; setTimeout(() => { document.getElementById('successMsg').style.display = 'none'; }, 3000); } }
+    window.goTo = (id) => document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+    function toggleMobileMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
+    function toggleFaq(el) { const ans = el.nextElementSibling; ans.style.display = ans.style.display === 'block' ? 'none' : 'block'; el.querySelector('span').innerText = ans.style.display === 'block' ? '−' : '+'; }
+    function submitApplication() { const name = document.getElementById('fullName').value; if (!name) alert('الرجاء إدخال الاسم'); else { document.getElementById('successMsg').style.display = 'block'; setTimeout(() => { document.getElementById('successMsg').style.display = 'none'; }, 3000); } }
 
-  // بدء كل شيء بعد تحميل الصفحة
-  window.onload = () => {
-    renderUniversities('all');
-    startCounters();
-  };
-</script>
-
+    window.onload = () => {
+      renderUniversities('all');
+      startCounters();
+      // مراقبة ظهور العدادات
+      const statsSection = document.querySelector('.hero-stats');
+      if (statsSection) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => { if (entry.isIntersecting) startCounters(); });
+        }, { once: true });
+        observer.observe(statsSection);
+      }
+    };
+  </script>
 </body>
 </html>
