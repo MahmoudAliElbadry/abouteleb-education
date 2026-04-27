@@ -113,11 +113,18 @@
     .contact-card{background:white;border-radius:30px;padding:1.8rem;text-align:center;transition:var(--transition)}
     .contact-card:hover{transform:translateY(-5px)}
     footer{background:#1a1a1a;color:#94a3b8;padding:2rem;text-align:center}
+    /* تسجيل الدخول مودال */
     .login-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:2001;display:flex;justify-content:center;align-items:center;visibility:hidden}
     .login-box{background:white;border-radius:40px;padding:2rem;width:350px;text-align:center;position:relative}
     .login-box .close-btn{position:absolute;top:12px;left:18px;font-size:24px;cursor:pointer;color:#666}
     .login-box input{width:100%;margin:10px 0;padding:12px;border-radius:40px;border:1px solid #ccc}
     .login-box button{background:var(--primary);color:white;border:none;padding:12px;border-radius:40px;width:100%;cursor:pointer}
+    /* رسالة الخطأ الاحترافية */
+    .toast-message{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#1e293b;color:white;padding:14px 28px;border-radius:60px;box-shadow:0 10px 25px -5px rgba(0,0,0,0.2);display:flex;align-items:center;gap:12px;z-index:2002;font-weight:500;direction:rtl;opacity:0;transition:opacity 0.3s;pointer-events:none}
+    .toast-message i{font-size:20px;color:#facc15}
+    .toast-message.show{opacity:1}
+    .shake{animation:shake 0.5s ease-in-out}
+    @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
     .user-status{color:white;margin-left:15px;font-size:14px;background:rgba(255,255,255,0.1);padding:5px 12px;border-radius:40px}
     @media(max-width:768px){.nav-links,.nav-right{display:none}.hamburger{display:flex}.hero-inner{flex-direction:column;text-align:center}.hero h1{font-size:2rem}.sec-title{font-size:1.8rem}.fgrid{grid-template-columns:1fr}.logo-text{font-size:1.2rem}.about-grid{grid-template-columns:1fr;text-align:center}.video-wrapper iframe{height:250px}}
   </style>
@@ -137,6 +144,9 @@
   <div class="mobile-menu" id="mobileMenu"><a id="mobUnisLink" onclick="goTo('unis');toggleMobileMenu()">الجامعات</a><a id="mobServicesLink" onclick="goTo('services');toggleMobileMenu()">الخدمات</a><a id="mobApplyLink" onclick="goTo('apply');toggleMobileMenu()">التسجيل</a><a id="mobFaqLink" onclick="goTo('faq');toggleMobileMenu()">الأسئلة</a></div>
 
   <div class="login-overlay" id="loginOverlay" onclick="closeLoginOnOutside(event)"><div class="login-box" onclick="event.stopPropagation()"><span class="close-btn" onclick="closeLogin()">✖</span><h3>تسجيل الدخول</h3><input type="text" id="loginUsername" placeholder="اسم المستخدم"><input type="password" id="loginPassword" placeholder="كلمة المرور"><button onclick="doLogin()">دخول</button></div></div>
+
+  <!-- رسالة خطأ احترافية -->
+  <div id="errorToast" class="toast-message"><i class="fas fa-exclamation-circle"></i><span id="errorText"></span></div>
 
   <section class="hero"><div class="hero-inner"><div class="hero-content" data-aos="fade-right"><div class="hero-badge" id="heroBadge">شريكك الموثوق للتعليم في تركيا 🇹🇷</div><h1 id="heroTitle">ابدأ مستقبلك الأكاديمي <br> في <span id="heroTitleSpan">أفضل الجامعات التركية</span></h1><p id="heroDesc">نساعدك في القبول والتسجيل والسكن — الدراسة بالإنكليزية أو التركية فقط.</p><div class="hero-btns"><button class="btn-primary" id="heroBtn1" onclick="goTo('apply')">ابدأ تسجيلك مجاناً</button><button class="btn-outline" id="heroBtn2" onclick="goTo('unis')">اكتشف جامعاتنا</button></div></div><div class="hero-stats" data-aos="fade-left"><div class="stat-card"><div class="stat-number" id="stat1">+500</div><div class="stat-label" id="statLabel1">طالب مسجّل</div></div><div class="stat-card"><div class="stat-number" id="stat2">+30</div><div class="stat-label" id="statLabel2">جامعة شريكة</div></div><div class="stat-card"><div class="stat-number" id="stat3">9</div><div class="stat-label" id="statLabel3">لغات خدمة</div></div><div class="stat-card"><div class="stat-number" id="stat4">95%</div><div class="stat-label" id="statLabel4">نسبة القبول</div></div></div></div></section>
 
@@ -239,8 +249,22 @@
     function showLogin() { document.getElementById('loginOverlay').style.visibility = 'visible'; }
     function closeLogin() { document.getElementById('loginOverlay').style.visibility = 'hidden'; }
     function closeLoginOnOutside(e) { if(e.target === document.getElementById('loginOverlay')) closeLogin(); }
-    function doLogin() { const u = document.getElementById('loginUsername').value; const p = document.getElementById('loginPassword').value; if(u === 'admin' && p === 'admin') { isLoggedIn = true; closeLogin(); document.getElementById('userStatus').style.display = 'inline-block'; document.getElementById('userStatus').innerText = `مرحباً ${u}`; document.getElementById('loginBtn').style.display = 'none'; alert('تم تسجيل الدخول بنجاح، يمكنك الآن إرسال الطلب.'); document.getElementById('loginUsername').value = ''; document.getElementById('loginPassword').value = ''; } else { alert('اسم المستخدم أو كلمة المرور غير صحيحة'); } }
-    async function submitApplication() { if(!isLoggedIn) { alert('يرجى تسجيل الدخول أولاً باستخدام زر "تسجيل الدخول" أعلى الصفحة.'); return; } const fullName = document.getElementById('fullName').value.trim(); let phone = document.getElementById('phone').value.trim(); const email = document.getElementById('email').value.trim(); const nationality = document.getElementById('nationality').value.trim(); const qualification = document.getElementById('degree').value; const desiredMajor = document.getElementById('major').value.trim(); const fullPhone = (iti && iti.getNumber) ? iti.getNumber() : phone; if (!fullName || !phone || !email) { alert('يرجى ملء الحقول الإلزامية'); return; } const submitBtn = document.getElementById('formSubmitBtn'); const originalText = submitBtn.innerText; submitBtn.innerText = 'جاري الإرسال...'; submitBtn.disabled = true; try { await fetch('https://script.google.com/macros/s/AKfycbwFPalgj95ZRW1Tm350wOArRyOWzfxteAJ7qWbb4IRYW0u7qfmm9q4BkyQo1ODnhIdh/exec', { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ fullName, phone: fullPhone, email, nationality, qualification, desiredMajor, message: '', fileUrl: '' }) }); document.getElementById('successMsg').style.display = 'block'; submitBtn.innerText = '✓ تم الإرسال بنجاح'; submitBtn.style.background = '#2c7a4a'; document.getElementById('fullName').value = ''; document.getElementById('phone').value = ''; document.getElementById('email').value = ''; document.getElementById('nationality').value = ''; document.getElementById('degree').value = 'المؤهل الدراسي'; document.getElementById('major').value = ''; setTimeout(() => { submitBtn.innerText = originalText; submitBtn.style.background = 'var(--primary)'; submitBtn.disabled = false; document.getElementById('successMsg').style.display = 'none'; }, 4000); } catch (error) { alert('حدث خطأ في الإرسال. حاول مرة أخرى.'); submitBtn.innerText = originalText; submitBtn.disabled = false; } }
+    function showErrorToast(message) {
+      const toast = document.getElementById('errorToast');
+      const textSpan = document.getElementById('errorText');
+      textSpan.innerText = message;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 4000);
+    }
+    function shakeLoginButton() {
+      const btn = document.getElementById('loginBtn');
+      btn.classList.add('shake');
+      setTimeout(() => btn.classList.remove('shake'), 500);
+    }
+    function doLogin() { const u = document.getElementById('loginUsername').value; const p = document.getElementById('loginPassword').value; if(u === 'admin' && p === 'admin') { isLoggedIn = true; closeLogin(); document.getElementById('userStatus').style.display = 'inline-block'; document.getElementById('userStatus').innerText = `مرحباً ${u}`; document.getElementById('loginBtn').style.display = 'none'; showErrorToast('✓ تم تسجيل الدخول بنجاح، يمكنك الآن إرسال الطلب.'); document.getElementById('loginUsername').value = ''; document.getElementById('loginPassword').value = ''; } else { showErrorToast('اسم المستخدم أو كلمة المرور غير صحيحة. حاول مرة أخرى.'); } }
+    async function submitApplication() { if(!isLoggedIn) { showErrorToast('⚠️ يجب عليك تسجيل الدخول أولاً لإرسال الطلب. يُرجى الضغط على زر "تسجيل الدخول" أعلى الصفحة.'); shakeLoginButton(); return; } const fullName = document.getElementById('fullName').value.trim(); let phone = document.getElementById('phone').value.trim(); const email = document.getElementById('email').value.trim(); const nationality = document.getElementById('nationality').value.trim(); const qualification = document.getElementById('degree').value; const desiredMajor = document.getElementById('major').value.trim(); const fullPhone = (iti && iti.getNumber) ? iti.getNumber() : phone; if (!fullName || !phone || !email) { showErrorToast('يرجى ملء الحقول الإلزامية: الاسم، الهاتف، البريد الإلكتروني'); return; } const submitBtn = document.getElementById('formSubmitBtn'); const originalText = submitBtn.innerText; submitBtn.innerText = 'جاري الإرسال...'; submitBtn.disabled = true; try { await fetch('https://script.google.com/macros/s/AKfycbwFPalgj95ZRW1Tm350wOArRyOWzfxteAJ7qWbb4IRYW0u7qfmm9q4BkyQo1ODnhIdh/exec', { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ fullName, phone: fullPhone, email, nationality, qualification, desiredMajor, message: '', fileUrl: '' }) }); document.getElementById('successMsg').style.display = 'block'; submitBtn.innerText = '✓ تم الإرسال بنجاح'; submitBtn.style.background = '#2c7a4a'; document.getElementById('fullName').value = ''; document.getElementById('phone').value = ''; document.getElementById('email').value = ''; document.getElementById('nationality').value = ''; document.getElementById('degree').value = 'المؤهل الدراسي'; document.getElementById('major').value = ''; setTimeout(() => { submitBtn.innerText = originalText; submitBtn.style.background = 'var(--primary)'; submitBtn.disabled = false; document.getElementById('successMsg').style.display = 'none'; }, 4000); } catch (error) { showErrorToast('حدث خطأ في الإرسال. حاول مرة أخرى.'); submitBtn.innerText = originalText; submitBtn.disabled = false; } }
     renderUniversities('all');
     const counters = document.querySelectorAll('.stat-number');
     function startCounters() { counters.forEach(c => { const target = parseInt(c.innerText); let count = 0; const step = target/60; const interval = setInterval(() => { count += step; if(count >= target) { c.innerText = target; clearInterval(interval); } else c.innerText = Math.ceil(count); }, 30); }); }
