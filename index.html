@@ -81,7 +81,6 @@
     .gallery-item:hover img{transform:scale(1.05)}
     .lightbox{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:2000;justify-content:center;align-items:center;cursor:pointer}
     .lightbox img{max-width:90%;max-height:90%;border-radius:20px}
-    /* تم إزالة شهادات الطلاب - قسم فارغ */
     .testimonials-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:30px;margin-top:30px}
     .testimonial-card{background:white;border-radius:28px;padding:2rem;text-align:center;border:1px solid var(--gray-border);transition:var(--transition)}
     .testimonial-card:hover{transform:translateY(-8px);border-color:var(--primary)}
@@ -152,24 +151,32 @@
       <div class="stat-card"><div class="stat-number" id="stat4">95%</div><div class="stat-label" id="statLabel4">نسبة القبول</div></div>
     </div></div></section>
 
+  <!-- من نحن -->
   <section class="section"><div class="about-grid" data-aos="fade-up"><div class="about-content"><div class="sec-tag" id="aboutTag" style="display:inline-block">من نحن</div><h3 id="aboutTitle">شريكك الموثوق للتعليم في تركيا</h3><p id="aboutText">نحن فريق متخصص في تقديم خدمات القبول الجامعي للطلاب الدوليين الراغبين في الدراسة في تركيا. نعمل مع أكثر من 30 جامعة معتمدة، ونساعد الطلاب في كل خطوة: من اختيار التخصص المناسب، إلى القبول، السكن، والتأشيرة.</p><div class="about-stats"><div class="about-stat"><div class="num" id="aboutYear">+8</div><div id="aboutYearLabel">سنوات خبرة</div></div><div class="about-stat"><div class="num" id="aboutUni">+30</div><div id="aboutUniLabel">جامعة شريكة</div></div><div class="about-stat"><div class="num" id="aboutStudent">+500</div><div id="aboutStudentLabel">طالب سعيد</div></div></div></div><div class="video-wrapper" style="max-width:100%"><img src="https://i.ibb.co/FkgS4ZWz/Cam-Scanner-25-04-2026-20-51.jpg" alt="About us" style="width:100%;border-radius:28px;object-fit:cover;height:300px"></div></div></section>
 
+  <!-- خدماتنا -->
   <section class="section bg-gray" id="services"><div class="sec-header" data-aos="fade-up"><div class="sec-tag" id="servicesTag">خدماتنا</div><div class="sec-title" id="servicesTitle">كل ما تحتاجه في مكان واحد</div><div class="sec-sub" id="servicesSub">نرافقك من الاستشارة الأولى حتى بداية دراستك</div></div><div class="services-grid" data-aos="fade-up" data-aos-delay="100"><div class="service-card"><div class="service-icon"><i class="fas fa-graduation-cap"></i></div><div class="service-title" id="srv1Title">القبول الجامعي</div><div class="service-desc" id="srv1Desc">في الجامعات بكل سهولة</div></div><div class="service-card"><div class="service-icon"><i class="fas fa-chalkboard-user"></i></div><div class="service-title" id="srv2Title">الإرشاد الأكاديمي</div><div class="service-desc" id="srv2Desc">اختيار التخصص المناسب</div></div><div class="service-card"><div class="service-icon"><i class="fas fa-house-chimney"></i></div><div class="service-title" id="srv3Title">السكن الطلابي</div><div class="service-desc" id="srv3Desc">سكن آمن وقريب من جامعتك</div></div><div class="service-card"><div class="service-icon"><i class="fas fa-passport"></i></div><div class="service-title" id="srv4Title">التأشيرة والإقامة</div><div class="service-desc" id="srv4Desc">إنهاء كل الأوراق الرسمية</div></div><div class="service-card"><div class="service-icon"><i class="fas fa-file-signature"></i></div><div class="service-title" id="srv5Title">معادلة الشهادات</div><div class="service-desc" id="srv5Desc">تصديق ومعادلة مؤهلاتك</div></div><div class="service-card"><div class="service-icon"><i class="fas fa-plane-arrival"></i></div><div class="service-title" id="srv6Title">الاستقبال في إسطنبول</div><div class="service-desc" id="srv6Desc">فريقنا يستقبلك من المطار</div></div></div></section>
 
+  <!-- الجامعات -->
   <section class="section" id="unis"><div class="sec-header" data-aos="fade-up"><div class="sec-tag" id="unisTag">جامعاتنا الشريكة</div><div class="sec-title" id="unisTitle">أفضل الجامعات في تركيا</div></div><div class="tab-nav" data-aos="fade-up"><button class="tab-btn active" id="tabAllBtn" onclick="filterUnis('all',this)">الكل</button><button class="tab-btn" id="tabIstanbulBtn" onclick="filterUnis('istanbul',this)">إسطنبول</button><button class="tab-btn" id="tabAnkaraBtn" onclick="filterUnis('ankara',this)">أنقرة</button></div><div class="unis-grid" id="unisContainer"></div></section>
 
+  <!-- معرض الصور -->
   <section class="section bg-gray"><div class="sec-header" data-aos="fade-up"><div class="sec-tag" id="galleryTag">معرض الصور</div><div class="sec-title" id="galleryTitle">جامعاتنا في صور</div></div><div class="gallery-grid" id="galleryGrid"></div></section>
   <div id="lightbox" class="lightbox" onclick="closeLightbox()"><img id="lightboxImg" src=""></div>
 
-  <!-- قسم شهادات الطلاب - تم إزالة جميع التعليقات الوهمية، أصبح فارغاً -->
+  <!-- شهادات الطلاب (تم إزالة جميع التعليقات الوهمية - أصبح القسم فارغاً) -->
   <section class="section"><div class="sec-header" data-aos="fade-up"><div class="sec-tag" id="testimonialsTag">آراء الطلاب</div><div class="sec-title" id="testimonialsTitle">ماذا يقولون عنا؟</div></div><div class="testimonials-grid" id="testimonialsGrid"></div></section>
 
+  <!-- فيديو -->
   <section class="section bg-gray"><div class="sec-header" data-aos="fade-up"><div class="sec-tag" id="videoTag">شاهد قصص النجاح</div><div class="sec-title" id="videoTitle">تعرف على تجارب الطلاب في تركيا</div></div><div class="video-wrapper" data-aos="zoom-in"><iframe src="https://www.youtube.com/embed/VIDEO_ID?autoplay=0&rel=0" title="Study in Turkey" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></section>
 
+  <!-- نموذج التسجيل -->
   <section class="section" id="apply"><div class="sec-header" data-aos="fade-up"><div class="sec-tag" id="formTag">التسجيل</div><div class="sec-title" id="formTitle">سجّل الآن وابدأ مسيرتك</div><div class="sec-sub" id="formSub">أرسل طلبك وسيتواصل معك مستشارنا خلال 24 ساعة</div></div><div class="form-wrap" data-aos="fade-up"><div class="fgrid"><div class="fg"><input type="text" id="fullName" placeholder="الاسم الكامل *"></div><div class="fg"><input type="tel" id="phone" placeholder="رقم الهاتف *"></div><div class="fg"><input type="email" id="email" placeholder="البريد الإلكتروني *"></div><div class="fg"><input type="text" id="nationality" placeholder="الجنسية"></div><div class="fg"><select id="degree"><option>المؤهل الدراسي</option><option>ثانوية عامة</option><option>بكالوريوس</option><option>ماجستير</option></select></div><div class="fg"><input type="text" id="major" placeholder="التخصص المرغوب"></div></div><button class="sub-btn" id="formSubmitBtn" onclick="submitApplication()">إرسال الطلب</button><div id="successMsg" style="display:none; text-align:center; margin-top:16px; color:#16a34a;">✓ تم إرسال طلبك بنجاح!</div></div></section>
 
+  <!-- أسئلة شائعة -->
   <section class="section bg-gray" id="faq"><div class="sec-header" data-aos="fade-up"><div class="sec-tag" id="faqTag">الأسئلة الشائعة</div><div class="sec-title" id="faqTitle">إجابات لأكثر الأسئلة شيوعاً</div></div><div class="faq-wrap"><div class="faq-item" data-aos="fade-up"><div class="faq-q" onclick="toggleFaq(this)"><span id="faq1Q">ما هي شروط القبول في الجامعات؟</span><span>+</span></div><div class="faq-a" id="faq1A">عادةً شهادة الثانوية العامة كافية، والجامعات لا تشترط اختبارات إضافية.</div></div><div class="faq-item" data-aos="fade-up"><div class="faq-q" onclick="toggleFaq(this)"><span id="faq2Q">هل يمكن الدراسة باللغة الإنجليزية؟</span><span>+</span></div><div class="faq-a" id="faq2A">نعم، معظم البرامج متاحة باللغة الإنجليزية أو التركية.</div></div><div class="faq-item" data-aos="fade-up"><div class="faq-q" onclick="toggleFaq(this)"><span id="faq3Q">كم تكلفة الدراسة في تركيا؟</span><span>+</span></div><div class="faq-a" id="faq3A">تتراوح بين 3000 و 15000 دولار سنوياً حسب الجامعة والتخصص.</div></div></div></section>
 
+  <!-- تواصل -->
   <section class="section" id="contact"><div class="sec-header" data-aos="fade-up"><div class="sec-tag" id="contactTag">تواصل معنا</div><div class="sec-title" id="contactTitle">نحن هنا لمساعدتك</div></div><div class="contact-grid" data-aos="fade-up"><div class="contact-card"><i class="fas fa-phone-alt" style="font-size:30px; color:var(--primary);"></i><h4 id="contactWhatsapp">واتساب</h4><p>+90 501 595 98 80</p></div><div class="contact-card"><i class="fas fa-envelope" style="font-size:30px; color:var(--primary);"></i><h4 id="contactEmailLabel">البريد الإلكتروني</h4><p>aboutalebeducation@gmail.com</p></div><div class="contact-card"><i class="fas fa-map-marker-alt" style="font-size:30px; color:var(--primary);"></i><h4 id="contactAddressLabel">العنوان</h4><p>Bahcelievler, Istanbul, Turkey</p></div></div></section>
 
   <footer id="footerCopy">© 2025 Abou-Taleb Education — جميع الحقوق محفوظة — الدراسة بالإنكليزية أو التركية فقط</footer>
@@ -179,26 +186,94 @@
   <script>
     AOS.init({ duration: 800, once: true });
     let isLoggedIn = false;
-    const universitiesList = [ /* ... قائمة الجامعات كاملة كما هي ... */ ];
-    function renderUniversities(filter = 'all') { /* ... نفس الكود ... */ }
-    window.filterUnis = (city, btn) => { /* ... */ };
+    const universitiesList = [
+      { name: "Acıbadem Mehmet Ali Aydınlar Üniversitesi", city: "istanbul", img: "ACIBADEM MEHMET ALI_ç AYDINLAR U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "Altınbaş Üniversitesi", city: "istanbul", img: "ALTINBAS_د U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "Ankara Bilim Üniversitesi", city: "ankara", img: "ANKARA BI_çLI_çM U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "Ankara Medipol Üniversitesi", city: "ankara", img: "ANKARA MEDI_çPOL U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "Atılım Üniversitesi", city: "ankara", img: "ATILIM U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "Bahçeşehir Üniversitesi", city: "istanbul", img: "BAHC_دES_دEHI_çR U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "Bezmialem Vakıf Üniversitesi", city: "istanbul", img: "BEZM-I_ç A_éLEM VAKIF U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "Biruni Üniversitesi", city: "istanbul", img: "BI_çRUNI_ç U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "Doğuş Üniversitesi", city: "istanbul", img: "DOG__US_د U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "Fatih Sultan Mehmet Vakıf Üniversitesi", city: "istanbul", img: "FATI_çH SULTAN MEHMET VAKIF U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "Fenerbahçe Üniversitesi", city: "istanbul", img: "FENERBAHC_دE U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "Haliç Üniversitesi", city: "istanbul", img: "HALI_çC_د U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "İbn Haldun Üniversitesi", city: "istanbul", img: "I_çBN HALDUN U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "İstanbul Aydın Üniversitesi", city: "istanbul", img: "I_çSTANBUL AYDIN U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "İstanbul Galata Üniversitesi", city: "istanbul", img: "I_çSTANBUL GALATA U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "İstanbul Gedik Üniversitesi", city: "istanbul", img: "I_çSTANBUL GEDI_çK U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "İstanbul Gelişim Üniversitesi", city: "istanbul", img: "I_çSTANBUL GELI_çS_دI_çM U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "İstanbul Kent Üniversitesi", city: "istanbul", img: "I_çSTANBUL KENT U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "İstanbul Medipol Üniversitesi", city: "istanbul", img: "I_çSTANBUL MEDI_çPOL U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "İstanbul Nişantaşı Üniversitesi", city: "istanbul", img: "I_çSTANBUL NI_çS_دANTAS_دI U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "İstanbul Okan Üniversitesi", city: "istanbul", img: "I_çSTANBUL OKAN U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "İstanbul Sabahattin Zaim Üniversitesi", city: "istanbul", img: "I_çSTANBUL SABAHATTI_çN ZAI_çM U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "İstanbul Topkapı Üniversitesi", city: "istanbul", img: "I_çSTANBUL TOPKAPI U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "İstanbul Yeni Yüzyıl Üniversitesi", city: "istanbul", img: "I_çSTANBUL YENI_ç YU_êZYIL U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "İstinye Üniversitesi", city: "istanbul", img: "I_çSTI_çNYE U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "Maltepe Üniversitesi", city: "istanbul", img: "MALTEPE U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "OSTİM Teknik Üniversitesi", city: "ankara", img: "OSTI_çM TEKNI_çK U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "Özyeğin Üniversitesi", city: "istanbul", img: "O_êZYEG__I_çN U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "Üsküdar Üniversitesi", city: "istanbul", img: "U_êSKU_êDAR U_êNI_çVERSI_çTESI_ç.png" },
+      { name: "Yeditepe Üniversitesi", city: "istanbul", img: "YEDI_çTEPE U_êNI_çVERSI_çTESI_ç.png" }
+    ];
+    function renderUniversities(filter = 'all') {
+      const container = document.getElementById('unisContainer'); if (!container) return; container.innerHTML = '';
+      const filtered = universitiesList.filter(u => filter === 'all' || u.city === filter);
+      filtered.forEach(uni => { const card = document.createElement('div'); card.className = 'uni-card'; card.innerHTML = `<img class="uni-img" src="images/${uni.img}" alt="${uni.name}" onerror="this.src='https://placehold.co/100x100?text=Logo'"><div class="uni-name">${uni.name}</div><div class="uni-badge"></div>`; container.appendChild(card); });
+    }
+    window.filterUnis = (city, btn) => { renderUniversities(city); document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); if (btn) btn.classList.add('active'); };
     const galleryImages = ["https://picsum.photos/id/104/400/300", "https://picsum.photos/id/20/400/300", "https://picsum.photos/id/28/400/300", "https://picsum.photos/id/91/400/300"];
     const galleryGrid = document.getElementById('galleryGrid');
     galleryImages.forEach(img => { const div = document.createElement('div'); div.className = 'gallery-item'; div.innerHTML = `<img src="${img}" alt="Gallery" onclick="openLightbox('${img}')">`; galleryGrid.appendChild(div); });
     window.openLightbox = (src) => { document.getElementById('lightbox').style.display = 'flex'; document.getElementById('lightboxImg').src = src; };
     window.closeLightbox = () => { document.getElementById('lightbox').style.display = 'none'; };
-    
-    // ========== قسم شهادات الطلاب فارغ تماماً ==========
+    // شهادات الطلاب - فارغة تماماً
     const testimonialsGrid = document.getElementById('testimonialsGrid');
-    testimonialsGrid.innerHTML = ''; // إزالة أي محتوى سابق (إن وجد)
-    
+    testimonialsGrid.innerHTML = '';
     const phoneInput = document.querySelector("#phone"); let iti = null;
     if (phoneInput && window.intlTelInput) iti = window.intlTelInput(phoneInput, { separateDialCode: true, preferredCountries: ["tr", "eg", "sa", "ae", "jo", "dz"], utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js" });
-    
-    // تعريف الترجمة للغتين
+    // الترجمة
     const translations = {
-      ar: { /* جميع النصوص العربية */ },
-      en: { /* جميع النصوص الإنجليزية */ }
+      ar: {
+        dir: 'rtl', flag: '🇸🇦', name: 'العربية',
+        navUnis: 'الجامعات', navServices: 'الخدمات', navApply: 'التسجيل', navFaq: 'الأسئلة', navCta: 'سجل الآن',
+        heroBadge: 'شريكك الموثوق للتعليم في تركيا 🇹🇷', heroTitle: 'ابدأ مستقبلك الأكاديمي <br> في ', heroTitleSpan: 'أفضل الجامعات التركية', heroDesc: 'نساعدك في القبول والتسجيل والسكن — الدراسة بالإنكليزية أو التركية فقط.',
+        heroBtn1: 'ابدأ تسجيلك مجاناً', heroBtn2: 'اكتشف جامعاتنا',
+        stat1: 'طالب مسجّل', stat2: 'جامعة شريكة', stat3: 'سنوات خبرة', stat4: 'نسبة القبول',
+        aboutTag: 'من نحن', aboutTitle: 'شريكك الموثوق للتعليم في تركيا', aboutText: 'نحن فريق متخصص في تقديم خدمات القبول الجامعي للطلاب الدوليين.',
+        aboutYear: '+8', aboutYearLabel: 'سنوات خبرة', aboutUni: '+30', aboutUniLabel: 'جامعة شريكة', aboutStudent: '+500', aboutStudentLabel: 'طالب سعيد',
+        servicesTag: 'خدماتنا', servicesTitle: 'كل ما تحتاجه في مكان واحد', servicesSub: 'نرافقك من الاستشارة الأولى حتى بداية دراستك',
+        srv1: 'القبول الجامعي', srv1d: 'في الجامعات بكل سهولة', srv2: 'الإرشاد الأكاديمي', srv2d: 'اختيار التخصص المناسب', srv3: 'السكن الطلابي', srv3d: 'سكن آمن وقريب من جامعتك', srv4: 'التأشيرة والإقامة', srv4d: 'إنهاء كل الأوراق الرسمية', srv5: 'معادلة الشهادات', srv5d: 'تصديق ومعادلة مؤهلاتك', srv6: 'الاستقبال في إسطنبول', srv6d: 'فريقنا يستقبلك من المطار',
+        unisTag: 'جامعاتنا الشريكة', unisTitle: 'أفضل الجامعات في تركيا', tabAll: 'الكل', tabIst: 'إسطنبول', tabAnk: 'أنقرة',
+        galleryTag: 'معرض الصور', galleryTitle: 'جامعاتنا في صور',
+        testimonialsTag: 'آراء الطلاب', testimonialsTitle: 'ماذا يقولون عنا؟',
+        videoTag: 'شاهد قصص النجاح', videoTitle: 'تعرف على تجارب الطلاب في تركيا',
+        formTag: 'التسجيل', formTitle: 'سجّل الآن وابدأ مسيرتك', formSub: 'أرسل طلبك وسيتواصل معك مستشارنا خلال 24 ساعة', formSubmit: 'إرسال الطلب',
+        faqTag: 'الأسئلة الشائعة', faqTitle: 'إجابات لأكثر الأسئلة شيوعاً', faq1q: 'ما هي شروط القبول في الجامعات؟', faq1a: 'عادةً شهادة الثانوية العامة كافية.', faq2q: 'هل يمكن الدراسة باللغة الإنجليزية؟', faq2a: 'نعم، معظم البرامج متاحة باللغة الإنجليزية أو التركية.', faq3q: 'كم تكلفة الدراسة في تركيا؟', faq3a: 'تتراوح بين 3000 و 15000 دولار سنوياً.',
+        contactTag: 'تواصل معنا', contactTitle: 'نحن هنا لمساعدتك', contactWhatsapp: 'واتساب', contactEmail: 'البريد الإلكتروني', contactAddress: 'العنوان',
+        footer: '© 2025 Abou-Taleb Education — جميع الحقوق محفوظة — الدراسة بالإنكليزية أو التركية فقط'
+      },
+      en: {
+        dir: 'ltr', flag: '🇬🇧', name: 'English',
+        navUnis: 'Universities', navServices: 'Services', navApply: 'Apply', navFaq: 'FAQ', navCta: 'Apply Now',
+        heroBadge: 'Your Trusted Partner for Education in Turkey 🇹🇷', heroTitle: 'Start Your Academic Future <br> at ', heroTitleSpan: 'Top Turkish Universities', heroDesc: 'We assist with admission, housing, and visa — study in English or Turkish only.',
+        heroBtn1: 'Start Free Application', heroBtn2: 'Discover Universities',
+        stat1: 'Students', stat2: 'Partner Unis', stat3: 'Years Exp.', stat4: 'Acceptance Rate',
+        aboutTag: 'About Us', aboutTitle: 'Your Trusted Partner for Education in Turkey', aboutText: 'We are a specialized team providing university admission services.',
+        aboutYear: '+8', aboutYearLabel: 'Years Exp.', aboutUni: '+30', aboutUniLabel: 'Partner Unis', aboutStudent: '+500', aboutStudentLabel: 'Happy Students',
+        servicesTag: 'Our Services', servicesTitle: 'Everything You Need', servicesSub: 'From first consultation to your first day of study',
+        srv1: 'University Admission', srv1d: 'Easy admission to universities', srv2: 'Academic Advising', srv2d: 'Find the right major', srv3: 'Student Housing', srv3d: 'Safe accommodation near your university', srv4: 'Visa & Residence', srv4d: 'Complete official paperwork', srv5: 'Certificate Equivalency', srv5d: 'Attestation and equivalency', srv6: 'Istanbul Welcome', srv6d: 'Our team picks you up',
+        unisTag: 'Our Partner Universities', unisTitle: 'Top Universities in Turkey', tabAll: 'All', tabIst: 'Istanbul', tabAnk: 'Ankara',
+        galleryTag: 'Gallery', galleryTitle: 'Our Universities in Pictures',
+        testimonialsTag: 'Student Reviews', testimonialsTitle: 'What They Say About Us?',
+        videoTag: 'Watch Success Stories', videoTitle: 'Discover Student Experiences',
+        formTag: 'Apply', formTitle: 'Register Now & Start Your Journey', formSub: 'Send your request, our advisor will contact you within 24h', formSubmit: 'Submit Application',
+        faqTag: 'FAQ', faqTitle: 'Frequently Asked Questions', faq1q: 'Admission requirements?', faq1a: 'High school diploma is sufficient.', faq2q: 'Can I study in English?', faq2a: 'Yes, most programs in English or Turkish.', faq3q: 'Cost of studying?', faq3a: '$3,000–$15,000 per year.',
+        contactTag: 'Contact Us', contactTitle: 'We Are Here to Help', contactWhatsapp: 'WhatsApp', contactEmail: 'Email', contactAddress: 'Address',
+        footer: '© 2025 Abou-Taleb Education — All Rights Reserved — Study in English or Turkish only'
+      }
     };
     let currentLang = 'ar';
     function applyLanguage(lang) {
@@ -206,41 +281,94 @@
       const t = translations[lang];
       if (!t) return;
       document.documentElement.setAttribute('dir', t.dir);
-      // تحديث كل العناصر التي تحمل id ... (تم تنفيذها مسبقاً)
-      // نختصر هنا ولكن يجب أن تكون كاملة
+      document.getElementById('navUnisLink').innerText = t.navUnis;
+      document.getElementById('navServicesLink').innerText = t.navServices;
+      document.getElementById('navApplyLink').innerText = t.navApply;
+      document.getElementById('navFaqLink').innerText = t.navFaq;
+      document.getElementById('navCtaBtn').innerText = t.navCta;
+      document.getElementById('mobUnisLink').innerText = t.navUnis;
+      document.getElementById('mobServicesLink').innerText = t.navServices;
+      document.getElementById('mobApplyLink').innerText = t.navApply;
+      document.getElementById('mobFaqLink').innerText = t.navFaq;
+      document.getElementById('heroBadge').innerText = t.heroBadge;
+      document.getElementById('heroTitle').innerHTML = t.heroTitle;
+      document.getElementById('heroTitleSpan').innerText = t.heroTitleSpan;
+      document.getElementById('heroDesc').innerText = t.heroDesc;
+      document.getElementById('heroBtn1').innerText = t.heroBtn1;
+      document.getElementById('heroBtn2').innerText = t.heroBtn2;
+      document.getElementById('statLabel1').innerText = t.stat1;
+      document.getElementById('statLabel2').innerText = t.stat2;
+      document.getElementById('statLabel3').innerText = t.stat3;
+      document.getElementById('statLabel4').innerText = t.stat4;
+      document.getElementById('aboutTag').innerText = t.aboutTag;
+      document.getElementById('aboutTitle').innerText = t.aboutTitle;
+      document.getElementById('aboutText').innerText = t.aboutText;
+      document.getElementById('aboutYear').innerText = t.aboutYear;
+      document.getElementById('aboutYearLabel').innerText = t.aboutYearLabel;
+      document.getElementById('aboutUni').innerText = t.aboutUni;
+      document.getElementById('aboutUniLabel').innerText = t.aboutUniLabel;
+      document.getElementById('aboutStudent').innerText = t.aboutStudent;
+      document.getElementById('aboutStudentLabel').innerText = t.aboutStudentLabel;
+      document.getElementById('servicesTag').innerText = t.servicesTag;
+      document.getElementById('servicesTitle').innerText = t.servicesTitle;
+      document.getElementById('servicesSub').innerText = t.servicesSub;
+      document.getElementById('srv1Title').innerText = t.srv1; document.getElementById('srv1Desc').innerText = t.srv1d;
+      document.getElementById('srv2Title').innerText = t.srv2; document.getElementById('srv2Desc').innerText = t.srv2d;
+      document.getElementById('srv3Title').innerText = t.srv3; document.getElementById('srv3Desc').innerText = t.srv3d;
+      document.getElementById('srv4Title').innerText = t.srv4; document.getElementById('srv4Desc').innerText = t.srv4d;
+      document.getElementById('srv5Title').innerText = t.srv5; document.getElementById('srv5Desc').innerText = t.srv5d;
+      document.getElementById('srv6Title').innerText = t.srv6; document.getElementById('srv6Desc').innerText = t.srv6d;
+      document.getElementById('unisTag').innerText = t.unisTag;
+      document.getElementById('unisTitle').innerText = t.unisTitle;
+      document.getElementById('tabAllBtn').innerText = t.tabAll;
+      document.getElementById('tabIstanbulBtn').innerText = t.tabIst;
+      document.getElementById('tabAnkaraBtn').innerText = t.tabAnk;
+      document.getElementById('galleryTag').innerText = t.galleryTag;
+      document.getElementById('galleryTitle').innerText = t.galleryTitle;
+      document.getElementById('testimonialsTag').innerText = t.testimonialsTag;
+      document.getElementById('testimonialsTitle').innerText = t.testimonialsTitle;
+      document.getElementById('videoTag').innerText = t.videoTag;
+      document.getElementById('videoTitle').innerText = t.videoTitle;
+      document.getElementById('formTag').innerText = t.formTag;
+      document.getElementById('formTitle').innerText = t.formTitle;
+      document.getElementById('formSub').innerText = t.formSub;
+      document.getElementById('formSubmitBtn').innerText = t.formSubmit;
+      document.getElementById('faqTag').innerText = t.faqTag;
+      document.getElementById('faqTitle').innerText = t.faqTitle;
+      document.getElementById('faq1Q').innerText = t.faq1q; document.getElementById('faq1A').innerText = t.faq1a;
+      document.getElementById('faq2Q').innerText = t.faq2q; document.getElementById('faq2A').innerText = t.faq2a;
+      document.getElementById('faq3Q').innerText = t.faq3q; document.getElementById('faq3A').innerText = t.faq3a;
+      document.getElementById('contactTag').innerText = t.contactTag;
+      document.getElementById('contactTitle').innerText = t.contactTitle;
+      document.getElementById('contactWhatsapp').innerText = t.contactWhatsapp;
+      document.getElementById('contactEmailLabel').innerText = t.contactEmail;
+      document.getElementById('contactAddressLabel').innerText = t.contactAddress;
+      document.getElementById('footerCopy').innerText = t.footer;
       document.getElementById('langBtn').innerHTML = `${t.flag} ${t.name} ▾`;
-      // إعادة عرض الجامعات لتحديث النصوص
       const activeBtn = document.querySelector('.tab-btn.active');
       const activeCity = activeBtn ? (activeBtn.innerText === t.tabAll ? 'all' : (activeBtn.innerText === t.tabIst ? 'istanbul' : 'ankara')) : 'all';
       renderUniversities(activeCity);
     }
-    
-    // بناء قائمة اللغات وإضافة حدث الإغلاق
-    const langList = ['ar','en'];
-    const langDropdown = document.getElementById('langDropdown');
-    langDropdown.innerHTML = '';
-    langList.forEach(code => {
-      const t = translations[code];
-      const div = document.createElement('div');
-      div.className = 'lang-option' + (code === currentLang ? ' active' : '');
-      div.innerHTML = `${t.flag} ${t.name}`;
-      div.onclick = (e) => {
-        e.stopPropagation();
-        applyLanguage(code);
-        // إغلاق القائمة بعد الاختيار
-        langDropdown.classList.remove('open');
-      };
-      langDropdown.appendChild(div);
-    });
-    
+    const langList = ['ar','en']; const langDropdown = document.getElementById('langDropdown');
+    langList.forEach(code => { const t = translations[code]; const div = document.createElement('div'); div.className = 'lang-option' + (code === currentLang ? ' active' : ''); div.innerHTML = `${t.flag} ${t.name}`; div.onclick = (e) => { e.stopPropagation(); applyLanguage(code); langDropdown.classList.remove('open'); }; langDropdown.appendChild(div); });
     function toggleLangDropdown() { langDropdown.classList.toggle('open'); }
     document.getElementById('langBtn').onclick = (e) => { e.stopPropagation(); toggleLangDropdown(); };
     document.addEventListener('click', () => langDropdown.classList.remove('open'));
-    
-    // بقية الدوال (goTo, toggleMobileMenu, toggleFaq, showLogin, closeLogin, submitApplication, إلخ) كما هي مع الحفاظ على الوظائف.
-    
+    window.goTo = (id) => document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+    function toggleMobileMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
+    function toggleFaq(el) { const ans = el.nextElementSibling; ans.style.display = ans.style.display === 'block' ? 'none' : 'block'; el.querySelector('span:last-child').innerText = ans.style.display === 'block' ? '−' : '+'; }
+    function showLogin() { document.getElementById('loginOverlay').style.visibility = 'visible'; }
+    function closeLogin() { document.getElementById('loginOverlay').style.visibility = 'hidden'; }
+    function closeLoginOnOutside(e) { if(e.target === document.getElementById('loginOverlay')) closeLogin(); }
+    function showErrorToast(message) { const toast = document.getElementById('errorToast'); const textSpan = document.getElementById('errorText'); textSpan.innerText = message; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 4000); }
+    function shakeLoginButton() { const btn = document.getElementById('loginBtn'); btn.classList.add('shake'); setTimeout(() => btn.classList.remove('shake'), 500); }
+    function doLogin() { const u = document.getElementById('loginUsername').value; const p = document.getElementById('loginPassword').value; if(u === 'admin' && p === 'admin') { isLoggedIn = true; closeLogin(); document.getElementById('userStatus').style.display = 'inline-block'; document.getElementById('userStatus').innerText = `مرحباً ${u}`; document.getElementById('loginBtn').style.display = 'none'; showErrorToast('✓ تم تسجيل الدخول بنجاح، يمكنك الآن إرسال الطلب.'); document.getElementById('loginUsername').value = ''; document.getElementById('loginPassword').value = ''; } else { showErrorToast('اسم المستخدم أو كلمة المرور غير صحيحة. حاول مرة أخرى.'); } }
+    async function submitApplication() { if(!isLoggedIn) { showErrorToast('⚠️ يجب عليك تسجيل الدخول أولاً لإرسال الطلب. يُرجى الضغط على زر "تسجيل الدخول" أعلى الصفحة.'); shakeLoginButton(); return; } const fullName = document.getElementById('fullName').value.trim(); let phone = document.getElementById('phone').value.trim(); const email = document.getElementById('email').value.trim(); const nationality = document.getElementById('nationality').value.trim(); const qualification = document.getElementById('degree').value; const desiredMajor = document.getElementById('major').value.trim(); const fullPhone = (iti && iti.getNumber) ? iti.getNumber() : phone; if (!fullName || !phone || !email) { showErrorToast('يرجى ملء الحقول الإلزامية: الاسم، الهاتف، البريد الإلكتروني'); return; } const submitBtn = document.getElementById('formSubmitBtn'); const originalText = submitBtn.innerText; submitBtn.innerText = 'جاري الإرسال...'; submitBtn.disabled = true; try { await fetch('https://script.google.com/macros/s/AKfycbwFPalgj95ZRW1Tm350wOArRyOWzfxteAJ7qWbb4IRYW0u7qfmm9q4BkyQo1ODnhIdh/exec', { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ fullName, phone: fullPhone, email, nationality, qualification, desiredMajor, message: '', fileUrl: '' }) }); document.getElementById('successMsg').style.display = 'block'; submitBtn.innerText = '✓ تم الإرسال بنجاح'; submitBtn.style.background = '#2c7a4a'; document.getElementById('fullName').value = ''; document.getElementById('phone').value = ''; document.getElementById('email').value = ''; document.getElementById('nationality').value = ''; document.getElementById('degree').value = 'المؤهل الدراسي'; document.getElementById('major').value = ''; setTimeout(() => { submitBtn.innerText = originalText; submitBtn.style.background = 'var(--primary)'; submitBtn.disabled = false; document.getElementById('successMsg').style.display = 'none'; }, 4000); } catch (error) { showErrorToast('حدث خطأ في الإرسال. حاول مرة أخرى.'); submitBtn.innerText = originalText; submitBtn.disabled = false; } }
     renderUniversities('all');
-    // العدادات...
+    const counters = document.querySelectorAll('.stat-number');
+    function startCounters() { counters.forEach(c => { const target = parseInt(c.innerText); let count = 0; const step = target/60; const interval = setInterval(() => { count += step; if(count >= target) { c.innerText = target; clearInterval(interval); } else c.innerText = Math.ceil(count); }, 30); }); }
+    const statsObserver = new IntersectionObserver((entries) => { if(entries[0].isIntersecting) startCounters(); }, { threshold: 0.5 });
+    if(document.querySelector('.hero-stats')) statsObserver.observe(document.querySelector('.hero-stats'));
   </script>
 </body>
 </html>
