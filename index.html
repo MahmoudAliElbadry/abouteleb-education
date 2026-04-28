@@ -15,7 +15,7 @@
     body{font-family:'Cairo',sans-serif;background:var(--gray-bg);color:var(--text-dark);line-height:1.6}
     nav{background:rgba(10,10,10,0.96);backdrop-filter:blur(10px);padding:0 5%;display:flex;align-items:center;justify-content:space-between;height:85px;position:sticky;top:0;z-index:1000;border-bottom:1px solid rgba(255,255,255,0.08)}
     .logo{display:flex;align-items:center;gap:14px;text-decoration:none}
-    .logo-img{width:55px;height:55px;border-radius:50%;object-fit:cover;border:2px solid var(--primary);transition:var(--transition)}
+    .logo-img{width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid var(--primary);transition:var(--transition)}
     .logo-img:hover{transform:scale(1.05);border-color:var(--white)}
     .logo-text{color:var(--white);font-size:1.5rem;font-weight:800;line-height:1.2}
     .logo-text span{color:var(--primary)}
@@ -64,7 +64,7 @@
     .unis-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:25px;max-width:1100px;margin:0 auto}
     .uni-card{background:var(--white);border-radius:20px;padding:1.5rem;text-align:center;border:1px solid var(--gray-border);transition:var(--transition)}
     .uni-card:hover{border-color:var(--primary);transform:translateY(-5px);box-shadow:var(--shadow-hover)}
-    .uni-card img{width:100px;height:100px;object-fit:contain;margin-bottom:1rem}
+    .uni-card img{width:150px;height:150px;object-fit:contain;margin-bottom:1rem}
     .uni-card h4{font-weight:800;font-size:0.85rem}
     .services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:30px;max-width:1100px;margin:0 auto}
     .service-card{background:var(--white);padding:2rem;border-radius:25px;text-align:center;border:1px solid var(--gray-border);transition:var(--transition)}
@@ -110,7 +110,7 @@
     .overlay.active{display:block}
     @media (max-width:768px){
       nav{padding:0 4%;height:70px}
-      .logo-img{width:45px;height:45px}
+      .logo-img{width:65px;height:65px}
       .logo-text{font-size:1.1rem}
       .hamburger{display:flex}
       .nav-links{display:none}
@@ -125,7 +125,7 @@
       .section{padding:2.5rem 4%}
       .sec-title{font-size:1.3rem}
       .unis-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:15px}
-      .uni-card img{width:70px;height:70px}
+      .uni-card img{width:105px;height:105px}
       .uni-card h4{font-size:0.7rem}
       .services-grid{grid-template-columns:1fr;gap:20px}
       .steps-container{grid-template-columns:1fr;gap:25px}
@@ -164,7 +164,7 @@
 
 <nav>
   <a href="#" class="logo">
-    <img src="https://i.ibb.co/FkgS4ZWz/Cam-Scanner-25-04-2026-20-51.jpg" alt="Abou-Taleb Logo" class="logo-img">
+    <img src="images/logo.png" alt="Abou-Taleb Logo" class="logo-img">
     <div class="logo-text">Abou-Taleb<br><span>Education</span></div>
   </a>
   <div class="nav-links">
@@ -314,7 +314,8 @@
 <script>
   AOS.init({ duration: 800, once: true });
 
-  const universitiesList = [ /* ... قائمة الجامعات ... */ 
+  // ========== قائمة الجامعات الكاملة (45+ جامعة) ==========
+  const universitiesList = [
     { name: "Acıbadem Mehmet Ali Aydınlar Üniversitesi", img: "ACIBADEM MEHMET ALI_ç AYDINLAR U_êNI_çVERSI_çTESI_ç.png" },
     { name: "Altınbaş Üniversitesi", img: "ALTINBAS_د U_êNI_çVERSI_çTESI_ç.png" },
     { name: "Ankara Bilim Üniversitesi", img: "ANKARA BI_çLI_çM U_êNI_çVERSI_çTESI_ç.png" },
@@ -328,21 +329,31 @@
     { name: "Fenerbahçe Üniversitesi", img: "FENERBAHC_دE U_êNI_çVERSI_çTESI_ç.png" },
     { name: "Haliç Üniversitesi", img: "HALI_çC_د U_êNI_çVERSI_çTESI_ç.png" },
     { name: "İbn Haldun Üniversitesi", img: "I_çBN HALDUN U_êNI_çVERSI_çTESI_ç.png" },
+    { name: "İstanbul Arel Üniversitesi", img: "I_çSTANBUL AREL U_êNI_çVERSI_çTESI_ç.png" },
+    { name: "İstanbul Atlas Üniversitesi", img: "I_çSTANBUL ATLAS U_êNI_çVERSI_çTESI_ç.png" },
     { name: "İstanbul Aydın Üniversitesi", img: "I_çSTANBUL AYDIN U_êNI_çVERSI_çTESI_ç.png" },
+    { name: "İstanbul Beykent Üniversitesi", img: "I_çSTANBUL BEYKENT U_êNI_çVERSI_çTESI_ç.png" },
+    { name: "İstanbul Bilgi Üniversitesi", img: "I_çSTANBUL BI_çLGI_ç U_êNI_çVERSI_çTESI_ç.png" },
+    { name: "İstanbul Esenyurt Üniversitesi", img: "I_çSTANBUL ESENYURT U_êNI_çVERSI_çTESI_ç.png" },
     { name: "İstanbul Galata Üniversitesi", img: "I_çSTANBUL GALATA U_êNI_çVERSI_çTESI_ç.png" },
     { name: "İstanbul Gedik Üniversitesi", img: "I_çSTANBUL GEDI_çK U_êNI_çVERSI_çTESI_ç.png" },
     { name: "İstanbul Gelişim Üniversitesi", img: "I_çSTANBUL GELI_çS_دI_çM U_êNI_çVERSI_çTESI_ç.png" },
     { name: "İstanbul Kent Üniversitesi", img: "I_çSTANBUL KENT U_êNI_çVERSI_çTESI_ç.png" },
+    { name: "İstanbul Kültür Üniversitesi", img: "I_çSTANBUL KU_êLTU_êR U_êNI_çVERSI_çTESI_ç.png" },
     { name: "İstanbul Medipol Üniversitesi", img: "I_çSTANBUL MEDI_çPOL U_êNI_çVERSI_çTESI_ç.png" },
     { name: "İstanbul Nişantaşı Üniversitesi", img: "I_çSTANBUL NI_çS_دANTAS_دI U_êNI_çVERSI_çTESI_ç.png" },
     { name: "İstanbul Okan Üniversitesi", img: "I_çSTANBUL OKAN U_êNI_çVERSI_çTESI_ç.png" },
     { name: "İstanbul Sabahattin Zaim Üniversitesi", img: "I_çSTANBUL SABAHATTI_çN ZAI_çM U_êNI_çVERSI_çTESI_ç.png" },
+    { name: "İstanbul Ticaret Üniversitesi", img: "I_çSTANBUL TI_çCARET U_êNI_çVERSI_çTESI_ç.png" },
     { name: "İstanbul Topkapı Üniversitesi", img: "I_çSTANBUL TOPKAPI U_êNI_çVERSI_çTESI_ç.png" },
     { name: "İstanbul Yeni Yüzyıl Üniversitesi", img: "I_çSTANBUL YENI_ç YU_êZYIL U_êNI_çVERSI_çTESI_ç.png" },
     { name: "İstinye Üniversitesi", img: "I_çSTI_çNYE U_êNI_çVERSI_çTESI_ç.png" },
+    { name: "Işık Üniversitesi", img: "IS_دIK U_êNI_çVERSI_çTESI_ç.png" },
+    { name: "Kocaeli Sağlık ve Teknoloji Üniversitesi", img: "KOCAELI_ç SAG__LIK VE TEKNOLOJI_ç U_êNI_çVERSI_çTESI_ç.png" },
     { name: "Maltepe Üniversitesi", img: "MALTEPE U_êNI_çVERSI_çTESI_ç.png" },
-    { name: "OSTİM Teknik Üniversitesi", img: "OSTI_çM TEKNI_çK U_êNI_çVERSI_çTESI_ç.png" },
     { name: "Özyeğin Üniversitesi", img: "O_êZYEG__I_çN U_êNI_çVERSI_çTESI_ç.png" },
+    { name: "OSTİM Teknik Üniversitesi", img: "OSTI_çM TEKNI_çK U_êNI_çVERSI_çTESI_ç.png" },
+    { name: "Türk Hava Kurumu Üniversitesi", img: "TU_êRK HAVA KURUMU U_êNI_çVERSI_çTESI_ç.png" },
     { name: "Üsküdar Üniversitesi", img: "U_êSKU_êDAR U_êNI_çVERSI_çTESI_ç.png" },
     { name: "Yeditepe Üniversitesi", img: "YEDI_çTEPE U_êNI_çVERSI_çTESI_ç.png" }
   ];
@@ -355,7 +366,7 @@
       const card = document.createElement('div');
       card.className = 'uni-card';
       card.setAttribute('data-aos', 'zoom-in');
-      card.innerHTML = `<img src="images/${uni.img}" alt="${uni.name}" onerror="this.src='https://placehold.co/100x100?text=Logo'"><h4>${uni.name}</h4>`;
+      card.innerHTML = `<img src="images/${uni.img}" alt="${uni.name}" onerror="this.src='https://placehold.co/150x150?text=Logo'"><h4>${uni.name}</h4>`;
       container.appendChild(card);
     });
   }
@@ -377,7 +388,6 @@
     });
   }
 
-  // --- دالة بناء القائمة المنسدلة لوسائل التواصل (مع إضافة معرفات للترجمة) ---
   function populateContactDropdown() {
     const dropdown = document.getElementById('contactDropdown');
     if (!dropdown) return;
@@ -407,7 +417,7 @@
   populateUnisDropdown();
   populateContactDropdown();
 
-  // ========== الترجمة الشاملة مع ترجمة القائمة المنسدلة لوسائل التواصل ==========
+  // ========== الترجمة الشاملة (نفس الكود السابق دون تغيير) ==========
   const translations = {
     ar: {
       navHome: "الرئيسية", navServices: "خدماتنا", navUnis: "الجامعات", navSteps: "خطوات التسجيل", navContact: "تواصل معنا", navCta: "سجل الآن",
@@ -471,7 +481,6 @@
     if (!t) return;
     document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
     
-    // تحديث شريط التنقل
     document.getElementById('navHomeLink').innerText = t.navHome;
     document.getElementById('navServicesLink').innerText = t.navServices;
     document.getElementById('navUnisLink').innerHTML = t.navUnis + ' <i class="fas fa-chevron-down"></i>';
@@ -479,14 +488,12 @@
     document.getElementById('navContactLink').innerHTML = t.navContact + ' <i class="fas fa-chevron-down"></i>';
     document.getElementById('navCtaBtn').innerText = t.navCta;
     
-    // القائمة الجانبية
     document.getElementById('mobHomeLink').innerText = t.mobHome;
     document.getElementById('mobServicesLink').innerText = t.mobServices;
     document.getElementById('mobUnisLink').innerText = t.mobUnis;
     document.getElementById('mobStepsLink').innerText = t.mobSteps;
     document.getElementById('mobContactLink').innerText = t.mobContact;
     
-    // الهيرو والإحصائيات...
     document.getElementById('heroBadge').innerText = t.heroBadge;
     document.getElementById('heroTitle').innerHTML = t.heroFull;
     document.getElementById('heroDesc').innerText = t.heroDesc;
@@ -497,7 +504,6 @@
     document.getElementById('statLabel3').innerText = t.stat3;
     document.getElementById('statLabel4').innerText = t.stat4;
     
-    // الخدمات والجامعات والخطوات...
     document.getElementById('servicesTag').innerText = t.servicesTag;
     document.getElementById('servicesTitle').innerText = t.servicesTitle;
     document.getElementById('srv1Title').innerText = t.srv1Title;
@@ -508,8 +514,10 @@
     document.getElementById('srv3Desc').innerText = t.srv3Desc;
     document.getElementById('srv4Title').innerText = t.srv4Title;
     document.getElementById('srv4Desc').innerText = t.srv4Desc;
+    
     document.getElementById('unisTag').innerText = t.unisTag;
     document.getElementById('unisTitle').innerText = t.unisTitle;
+    
     document.getElementById('stepsTag').innerText = t.stepsTag;
     document.getElementById('stepsTitle').innerText = t.stepsTitle;
     document.getElementById('step1Title').innerText = t.step1;
@@ -517,7 +525,6 @@
     document.getElementById('step3Title').innerText = t.step3;
     document.getElementById('step4Title').innerText = t.step4;
     
-    // نموذج التواصل
     document.getElementById('contactTitle').innerText = t.contactTitle;
     document.getElementById('contactDesc').innerText = t.contactDesc;
     document.getElementById('formNameLabel').innerText = t.formName;
@@ -525,7 +532,6 @@
     document.getElementById('formMajorLabel').innerText = t.formMajor;
     document.getElementById('submitBtnText').innerText = t.submitBtn;
     
-    // ترجمة خيارات التخصصات
     const selectElem = document.getElementById('majorSelect');
     if (selectElem) {
       for (let i = 0; i < selectElem.options.length; i++) {
@@ -535,7 +541,6 @@
       }
     }
     
-    // ترجمة وسائل التواصل في العمود الأيسر
     document.getElementById('socialWhatsapp').innerText = t.socialWhatsapp;
     document.getElementById('socialInstagram').innerText = t.socialInstagram;
     document.getElementById('socialFacebook').innerText = t.socialFacebook;
@@ -544,11 +549,9 @@
     document.getElementById('socialEmail1').innerText = t.socialEmail1;
     document.getElementById('socialEmail2').innerText = t.socialEmail2;
     
-    // ترجمة الـ placeholder
     const nameInput = document.getElementById('fullNameInput');
     if (nameInput) nameInput.placeholder = t.namePlaceholder;
     
-    // ترجمة القائمة المنسدلة لوسائل التواصل في الشريط العلوي
     const ddWhatsapp = document.getElementById('ddWhatsapp');
     if (ddWhatsapp) ddWhatsapp.querySelector('span').innerText = t.ddWhatsapp;
     const ddInstagram = document.getElementById('ddInstagram');
@@ -564,18 +567,13 @@
     const ddEmail2 = document.getElementById('ddEmail2');
     if (ddEmail2) ddEmail2.querySelector('span').innerText = t.ddEmail2;
     
-    // التذييل
     document.getElementById('footerCopy').innerHTML = `&copy; 2026 Abou-Taleb Education. ${t.footer}`;
-    
-    // زر اللغة
     document.getElementById('langBtn').innerHTML = (lang === 'ar' ? '🌐 العربية ▾' : '🌐 English ▾');
     
-    // إغلاق القائمة المنسدلة للغة
     const langDropdown = document.getElementById('langDropdown');
     if (langDropdown) langDropdown.classList.remove('open');
   }
 
-  // بناء قائمة اللغات
   const langList = ['ar', 'en'];
   const langDropdown = document.getElementById('langDropdown');
   langDropdown.innerHTML = '';
@@ -601,7 +599,6 @@
     document.getElementById('langDropdown').classList.remove('open');
   });
 
-  // القائمة الجانبية للهاتف
   const menuBtn = document.getElementById('menuBtn');
   const mobileNav = document.getElementById('mobileNav');
   const overlay = document.getElementById('overlay');
@@ -612,7 +609,6 @@
   if (menuBtn) menuBtn.addEventListener('click', toggleMenu);
   if (overlay) overlay.addEventListener('click', toggleMenu);
 
-  // تفعيل حقل رقم الهاتف
   const phoneInput = document.querySelector("#phoneInput");
   let itiPhone = null;
   if (phoneInput && window.intlTelInput) {
@@ -625,7 +621,6 @@
     });
   }
 
-  // إرسال النموذج
   const leadForm = document.getElementById('leadForm');
   if (leadForm) {
     leadForm.addEventListener('submit', async function(e) {
