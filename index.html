@@ -155,11 +155,11 @@
 
 <div class="overlay" id="overlay"></div>
 <div class="mobile-nav" id="mobileNav">
-  <a href="#home">الرئيسية</a>
-  <a href="#services">خدماتنا</a>
-  <a href="#universities">الجامعات</a>
-  <a href="#steps">خطوات التسجيل</a>
-  <a href="#contact">تواصل معنا</a>
+  <a href="#home" id="mobHomeLink">الرئيسية</a>
+  <a href="#services" id="mobServicesLink">خدماتنا</a>
+  <a href="#universities" id="mobUnisLink">الجامعات</a>
+  <a href="#steps" id="mobStepsLink">خطوات التسجيل</a>
+  <a href="#contact" id="mobContactLink">تواصل معنا</a>
 </div>
 
 <nav>
@@ -168,15 +168,15 @@
     <div class="logo-text">Abou-Taleb<br><span>Education</span></div>
   </a>
   <div class="nav-links">
-    <div class="nav-item"><a href="#home">الرئيسية</a></div>
-    <div class="nav-item"><a href="#services">خدماتنا</a></div>
+    <div class="nav-item"><a href="#home" id="navHomeLink">الرئيسية</a></div>
+    <div class="nav-item"><a href="#services" id="navServicesLink">خدماتنا</a></div>
     <div class="nav-item">
-      <a href="#universities">الجامعات <i class="fas fa-chevron-down"></i></a>
+      <a href="#universities" id="navUnisLink">الجامعات <i class="fas fa-chevron-down"></i></a>
       <div class="nav-dropdown" id="navbarDropdown"></div>
     </div>
-    <div class="nav-item"><a href="#steps">خطوات التسجيل</a></div>
+    <div class="nav-item"><a href="#steps" id="navStepsLink">خطوات التسجيل</a></div>
     <div class="nav-item">
-      <a href="#contact">تواصل معنا <i class="fas fa-chevron-down"></i></a>
+      <a href="#contact" id="navContactLink">تواصل معنا <i class="fas fa-chevron-down"></i></a>
       <div class="nav-dropdown" id="contactDropdown"></div>
     </div>
   </div>
@@ -185,7 +185,7 @@
       <button class="lang-btn" id="langBtn">🌐 العربية ▾</button>
       <div class="lang-dropdown" id="langDropdown"></div>
     </div>
-    <a href="#contact" class="nav-cta">سجل الآن</a>
+    <a href="#contact" class="nav-cta" id="navCtaBtn">سجل الآن</a>
     <div class="hamburger" id="menuBtn"><span></span><span></span><span></span></div>
   </div>
 </nav>
@@ -401,28 +401,40 @@
   // ========== نظام الترجمة الكامل والمضمون ==========
   const translations = {
     ar: {
-      navUnis: "الجامعات", navServices: "الخدمات", navApply: "التسجيل", navFaq: "الأسئلة", navCta: "سجل الآن",
+      // شريط التنقل
+      navHome: "الرئيسية", navServices: "خدماتنا", navUnis: "الجامعات", navSteps: "خطوات التسجيل", navContact: "تواصل معنا", navCta: "سجل الآن",
+      // القائمة الجانبية
+      mobHome: "الرئيسية", mobServices: "خدماتنا", mobUnis: "الجامعات", mobSteps: "خطوات التسجيل", mobContact: "تواصل معنا",
+      // الهيرو
       heroBadge: "وكيل معتمد لأقوى الجامعات التركية",
       heroFull: "مستقبلك الدراسي في <span>تركيا</span> يبدأ من هنا",
       heroDesc: "نحن في Abou-Taleb Education نوفر لك كافة التسهيلات والقبولات الجامعية المجانية في أفضل الجامعات الخاصة التركية مع خصومات حصرية تصل إلى 70%.",
       heroBtn1: "احصل على استشارة مجانية", heroBtn2: "اكتشف خدماتنا",
+      // الإحصائيات
       stat1: "جامعة متعاقدة", stat2: "طالب مسجل", stat3: "قبول مضمون", stat4: "سنوات خبرة",
+      // الخدمات
       servicesTag: "لماذا نحن؟", servicesTitle: "خدماتنا المتكاملة للطلاب",
       srv1Title: "القبول الجامعي", srv1Desc: "نضمن لك الحصول على قبولك الجامعي في الجامعات الخاصة مجاناً وبدون أي رسوم إضافية.",
       srv2Title: "خصومات حصرية", srv2Desc: "بصفتنا وكلاء معتمدين، نوفر لك خصومات خاصة على الأقساط الدراسية لا تتوفر عند التقديم المباشر.",
       srv3Title: "تجهيز الملفات", srv3Desc: "نساعدك في ترجمة وتصديق أوراقك وتجهيز ملف التقديم بشكل احترافي لضمان القبول.",
       srv4Title: "تأمين السكن", srv4Desc: "نوفر لك خيارات متنوعة للسكن الطلابي (حكومي أو خاص) بما يتناسب مع ميزانيتك وموقع جامعتك.",
+      // الجامعات
       unisTag: "شركاؤنا في النجاح", unisTitle: "أفضل الجامعات التركية",
+      // الخطوات
       stepsTag: "بساطة الإجراءات", stepsTitle: "خطوات رحلتك معنا",
       step1: "تواصل معنا", step2: "اختر تخصصك", step3: "أرسل أوراقك", step4: "ابدأ الدراسة",
+      // التواصل
       contactTitle: "هل أنت جاهز لبدء مستقبلك؟",
       contactDesc: "اترك بياناتك الآن وسيقوم أحد مستشارينا التعليميين بالتواصل معك خلال أقل من 24 ساعة.",
+      // النموذج
       formName: "الاسم الكامل", formPhone: "رقم الهاتف", formMajor: "التخصص المطلوب",
       submitBtn: "إرسال الطلب الآن",
+      // التذييل
       footer: "جميع الحقوق محفوظة."
     },
     en: {
-      navUnis: "Universities", navServices: "Services", navApply: "Apply", navFaq: "FAQ", navCta: "Apply Now",
+      navHome: "Home", navServices: "Services", navUnis: "Universities", navSteps: "Registration Steps", navContact: "Contact Us", navCta: "Apply Now",
+      mobHome: "Home", mobServices: "Services", mobUnis: "Universities", mobSteps: "Registration Steps", mobContact: "Contact Us",
       heroBadge: "Authorized Agent for Top Turkish Universities",
       heroFull: "Your Academic Future in <span>Turkey</span> Starts Here",
       heroDesc: "We provide all facilities and free university admissions to the best private Turkish universities with exclusive discounts up to 70%.",
@@ -452,21 +464,35 @@
     if (!t) return;
     document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
     
-    // تحديث جميع النصوص
-    document.getElementById('navUnisLink').innerText = t.navUnis;
+    // تحديث شريط التنقل العلوي
+    document.getElementById('navHomeLink').innerText = t.navHome;
     document.getElementById('navServicesLink').innerText = t.navServices;
-    document.getElementById('navApplyLink').innerText = t.navApply;
-    document.getElementById('navFaqLink').innerText = t.navFaq;
+    document.getElementById('navUnisLink').innerHTML = t.navUnis + ' <i class="fas fa-chevron-down"></i>';
+    document.getElementById('navStepsLink').innerText = t.navSteps;
+    document.getElementById('navContactLink').innerHTML = t.navContact + ' <i class="fas fa-chevron-down"></i>';
     document.getElementById('navCtaBtn').innerText = t.navCta;
+    
+    // تحديث القائمة الجانبية
+    document.getElementById('mobHomeLink').innerText = t.mobHome;
+    document.getElementById('mobServicesLink').innerText = t.mobServices;
+    document.getElementById('mobUnisLink').innerText = t.mobUnis;
+    document.getElementById('mobStepsLink').innerText = t.mobSteps;
+    document.getElementById('mobContactLink').innerText = t.mobContact;
+    
+    // تحديث الهيرو
     document.getElementById('heroBadge').innerText = t.heroBadge;
     document.getElementById('heroTitle').innerHTML = t.heroFull;
     document.getElementById('heroDesc').innerText = t.heroDesc;
     document.getElementById('heroBtn1').innerText = t.heroBtn1;
     document.getElementById('heroBtn2').innerText = t.heroBtn2;
+    
+    // تحديث الإحصائيات
     document.getElementById('statLabel1').innerText = t.stat1;
     document.getElementById('statLabel2').innerText = t.stat2;
     document.getElementById('statLabel3').innerText = t.stat3;
     document.getElementById('statLabel4').innerText = t.stat4;
+    
+    // تحديث الخدمات
     document.getElementById('servicesTag').innerText = t.servicesTag;
     document.getElementById('servicesTitle').innerText = t.servicesTitle;
     document.getElementById('srv1Title').innerText = t.srv1Title;
@@ -477,31 +503,41 @@
     document.getElementById('srv3Desc').innerText = t.srv3Desc;
     document.getElementById('srv4Title').innerText = t.srv4Title;
     document.getElementById('srv4Desc').innerText = t.srv4Desc;
+    
+    // تحديث الجامعات
     document.getElementById('unisTag').innerText = t.unisTag;
     document.getElementById('unisTitle').innerText = t.unisTitle;
+    
+    // تحديث الخطوات
     document.getElementById('stepsTag').innerText = t.stepsTag;
     document.getElementById('stepsTitle').innerText = t.stepsTitle;
     document.getElementById('step1Title').innerText = t.step1;
     document.getElementById('step2Title').innerText = t.step2;
     document.getElementById('step3Title').innerText = t.step3;
     document.getElementById('step4Title').innerText = t.step4;
+    
+    // تحديث نموذج التواصل
     document.getElementById('contactTitle').innerText = t.contactTitle;
     document.getElementById('contactDesc').innerText = t.contactDesc;
     document.getElementById('formNameLabel').innerText = t.formName;
     document.getElementById('formPhoneLabel').innerText = t.formPhone;
     document.getElementById('formMajorLabel').innerText = t.formMajor;
     document.getElementById('submitBtnText').innerText = t.submitBtn;
+    
+    // تحديث التذييل
     document.getElementById('footerCopy').innerHTML = `&copy; 2026 Abou-Taleb Education. ${t.footer}`;
-    document.getElementById('langBtn').innerHTML = (lang === 'ar' ? '🇸🇦 العربية ▾' : '🇬🇧 English ▾');
-
-    // إغلاق القائمة المنسدلة للغة بعد التطبيق
+    
+    // تحديث زر اللغة
+    document.getElementById('langBtn').innerHTML = (lang === 'ar' ? '🌐 العربية ▾' : '🌐 English ▾');
+    
+    // إغلاق القائمة المنسدلة للغة
     document.getElementById('langDropdown').classList.remove('open');
   }
 
   // بناء القائمة المنسدلة للغة
   const langList = ['ar', 'en'];
   const langDropdown = document.getElementById('langDropdown');
-  langDropdown.innerHTML = ''; // Clear any existing
+  langDropdown.innerHTML = '';
   langList.forEach(code => {
     const div = document.createElement('div');
     div.className = 'lang-option';
