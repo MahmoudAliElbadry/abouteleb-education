@@ -3,372 +3,395 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Abou‑Taleb Education | الدراسة في تركيا</title>
+  <title>Abou-Taleb Education | الدراسة في تركيا</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css">
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
-    :root{--primary:#C0392B;--primary-dark:#9a2e22;--primary-light:#e65c4a;--black:#1a1a1a;--white:#fff;--gray-bg:#f8fafc;--gray-border:#eef2f5;--text-dark:#1e293b;--text-light:#5a6e7c;--shadow-sm:0 10px 25px -5px rgba(0,0,0,0.05);--shadow-md:0 20px 25px -5px rgba(0,0,0,0.05);--shadow-hover:0 25px 35px -12px rgba(0,0,0,0.2);--transition:all 0.3s cubic-bezier(0.25,0.46,0.45,0.94)}
+    :root{
+      --primary:#C0392B;
+      --primary-dark:#9a2e22;
+      --primary-light:#e65c4a;
+      --black:#1a1a1a;
+      --white:#fff;
+      --gray-bg:#f8fafc;
+      --gray-border:#eef2f5;
+      --text-dark:#1e293b;
+      --text-light:#5a6e7c;
+      --shadow-sm:0 10px 25px -5px rgba(0,0,0,0.05);
+      --shadow-md:0 20px 25px -5px rgba(0,0,0,0.05);
+      --shadow-hover:0 25px 35px -12px rgba(0,0,0,0.2);
+      --transition:all 0.3s cubic-bezier(0.25,0.46,0.45,0.94)
+    }
     body{font-family:'Cairo',sans-serif;background:var(--gray-bg);color:var(--text-dark);line-height:1.6;scroll-behavior:smooth}
+    
+    /* Navigation */
     nav{background:rgba(26,26,26,0.96);backdrop-filter:blur(10px);padding:0 5%;display:flex;align-items:center;justify-content:space-between;height:85px;position:sticky;top:0;z-index:1000;border-bottom:1px solid rgba(255,255,255,0.1)}
     .logo{display:flex;align-items:center;gap:14px;text-decoration:none}
-    .logo-img{width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid var(--primary);transition:var(--transition)}
+    .logo-img{width:55px;height:55px;border-radius:50%;object-fit:cover;border:2px solid var(--primary);transition:var(--transition)}
     .logo-img:hover{transform:scale(1.05);border-color:var(--white)}
-    .logo-text{color:var(--white);font-size:1.7rem;font-weight:800;line-height:1.2}
+    .logo-text{color:var(--white);font-size:1.5rem;font-weight:800;line-height:1.2}
     .logo-text span{color:var(--primary)}
-    .nav-links{display:flex;gap:32px}
-    .nav-links a{color:#e2e8f0;font-weight:600;text-decoration:none;font-size:1rem;padding-bottom:4px;border-bottom:2px solid transparent;transition:var(--transition)}
+    .nav-links{display:flex;gap:25px}
+    .nav-links a{color:#e2e8f0;font-weight:600;text-decoration:none;font-size:0.95rem;padding-bottom:4px;border-bottom:2px solid transparent;transition:var(--transition)}
     .nav-links a:hover{color:white;border-bottom-color:var(--primary)}
-    .nav-right{display:flex;align-items:center;gap:20px}
-    .lang-wrap{position:relative}
-    .lang-btn{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);padding:8px 18px;border-radius:40px;color:white;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:8px;transition:var(--transition)}
-    .lang-btn:hover{background:rgba(255,255,255,0.15)}
-    .lang-dropdown{display:none;position:absolute;top:55px;right:0;background:#1e1e2a;border-radius:20px;min-width:190px;overflow:hidden;box-shadow:var(--shadow-md);z-index:110}
-    .lang-dropdown.open{display:block}
-    .lang-option{padding:10px 18px;color:#cbd5e1;cursor:pointer;transition:var(--transition);display:flex;align-items:center;gap:10px}
-    .lang-option:hover,.lang-option.active{background:var(--primary);color:white}
-    .nav-cta{background:var(--primary);color:white;padding:10px 24px;border-radius:40px;font-weight:700;border:none;cursor:pointer;transition:var(--transition);margin:0 5px}
+    .nav-right{display:flex;align-items:center;gap:15px}
+    .nav-cta{background:var(--primary);color:white;padding:10px 24px;border-radius:40px;font-weight:700;border:none;cursor:pointer;transition:var(--transition);text-decoration:none;font-size:0.9rem}
     .nav-cta:hover{background:var(--primary-dark);transform:translateY(-2px)}
     .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer}
     .hamburger span{width:25px;height:3px;background:white;border-radius:3px}
-    .mobile-menu{display:none;background:#1a1a1a;padding:20px 5%;flex-direction:column;gap:15px;border-bottom:1px solid rgba(255,255,255,0.1)}
-    .mobile-menu.open{display:flex}
-    .mobile-menu a{color:#ccc;text-decoration:none;font-weight:500}
-    .hero{background:linear-gradient(125deg,#0b0b12,#1e1e2a);padding:5rem 5%;position:relative;overflow:hidden}
-    .hero::before{content:'';position:absolute;top:-20%;right:-10%;width:400px;height:400px;background:radial-gradient(circle,rgba(192,57,43,0.15),transparent 70%);border-radius:50%}
+
+    /* Hero Section */
+    .hero{background:linear-gradient(135deg,#1a1a1a 0%,#2c3e50 100%);padding:6rem 5%;position:relative;overflow:hidden;color:white}
+    .hero::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:100px;background:linear-gradient(to top, var(--gray-bg), transparent);z-index:1}
     .hero-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:3rem;position:relative;z-index:2}
     .hero-content{flex:1}
     .hero-badge{background:rgba(192,57,43,0.2);border:1px solid rgba(192,57,43,0.4);color:#ffaa9a;padding:6px 20px;border-radius:40px;font-size:.8rem;font-weight:700;display:inline-block;margin-bottom:1.2rem}
-    .hero h1{font-size:3rem;font-weight:800;color:white;line-height:1.3;margin-bottom:1.2rem}
+    .hero h1{font-size:3.2rem;font-weight:900;line-height:1.2;margin-bottom:1.5rem}
     .hero h1 span{color:var(--primary)}
-    .hero p{color:#cbd5e1;font-size:1.05rem;max-width:500px;margin-bottom:2rem}
+    .hero p{color:#cbd5e1;font-size:1.1rem;max-width:550px;margin-bottom:2.5rem}
     .hero-btns{display:flex;gap:16px;flex-wrap:wrap}
-    .btn-primary{background:var(--primary);border:none;padding:12px 32px;border-radius:40px;color:white;font-weight:700;cursor:pointer;transition:var(--transition)}
-    .btn-primary:hover{background:var(--primary-dark);transform:translateY(-3px)}
-    .btn-outline{background:transparent;border:1.5px solid rgba(255,255,255,0.4);padding:12px 32px;border-radius:40px;color:white;font-weight:600;cursor:pointer;transition:var(--transition)}
-    .btn-outline:hover{background:rgba(255,255,255,0.1);border-color:white}
-    .hero-stats{display:flex;gap:20px;flex-wrap:wrap}
-    .stat-card{background:rgba(255,255,255,0.05);backdrop-filter:blur(6px);border-radius:28px;padding:18px 24px;text-align:center;min-width:110px;border:1px solid rgba(255,255,255,0.08)}
-    .stat-number{font-size:2.3rem;font-weight:800;color:var(--primary)}
-    .stat-label{font-size:.75rem;color:#94a3b8;font-weight:500}
-    .section{padding:5rem 5%}
-    .bg-gray{background:#f1f5f9}
-    .sec-header{text-align:center;margin-bottom:3rem}
-    .sec-tag{background:rgba(192,57,43,0.1);color:var(--primary);display:inline-block;padding:5px 18px;border-radius:40px;font-weight:700;font-size:.75rem;margin-bottom:12px}
-    .sec-title{font-size:2.2rem;font-weight:800;margin-bottom:10px}
-    .sec-sub{color:var(--text-light)}
-    .services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:30px;max-width:1300px;margin:0 auto}
-    .service-card{background:white;border-radius:28px;padding:2rem 1.5rem;text-align:center;transition:var(--transition);border:1px solid var(--gray-border);box-shadow:var(--shadow-sm)}
-    .service-card:hover{transform:translateY(-10px);border-color:var(--primary);box-shadow:var(--shadow-hover)}
-    .service-icon{width:75px;height:75px;background:rgba(192,57,43,0.1);border-radius:25px;display:flex;align-items:center;justify-content:center;margin:0 auto 1.2rem;font-size:2rem;color:var(--primary);transition:var(--transition)}
+    .btn-primary{background:var(--primary);border:none;padding:14px 36px;border-radius:40px;color:white;font-weight:700;cursor:pointer;transition:var(--transition);text-decoration:none;display:inline-block}
+    .btn-primary:hover{background:var(--primary-dark);transform:translateY(-3px);box-shadow:0 10px 20px rgba(192,57,43,0.3)}
+    .btn-outline{background:transparent;border:2px solid rgba(255,255,255,0.3);padding:14px 36px;border-radius:40px;color:white;font-weight:700;cursor:pointer;transition:var(--transition);text-decoration:none;display:inline-block}
+    .btn-outline:hover{background:white;color:var(--black);border-color:white}
+    .hero-image{flex:1;display:flex;justify-content:center;position:relative}
+    .hero-image img{max-width:100%;border-radius:30px;box-shadow:var(--shadow-hover)}
+
+    /* Stats Section */
+    .stats-bar{background:white;padding:2rem 5%;margin-top:-50px;position:relative;z-index:10;border-radius:30px;max-width:1100px;margin-left:auto;margin-right:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:20px;box-shadow:var(--shadow-md)}
+    .stat-item{text-align:center;border-left:1px solid var(--gray-border)}
+    .stat-item:first-child{border-left:none}
+    .stat-num{font-size:2.2rem;font-weight:900;color:var(--primary);display:block}
+    .stat-label{font-size:0.9rem;color:var(--text-light);font-weight:600}
+
+    /* Sections */
+    .section{padding:6rem 5%}
+    .sec-header{text-align:center;margin-bottom:4rem;max-width:700px;margin-left:auto;margin-right:auto}
+    .sec-tag{color:var(--primary);font-weight:800;text-transform:uppercase;letter-spacing:1px;font-size:0.85rem;margin-bottom:10px;display:block}
+    .sec-title{font-size:2.5rem;font-weight:800;color:var(--black);margin-bottom:15px}
+    
+    /* Services */
+    .services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:30px;max-width:1200px;margin:0 auto}
+    .service-card{background:white;padding:3rem 2rem;border-radius:30px;text-align:center;transition:var(--transition);border:1px solid var(--gray-border)}
+    .service-card:hover{transform:translateY(-10px);box-shadow:var(--shadow-hover);border-color:var(--primary)}
+    .service-icon{width:80px;height:80px;background:rgba(192,57,43,0.05);border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:2.2rem;color:var(--primary);transition:var(--transition)}
     .service-card:hover .service-icon{background:var(--primary);color:white}
-    .service-title{font-size:1.2rem;font-weight:700;margin-bottom:.5rem}
-    .service-desc{font-size:.85rem;color:var(--text-light)}
-    .unis-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:25px;margin-top:20px}
-    .uni-card{background:white;border-radius:24px;padding:1.2rem;text-align:center;transition:var(--transition);cursor:pointer;border:1px solid var(--gray-border)}
-    .uni-card:hover{transform:scale(1.03);border-color:var(--primary);box-shadow:0 20px 25px -12px rgba(0,0,0,0.15)}
-    .uni-img{width:100px;height:100px;object-fit:contain;margin-bottom:12px}
-    .uni-name{font-weight:700;font-size:.9rem}
-    .uni-badge{display:inline-block;margin-top:8px;background:rgba(192,57,43,0.1);color:var(--primary);padding:4px 12px;border-radius:40px;font-size:.7rem}
-    .tab-nav{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:2rem}
-    .tab-btn{background:white;border:1px solid #cbd5e1;padding:8px 26px;border-radius:40px;font-weight:600;cursor:pointer;transition:var(--transition)}
-    .tab-btn.active,.tab-btn:hover{background:var(--primary);border-color:var(--primary);color:white}
-    .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:25px;margin-top:30px}
-    .gallery-item{position:relative;border-radius:28px;overflow:hidden;cursor:pointer;aspect-ratio:16/10}
-    .gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
-    .gallery-item:hover img{transform:scale(1.05)}
-    .lightbox{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:2000;justify-content:center;align-items:center;cursor:pointer}
-    .lightbox img{max-width:90%;max-height:90%;border-radius:20px}
-    .testimonials-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:30px;margin-top:30px}
-    .testimonial-card{background:white;border-radius:28px;padding:2rem;text-align:center;border:1px solid var(--gray-border);transition:var(--transition)}
-    .testimonial-card:hover{transform:translateY(-8px);border-color:var(--primary)}
-    .testimonial-avatar{width:80px;height:80px;border-radius:50%;object-fit:cover;margin:0 auto 1rem;border:3px solid var(--primary)}
-    .testimonial-text{font-style:italic;color:var(--text-light);margin-bottom:1rem}
-    .testimonial-name{font-weight:700;margin-bottom:4px}
-    .testimonial-univ{font-size:.8rem;color:var(--primary)}
-    .video-wrapper{max-width:800px;margin:0 auto;border-radius:32px;overflow:hidden;box-shadow:var(--shadow-md)}
-    .video-wrapper iframe{width:100%;height:450px;border:none}
-    .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
-    .about-content h3{font-size:1.8rem;margin-bottom:1rem}
-    .about-content p{color:var(--text-light);margin-bottom:1rem}
-    .about-stats{display:flex;gap:30px;margin-top:2rem}
-    .about-stat{text-align:center}
-    .about-stat .num{font-size:2rem;font-weight:800;color:var(--primary)}
-    .iti { display: block; width: 100%; }
-    .iti__flag-container { direction: ltr; }
-    .iti__selected-flag { padding: 0 12px; border-radius: 28px 0 0 28px; background: white; border: 1px solid #e2e8f0; border-right: none; }
-    .form-wrap{max-width:700px;margin:0 auto;background:white;border-radius:36px;padding:2.5rem;box-shadow:var(--shadow-md)}
-    .fgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
-    .fg input,.fg select,.fg textarea,.upload-area{width:100%;padding:12px 18px;border-radius:28px;border:1px solid #e2e8f0;font-family:'Cairo',sans-serif;transition:var(--transition)}
-    .fg input:focus,.fg select:focus{border-color:var(--primary);outline:none;box-shadow:0 0 0 3px rgba(192,57,43,0.2)}
-    .upload-area{background:#f8fafc;text-align:center;cursor:pointer}
-    .sub-btn{background:var(--primary);width:100%;padding:14px;border-radius:40px;border:none;color:white;font-weight:800;margin-top:20px;cursor:pointer;transition:var(--transition)}
-    .sub-btn:hover{background:var(--primary-dark);transform:translateY(-2px)}
-    .faq-item{background:white;border-radius:28px;margin-bottom:14px;border:1px solid var(--gray-border)}
-    .faq-q{padding:1rem 1.5rem;font-weight:700;display:flex;justify-content:space-between;cursor:pointer}
-    .faq-a{display:none;padding:0 1.5rem 1.5rem;color:var(--text-light);border-top:1px solid #e2e8f0}
-    .contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:25px;max-width:900px;margin:0 auto}
-    .contact-card{background:white;border-radius:30px;padding:1.8rem;text-align:center;transition:var(--transition)}
-    .contact-card:hover{transform:translateY(-5px)}
-    footer{background:#1a1a1a;color:#94a3b8;padding:2rem;text-align:center}
-    .login-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:2001;display:flex;justify-content:center;align-items:center;visibility:hidden}
-    .login-box{background:white;border-radius:40px;padding:2rem;width:350px;text-align:center;position:relative}
-    .login-box .close-btn{position:absolute;top:12px;left:18px;font-size:24px;cursor:pointer;color:#666}
-    .login-box input{width:100%;margin:10px 0;padding:12px;border-radius:40px;border:1px solid #ccc}
-    .login-box button{background:var(--primary);color:white;border:none;padding:12px;border-radius:40px;width:100%;cursor:pointer}
-    .toast-message{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#1e293b;color:white;padding:14px 28px;border-radius:60px;box-shadow:0 10px 25px -5px rgba(0,0,0,0.2);display:flex;align-items:center;gap:12px;z-index:2002;font-weight:500;direction:rtl;opacity:0;transition:opacity 0.3s;pointer-events:none}
-    .toast-message i{font-size:20px;color:#facc15}
-    .toast-message.show{opacity:1}
-    .shake{animation:shake 0.5s ease-in-out}
-    @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
-    .user-status{color:white;margin-left:15px;font-size:14px;background:rgba(255,255,255,0.1);padding:5px 12px;border-radius:40px}
-    @media(max-width:768px){.nav-links,.nav-right{display:none}.hamburger{display:flex}.hero-inner{flex-direction:column;text-align:center}.hero h1{font-size:2rem}.sec-title{font-size:1.8rem}.fgrid{grid-template-columns:1fr}.logo-text{font-size:1.2rem}.about-grid{grid-template-columns:1fr;text-align:center}.video-wrapper iframe{height:250px}}
+    .service-title{font-size:1.3rem;font-weight:800;margin-bottom:1rem}
+    .service-desc{color:var(--text-light);font-size:0.95rem}
+
+    /* Steps */
+    .steps-container{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:40px;position:relative}
+    .step-item{text-align:center;position:relative}
+    .step-num{width:60px;height:60px;background:var(--black);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:800;margin:0 auto 1.5rem;border:4px solid var(--primary)}
+    .step-title{font-weight:800;margin-bottom:10px}
+
+    /* Form Section */
+    .contact-section{background:var(--black);color:white}
+    .contact-container{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1.2fr;gap:60px;align-items:center}
+    .contact-info h2{font-size:2.5rem;margin-bottom:1.5rem}
+    .contact-info p{color:#94a3b8;margin-bottom:2rem}
+    .contact-form{background:white;padding:3rem;border-radius:40px;color:var(--black)}
+    .form-group{margin-bottom:20px}
+    .form-group label{display:block;margin-bottom:8px;font-weight:700;font-size:0.9rem}
+    .form-control{width:100%;padding:14px 20px;border-radius:15px;border:1px solid #e2e8f0;font-family:'Cairo';transition:var(--transition)}
+    .form-control:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 4px rgba(192,57,43,0.1)}
+    .submit-btn{width:100%;background:var(--primary);color:white;border:none;padding:16px;border-radius:15px;font-weight:800;font-size:1.1rem;cursor:pointer;transition:var(--transition)}
+    .submit-btn:hover{background:var(--primary-dark);transform:translateY(-2px)}
+
+    /* Footer */
+    footer{background:#0f172a;color:#94a3b8;padding:4rem 5% 2rem;text-align:center}
+    .footer-logo{margin-bottom:2rem}
+    .footer-links{display:flex;justify-content:center;gap:30px;margin-bottom:2rem;flex-wrap:wrap}
+    .footer-links a{color:#94a3b8;text-decoration:none;font-weight:600;transition:var(--transition)}
+    .footer-links a:hover{color:white}
+    .social-links{display:flex;justify-content:center;gap:20px;margin-bottom:2rem}
+    .social-links a{width:45px;height:45px;background:rgba(255,255,255,0.05);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:1.2rem;transition:var(--transition)}
+    .social-links a:hover{background:var(--primary);transform:translateY(-5px)}
+    .copyright{border-top:1px solid rgba(255,255,255,0.05);padding-top:2rem;font-size:0.9rem}
+
+    /* Mobile Menu */
+    .mobile-nav{position:fixed;top:0;right:-100%;width:80%;height:100%;background:var(--black);z-index:2000;padding:3rem 2rem;transition:0.4s;display:flex;flex-direction:column;gap:20px}
+    .mobile-nav.active{right:0}
+    .mobile-nav a{color:white;text-decoration:none;font-size:1.2rem;font-weight:700;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:10px}
+    .overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:1999;display:none}
+    .overlay.active{display:block}
+
+    @media (max-width: 992px) {
+      .hero-inner{flex-direction:column;text-align:center}
+      .hero h1{font-size:2.5rem}
+      .hero p{margin-left:auto;margin-right:auto}
+      .hero-btns{justify-content:center}
+      .stats-bar{grid-template-columns:repeat(2,1fr);margin-top:20px}
+      .stat-item:nth-child(odd){border-left:none}
+      .contact-container{grid-template-columns:1fr}
+      .nav-links{display:none}
+      .hamburger{display:flex}
+    }
+    
+    @media (max-width: 576px) {
+      .stats-bar{grid-template-columns:1fr}
+      .stat-item{border-left:none;border-bottom:1px solid var(--gray-border);padding-bottom:15px}
+      .stat-item:last-child{border-bottom:none}
+      .contact-form{padding:2rem 1.5rem}
+    }
+
+    /* Animations */
+    @keyframes shake {
+      0%, 100% {transform: translateX(0);}
+      25% {transform: translateX(-5px);}
+      75% {transform: translateX(5px);}
+    }
+    .shake {animation: shake 0.5s ease-in-out;}
   </style>
 </head>
 <body>
+
+  <div class="overlay" id="overlay"></div>
+  <div class="mobile-nav" id="mobileNav">
+    <a href="#home">الرئيسية</a>
+    <a href="#services">خدماتنا</a>
+    <a href="#universities">الجامعات</a>
+    <a href="#steps">خطوات التسجيل</a>
+    <a href="#contact">تواصل معنا</a>
+  </div>
+
   <nav>
-    <a class="logo" href="#"><img class="logo-img" src="https://i.ibb.co/FkgS4ZWz/Cam-Scanner-25-04-2026-20-51.jpg" alt="Logo"><div class="logo-text">ABOU-TALEB<br><span>EDUCATION</span></div></a>
-    <div class="nav-links"><a id="navUnisLink" onclick="goTo('unis')">الجامعات</a><a id="navServicesLink" onclick="goTo('services')">الخدمات</a><a id="navApplyLink" onclick="goTo('apply')">التسجيل</a><a id="navFaqLink" onclick="goTo('faq')">الأسئلة</a></div>
-    <div class="nav-right">
-      <div class="lang-wrap"><button class="lang-btn" id="langBtn">🌐 العربية ▾</button><div class="lang-dropdown" id="langDropdown"></div></div>
-      <button class="nav-cta" id="loginBtn" onclick="showLogin()">تسجيل الدخول</button>
-      <button class="nav-cta" id="navCtaBtn" onclick="goTo('apply')">سجل الآن</button>
-      <div class="user-status" id="userStatus" style="display:none"></div>
+    <a href="#" class="logo">
+      <img src="https://via.placeholder.com/100x100/C0392B/FFFFFF?text=AT" alt="Abou-Taleb Logo" class="logo-img">
+      <div class="logo-text">Abou-Taleb<br><span>Education</span></div>
+    </a>
+    <div class="nav-links">
+      <a href="#home">الرئيسية</a>
+      <a href="#services">خدماتنا</a>
+      <a href="#universities">الجامعات</a>
+      <a href="#steps">خطوات التسجيل</a>
+      <a href="#contact">تواصل معنا</a>
     </div>
-    <div class="hamburger" onclick="toggleMobileMenu()"><span></span><span></span><span></span></div>
+    <div class="nav-right">
+      <a href="#contact" class="nav-cta">سجل الآن</a>
+      <div class="hamburger" id="menuBtn">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
   </nav>
-  <div class="mobile-menu" id="mobileMenu"><a id="mobUnisLink" onclick="goTo('unis');toggleMobileMenu()">الجامعات</a><a id="mobServicesLink" onclick="goTo('services');toggleMobileMenu()">الخدمات</a><a id="mobApplyLink" onclick="goTo('apply');toggleMobileMenu()">التسجيل</a><a id="mobFaqLink" onclick="goTo('faq');toggleMobileMenu()">الأسئلة</a></div>
 
-  <div class="login-overlay" id="loginOverlay" onclick="closeLoginOnOutside(event)"><div class="login-box" onclick="event.stopPropagation()"><span class="close-btn" onclick="closeLogin()">✖</span><h3>تسجيل الدخول</h3><input type="text" id="loginUsername" placeholder="اسم المستخدم"><input type="password" id="loginPassword" placeholder="كلمة المرور"><button onclick="doLogin()">دخول</button></div></div>
-  <div id="errorToast" class="toast-message"><i class="fas fa-exclamation-circle"></i><span id="errorText"></span></div>
+  <section class="hero" id="home">
+    <div class="hero-inner">
+      <div class="hero-content" data-aos="fade-left">
+        <span class="hero-badge">وكيل معتمد لأقوى الجامعات التركية</span>
+        <h1>مستقبلك الدراسي في <span>تركيا</span> يبدأ من هنا</h1>
+        <p>نحن في Abou-Taleb Education نوفر لك كافة التسهيلات والقبولات الجامعية المجانية في أفضل الجامعات الخاصة التركية مع خصومات حصرية تصل إلى 70%.</p>
+        <div class="hero-btns">
+          <a href="#contact" class="btn-primary">احصل على استشارة مجانية</a>
+          <a href="#services" class="btn-outline">اكتشف خدماتنا</a>
+        </div>
+      </div>
+      <div class="hero-image" data-aos="fade-right">
+        <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Study in Turkey">
+      </div>
+    </div>
+  </section>
 
-  <section class="hero"><div class="hero-inner"><div class="hero-content" data-aos="fade-right"><div class="hero-badge" id="heroBadge">شريكك الموثوق للتعليم في تركيا 🇹🇷</div><h1 id="heroTitle">ابدأ مستقبلك الأكاديمي <br> في <span id="heroTitleSpan">أفضل الجامعات التركية</span></h1><p id="heroDesc">نساعدك في القبول والتسجيل والسكن — الدراسة بالإنكليزية أو التركية فقط.</p><div class="hero-btns"><button class="btn-primary" id="heroBtn1" onclick="goTo('apply')">ابدأ تسجيلك مجاناً</button><button class="btn-outline" id="heroBtn2" onclick="goTo('unis')">اكتشف جامعاتنا</button></div></div><div class="hero-stats" data-aos="fade-left">
-      <div class="stat-card"><div class="stat-number" id="stat1">+500</div><div class="stat-label" id="statLabel1">طالب مسجّل</div></div>
-      <div class="stat-card"><div class="stat-number" id="stat2">+30</div><div class="stat-label" id="statLabel2">جامعة شريكة</div></div>
-      <div class="stat-card"><div class="stat-number" id="stat3">+8</div><div class="stat-label" id="statLabel3">سنوات خبرة</div></div>
-      <div class="stat-card"><div class="stat-number" id="stat4">95%</div><div class="stat-label" id="statLabel4">نسبة القبول</div></div>
-    </div></div></section>
+  <div class="stats-bar" data-aos="fade-up">
+    <div class="stat-item">
+      <span class="stat-num">+50</span>
+      <span class="stat-label">جامعة متعاقدة</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">+1500</span>
+      <span class="stat-label">طالب مسجل</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">100%</span>
+      <span class="stat-label">قبول مضمون</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">+8</span>
+      <span class="stat-label">سنوات خبرة</span>
+    </div>
+  </div>
 
-  <!-- من نحن -->
-  <section class="section"><div class="about-grid" data-aos="fade-up"><div class="about-content"><div class="sec-tag" id="aboutTag" style="display:inline-block">من نحن</div><h3 id="aboutTitle">شريكك الموثوق للتعليم في تركيا</h3><p id="aboutText">نحن فريق متخصص في تقديم خدمات القبول الجامعي للطلاب الدوليين الراغبين في الدراسة في تركيا. نعمل مع أكثر من 30 جامعة معتمدة، ونساعد الطلاب في كل خطوة: من اختيار التخصص المناسب، إلى القبول، السكن، والتأشيرة.</p><div class="about-stats"><div class="about-stat"><div class="num" id="aboutYear">+8</div><div id="aboutYearLabel">سنوات خبرة</div></div><div class="about-stat"><div class="num" id="aboutUni">+30</div><div id="aboutUniLabel">جامعة شريكة</div></div><div class="about-stat"><div class="num" id="aboutStudent">+500</div><div id="aboutStudentLabel">طالب سعيد</div></div></div></div><div class="video-wrapper" style="max-width:100%"><img src="https://i.ibb.co/FkgS4ZWz/Cam-Scanner-25-04-2026-20-51.jpg" alt="About us" style="width:100%;border-radius:28px;object-fit:cover;height:300px"></div></div></section>
+  <section class="section" id="services">
+    <div class="sec-header" data-aos="fade-up">
+      <span class="sec-tag">لماذا نحن؟</span>
+      <h2 class="sec-title">خدماتنا المتكاملة للطلاب</h2>
+      <p class="sec-sub">نرافقك في كل خطوة، من اختيار التخصص وحتى الاستقرار في سكنك الجامعي بتركيا.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card" data-aos="zoom-in" data-aos-delay="100">
+        <div class="service-icon"><i class="fas fa-graduation-cap"></i></div>
+        <h3 class="service-title">قبولات مجانية</h3>
+        <p class="service-desc">نضمن لك الحصول على قبولك الجامعي في الجامعات الخاصة مجاناً وبدون أي رسوم إضافية.</p>
+      </div>
+      <div class="service-card" data-aos="zoom-in" data-aos-delay="200">
+        <div class="service-icon"><i class="fas fa-percent"></i></div>
+        <h3 class="service-title">خصومات حصرية</h3>
+        <p class="service-desc">بصفتنا وكلاء معتمدين، نوفر لك خصومات خاصة على الأقساط الدراسية لا تتوفر عند التقديم المباشر.</p>
+      </div>
+      <div class="service-card" data-aos="zoom-in" data-aos-delay="300">
+        <div class="service-icon"><i class="fas fa-file-signature"></i></div>
+        <h3 class="service-title">تجهيز الملفات</h3>
+        <p class="service-desc">نساعدك في ترجمة وتصديق أوراقك وتجهيز ملف التقديم بشكل احترافي لضمان القبول.</p>
+      </div>
+      <div class="service-card" data-aos="zoom-in" data-aos-delay="400">
+        <div class="service-icon"><i class="fas fa-home"></i></div>
+        <h3 class="service-title">تأمين السكن</h3>
+        <p class="service-desc">نوفر لك خيارات متنوعة للسكن الطلابي (حكومي أو خاص) بما يتناسب مع ميزانيتك وموقع جامعتك.</p>
+      </div>
+    </div>
+  </section>
 
-  <!-- خدماتنا -->
-  <section class="section bg-gray" id="services"><div class="sec-header" data-aos="fade-up"><div class="sec-tag" id="servicesTag">خدماتنا</div><div class="sec-title" id="servicesTitle">كل ما تحتاجه في مكان واحد</div><div class="sec-sub" id="servicesSub">نرافقك من الاستشارة الأولى حتى بداية دراستك</div></div><div class="services-grid" data-aos="fade-up" data-aos-delay="100"><div class="service-card"><div class="service-icon"><i class="fas fa-graduation-cap"></i></div><div class="service-title" id="srv1Title">القبول الجامعي</div><div class="service-desc" id="srv1Desc">في الجامعات بكل سهولة</div></div><div class="service-card"><div class="service-icon"><i class="fas fa-chalkboard-user"></i></div><div class="service-title" id="srv2Title">الإرشاد الأكاديمي</div><div class="service-desc" id="srv2Desc">اختيار التخصص المناسب</div></div><div class="service-card"><div class="service-icon"><i class="fas fa-house-chimney"></i></div><div class="service-title" id="srv3Title">السكن الطلابي</div><div class="service-desc" id="srv3Desc">سكن آمن وقريب من جامعتك</div></div><div class="service-card"><div class="service-icon"><i class="fas fa-passport"></i></div><div class="service-title" id="srv4Title">التأشيرة والإقامة</div><div class="service-desc" id="srv4Desc">إنهاء كل الأوراق الرسمية</div></div><div class="service-card"><div class="service-icon"><i class="fas fa-file-signature"></i></div><div class="service-title" id="srv5Title">معادلة الشهادات</div><div class="service-desc" id="srv5Desc">تصديق ومعادلة مؤهلاتك</div></div><div class="service-card"><div class="service-icon"><i class="fas fa-plane-arrival"></i></div><div class="service-title" id="srv6Title">الاستقبال في إسطنبول</div><div class="service-desc" id="srv6Desc">فريقنا يستقبلك من المطار</div></div></div></section>
+  <section class="section bg-gray" id="steps">
+    <div class="sec-header" data-aos="fade-up">
+      <span class="sec-tag">بساطة الإجراءات</span>
+      <h2 class="sec-title">خطوات رحلتك معنا</h2>
+    </div>
+    <div class="steps-container">
+      <div class="step-item" data-aos="fade-up" data-aos-delay="100">
+        <div class="step-num">1</div>
+        <h3 class="step-title">تواصل معنا</h3>
+        <p class="service-desc">املأ النموذج أو تواصل عبر الواتساب لاستشارة مجانية.</p>
+      </div>
+      <div class="step-item" data-aos="fade-up" data-aos-delay="200">
+        <div class="step-num">2</div>
+        <h3 class="step-title">اختر تخصصك</h3>
+        <p class="service-desc">نساعدك في اختيار الجامعة والتخصص الأنسب لمستقبلك.</p>
+      </div>
+      <div class="step-item" data-aos="fade-up" data-aos-delay="300">
+        <div class="step-num">3</div>
+        <h3 class="step-title">أرسل أوراقك</h3>
+        <p class="service-desc">نقوم بتقديم ملفك للجامعة ومتابعة صدور القبول المبدئي.</p>
+      </div>
+      <div class="step-item" data-aos="fade-up" data-aos-delay="400">
+        <div class="step-num">4</div>
+        <h3 class="step-title">ابدأ الدراسة</h3>
+        <p class="service-desc">نستقبلك في المطار وننهي إجراءات تثبيت القيد والإقامة.</p>
+      </div>
+    </div>
+  </section>
 
-  <!-- الجامعات -->
-  <section class="section" id="unis"><div class="sec-header" data-aos="fade-up"><div class="sec-tag" id="unisTag">جامعاتنا الشريكة</div><div class="sec-title" id="unisTitle">أفضل الجامعات في تركيا</div></div><div class="tab-nav" data-aos="fade-up"><button class="tab-btn active" id="tabAllBtn" onclick="filterUnis('all',this)">الكل</button><button class="tab-btn" id="tabIstanbulBtn" onclick="filterUnis('istanbul',this)">إسطنبول</button><button class="tab-btn" id="tabAnkaraBtn" onclick="filterUnis('ankara',this)">أنقرة</button></div><div class="unis-grid" id="unisContainer"></div></section>
+  <section class="section contact-section" id="contact">
+    <div class="contact-container">
+      <div class="contact-info" data-aos="fade-left">
+        <h2>هل أنت جاهز لبدء مستقبلك؟</h2>
+        <p>اترك بياناتك الآن وسيقوم أحد مستشارينا التعليميين بالتواصل معك خلال أقل من 24 ساعة لتزويدك بكافة التفاصيل والخصومات المتاحة.</p>
+        <div style="display: flex; gap: 20px; flex-direction: column;">
+          <div style="display: flex; align-items: center; gap: 15px;">
+            <i class="fab fa-whatsapp" style="font-size: 2rem; color: #25D366;"></i>
+            <div>
+              <h4 style="margin: 0;">واتساب</h4>
+              <p style="margin: 0; color: #cbd5e1;">+90 5XX XXX XX XX</p>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 15px;">
+            <i class="fas fa-envelope" style="font-size: 1.8rem; color: var(--primary);"></i>
+            <div>
+              <h4 style="margin: 0;">البريد الإلكتروني</h4>
+              <p style="margin: 0; color: #cbd5e1;">info@abou-taleb.com</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form" data-aos="fade-right">
+        <form id="leadForm">
+          <div class="form-group">
+            <label>الاسم الكامل</label>
+            <input type="text" class="form-control" placeholder="أدخل اسمك الثلاثي" required>
+          </div>
+          <div class="form-group">
+            <label>رقم الهاتف (مع رمز الدولة)</label>
+            <input type="tel" id="phone" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label>التخصص المطلوب</label>
+            <select class="form-control">
+              <option>الطب البشري</option>
+              <option>طب الأسنان</option>
+              <option>الصيدلة</option>
+              <option>الهندسة (بكافة أنواعها)</option>
+              <option>إدارة الأعمال</option>
+              <option>تخصصات أخرى</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>رسالتك (اختياري)</label>
+            <textarea class="form-control" rows="3" placeholder="أي استفسار إضافي؟"></textarea>
+          </div>
+          <button type="submit" class="submit-btn">إرسال الطلب الآن</button>
+        </form>
+      </div>
+    </div>
+  </section>
 
-  <!-- معرض الصور -->
-  <section class="section bg-gray"><div class="sec-header" data-aos="fade-up"><div class="sec-tag" id="galleryTag">معرض الصور</div><div class="sec-title" id="galleryTitle">جامعاتنا في صور</div></div><div class="gallery-grid" id="galleryGrid"></div></section>
-  <div id="lightbox" class="lightbox" onclick="closeLightbox()"><img id="lightboxImg" src=""></div>
-
-  <!-- شهادات الطلاب (تم إزالة جميع التعليقات الوهمية - أصبح القسم فارغاً) -->
-  <section class="section"><div class="sec-header" data-aos="fade-up"><div class="sec-tag" id="testimonialsTag">آراء الطلاب</div><div class="sec-title" id="testimonialsTitle">ماذا يقولون عنا؟</div></div><div class="testimonials-grid" id="testimonialsGrid"></div></section>
-
-  <!-- فيديو -->
-  <section class="section bg-gray"><div class="sec-header" data-aos="fade-up"><div class="sec-tag" id="videoTag">شاهد قصص النجاح</div><div class="sec-title" id="videoTitle">تعرف على تجارب الطلاب في تركيا</div></div><div class="video-wrapper" data-aos="zoom-in"><iframe src="https://www.youtube.com/embed/VIDEO_ID?autoplay=0&rel=0" title="Study in Turkey" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></section>
-
-  <!-- نموذج التسجيل -->
-  <section class="section" id="apply"><div class="sec-header" data-aos="fade-up"><div class="sec-tag" id="formTag">التسجيل</div><div class="sec-title" id="formTitle">سجّل الآن وابدأ مسيرتك</div><div class="sec-sub" id="formSub">أرسل طلبك وسيتواصل معك مستشارنا خلال 24 ساعة</div></div><div class="form-wrap" data-aos="fade-up"><div class="fgrid"><div class="fg"><input type="text" id="fullName" placeholder="الاسم الكامل *"></div><div class="fg"><input type="tel" id="phone" placeholder="رقم الهاتف *"></div><div class="fg"><input type="email" id="email" placeholder="البريد الإلكتروني *"></div><div class="fg"><input type="text" id="nationality" placeholder="الجنسية"></div><div class="fg"><select id="degree"><option>المؤهل الدراسي</option><option>ثانوية عامة</option><option>بكالوريوس</option><option>ماجستير</option></select></div><div class="fg"><input type="text" id="major" placeholder="التخصص المرغوب"></div></div><button class="sub-btn" id="formSubmitBtn" onclick="submitApplication()">إرسال الطلب</button><div id="successMsg" style="display:none; text-align:center; margin-top:16px; color:#16a34a;">✓ تم إرسال طلبك بنجاح!</div></div></section>
-
-  <!-- أسئلة شائعة -->
-  <section class="section bg-gray" id="faq"><div class="sec-header" data-aos="fade-up"><div class="sec-tag" id="faqTag">الأسئلة الشائعة</div><div class="sec-title" id="faqTitle">إجابات لأكثر الأسئلة شيوعاً</div></div><div class="faq-wrap"><div class="faq-item" data-aos="fade-up"><div class="faq-q" onclick="toggleFaq(this)"><span id="faq1Q">ما هي شروط القبول في الجامعات؟</span><span>+</span></div><div class="faq-a" id="faq1A">عادةً شهادة الثانوية العامة كافية، والجامعات لا تشترط اختبارات إضافية.</div></div><div class="faq-item" data-aos="fade-up"><div class="faq-q" onclick="toggleFaq(this)"><span id="faq2Q">هل يمكن الدراسة باللغة الإنجليزية؟</span><span>+</span></div><div class="faq-a" id="faq2A">نعم، معظم البرامج متاحة باللغة الإنجليزية أو التركية.</div></div><div class="faq-item" data-aos="fade-up"><div class="faq-q" onclick="toggleFaq(this)"><span id="faq3Q">كم تكلفة الدراسة في تركيا؟</span><span>+</span></div><div class="faq-a" id="faq3A">تتراوح بين 3000 و 15000 دولار سنوياً حسب الجامعة والتخصص.</div></div></div></section>
-
-  <!-- تواصل -->
-  <section class="section" id="contact"><div class="sec-header" data-aos="fade-up"><div class="sec-tag" id="contactTag">تواصل معنا</div><div class="sec-title" id="contactTitle">نحن هنا لمساعدتك</div></div><div class="contact-grid" data-aos="fade-up"><div class="contact-card"><i class="fas fa-phone-alt" style="font-size:30px; color:var(--primary);"></i><h4 id="contactWhatsapp">واتساب</h4><p>+90 501 595 98 80</p></div><div class="contact-card"><i class="fas fa-envelope" style="font-size:30px; color:var(--primary);"></i><h4 id="contactEmailLabel">البريد الإلكتروني</h4><p>aboutalebeducation@gmail.com</p></div><div class="contact-card"><i class="fas fa-map-marker-alt" style="font-size:30px; color:var(--primary);"></i><h4 id="contactAddressLabel">العنوان</h4><p>Bahcelievler, Istanbul, Turkey</p></div></div></section>
-
-  <footer id="footerCopy">© 2025 Abou-Taleb Education — جميع الحقوق محفوظة — الدراسة بالإنكليزية أو التركية فقط</footer>
+  <footer>
+    <div class="footer-logo">
+      <div class="logo-text" style="color: white; font-size: 2rem;">Abou-Taleb<br><span style="color: var(--primary);">Education</span></div>
+    </div>
+    <div class="footer-links">
+      <a href="#home">الرئيسية</a>
+      <a href="#services">خدماتنا</a>
+      <a href="#universities">الجامعات</a>
+      <a href="#steps">خطوات التسجيل</a>
+      <a href="#contact">تواصل معنا</a>
+    </div>
+    <div class="social-links">
+      <a href="#"><i class="fab fa-facebook-f"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-twitter"></i></a>
+      <a href="#"><i class="fab fa-youtube"></i></a>
+    </div>
+    <div class="copyright">
+      &copy; 2026 Abou-Taleb Education. جميع الحقوق محفوظة.
+    </div>
+  </footer>
 
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
   <script>
-    AOS.init({ duration: 800, once: true });
-    let isLoggedIn = false;
-    const universitiesList = [
-      { name: "Acıbadem Mehmet Ali Aydınlar Üniversitesi", city: "istanbul", img: "ACIBADEM MEHMET ALI_ç AYDINLAR U_êNI_çVERSI_çTESI_ç.png" },
-      { name: "Altınbaş Üniversitesi", city: "istanbul", img: "ALTINBAS_د U_êNI_çVERSI_çTESI_ç.png" },
-      { name: "Ankara Bilim Üniversitesi", city: "ankara", img: "ANKARA BI_çLI_çM U_êNI_çVERSI_çTESI_ç.png" },
-      { name: "Ankara Medipol Üniversitesi", city: "ankara", img: "ANKARA MEDI_çPOL U_êNI_çVERSI_çTESI_ç.png" },
-      { name: "Atılım Üniversitesi", city: "ankara", img: "ATILIM U_êNI_çVERSI_çTESI_ç.png" },
-      { name: "Bahçeşehir Üniversitesi", city: "istanbul", img: "BAHC_دES_دEHI_çR U_êNI_çVERSI_çTESI_ç.png" },
-      { name: "Bezmialem Vakıf Üniversitesi", city: "istanbul", img: "BEZM-I_ç A_éLEM VAKIF U_êNI_çVERSI_çTESI_ç.png" },
-      { name: "Biruni Üniversitesi", city: "istanbul", img: "BI_çRUNI_ç U_êNI_çVERSI_çTESI_ç.png" },
-      { name: "Doğuş Üniversitesi", city: "istanbul", img: "DOG__US_د U_êNI_çVERSI_çTESI_ç.png" },
-      { name: "Fatih Sultan Mehmet Vakıf Üniversitesi", city: "istanbul", img: "FATI_çH SULTAN MEHMET VAKIF U_êNI_çVERSI_çTESI_ç.png" },
-      { name: "Fenerbahçe Üniversitesi", city: "istanbul", img: "FENERBAHC_دE U_êNI_çVERSI_çTESI_ç.png" },
-      { name: "Haliç Üniversitesi", city: "istanbul", img: "HALI_çC_د U_êNI_çVERSI_çTESI_ç.png" },
-      { name: "İbn Haldun Üniversitesi", city: "istanbul", img: "I_çBN HALDUN U_êNI_çVERSI_çTESI_ç.png" },
-      { name: "İstanbul Aydın Üniversitesi", city: "istanbul", img: "I_çSTANBUL AYDIN U_êNI_çVERSI_çTESI_ç.png" },
-      { name: "İstanbul Galata Üniversitesi", city: "istanbul", img: "I_çSTANBUL GALATA U_êNI_çVERSI_çTESI_ç.png" },
-      { name: "İstanbul Gedik Üniversitesi", city: "istanbul", img: "I_çSTANBUL GEDI_çK U_êNI_çVERSI_çTESI_ç.png" },
-      { name: "İstanbul Gelişim Üniversitesi", city: "istanbul", img: "I_çSTANBUL GELI_çS_دI_çM U_êNI_çVERSI_çTESI_ç.png" },
-      { name: "İstanbul Kent Üniversitesi", city: "istanbul", img: "I_çSTANBUL KENT U_êNI_çVERSI_çTESI_ç.png" },
-      { name: "İstanbul Medipol Üniversitesi", city: "istanbul", img: "I_çSTANBUL MEDI_çPOL U_êNI_çVERSI_çTESI_ç.png" },
-      { name: "İstanbul Nişantaşı Üniversitesi", city: "istanbul", img: "I_çSTANBUL NI_çS_دANTAS_دI U_êNI_çVERSI_çTESI_ç.png" },
-      { name: "İstanbul Okan Üniversitesi", city: "istanbul", img: "I_çSTANBUL OKAN U_êNI_çVERSI_çTESI_ç.png" },
-      { name: "İstanbul Sabahattin Zaim Üniversitesi", city: "istanbul", img: "I_çSTANBUL SABAHATTI_çN ZAI_çM U_êNI_çVERSI_çTESI_ç.png" },
-      { name: "İstanbul Topkapı Üniversitesi", city: "istanbul", img: "I_çSTANBUL TOPKAPI U_êNI_çVERSI_çTESI_ç.png" },
-      { name: "İstanbul Yeni Yüzyıl Üniversitesi", city: "istanbul", img: "I_çSTANBUL YENI_ç YU_êZYIL U_êNI_çVERSI_çTESI_ç.png" },
-      { name: "İstinye Üniversitesi", city: "istanbul", img: "I_çSTI_çNYE U_êNI_çVERSI_çTESI_ç.png" },
-      { name: "Maltepe Üniversitesi", city: "istanbul", img: "MALTEPE U_êNI_çVERSI_çTESI_ç.png" },
-      { name: "OSTİM Teknik Üniversitesi", city: "ankara", img: "OSTI_çM TEKNI_çK U_êNI_çVERSI_çTESI_ç.png" },
-      { name: "Özyeğin Üniversitesi", city: "istanbul", img: "O_êZYEG__I_çN U_êNI_çVERSI_çTESI_ç.png" },
-      { name: "Üsküdar Üniversitesi", city: "istanbul", img: "U_êSKU_êDAR U_êNI_çVERSI_çTESI_ç.png" },
-      { name: "Yeditepe Üniversitesi", city: "istanbul", img: "YEDI_çTEPE U_êNI_çVERSI_çTESI_ç.png" }
-    ];
-    function renderUniversities(filter = 'all') {
-      const container = document.getElementById('unisContainer'); if (!container) return; container.innerHTML = '';
-      const filtered = universitiesList.filter(u => filter === 'all' || u.city === filter);
-      filtered.forEach(uni => { const card = document.createElement('div'); card.className = 'uni-card'; card.innerHTML = `<img class="uni-img" src="images/${uni.img}" alt="${uni.name}" onerror="this.src='https://placehold.co/100x100?text=Logo'"><div class="uni-name">${uni.name}</div><div class="uni-badge"></div>`; container.appendChild(card); });
+    // Initialize AOS
+    AOS.init({
+      duration: 1000,
+      once: true,
+      offset: 100
+    });
+
+    // Mobile Menu Toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileNav = document.getElementById('mobileNav');
+    const overlay = document.getElementById('overlay');
+
+    function toggleMenu() {
+      mobileNav.classList.toggle('active');
+      overlay.classList.toggle('active');
     }
-    window.filterUnis = (city, btn) => { renderUniversities(city); document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); if (btn) btn.classList.add('active'); };
-    const galleryImages = ["https://picsum.photos/id/104/400/300", "https://picsum.photos/id/20/400/300", "https://picsum.photos/id/28/400/300", "https://picsum.photos/id/91/400/300"];
-    const galleryGrid = document.getElementById('galleryGrid');
-    galleryImages.forEach(img => { const div = document.createElement('div'); div.className = 'gallery-item'; div.innerHTML = `<img src="${img}" alt="Gallery" onclick="openLightbox('${img}')">`; galleryGrid.appendChild(div); });
-    window.openLightbox = (src) => { document.getElementById('lightbox').style.display = 'flex'; document.getElementById('lightboxImg').src = src; };
-    window.closeLightbox = () => { document.getElementById('lightbox').style.display = 'none'; };
-    // شهادات الطلاب - فارغة تماماً
-    const testimonialsGrid = document.getElementById('testimonialsGrid');
-    testimonialsGrid.innerHTML = '';
-    const phoneInput = document.querySelector("#phone"); let iti = null;
-    if (phoneInput && window.intlTelInput) iti = window.intlTelInput(phoneInput, { separateDialCode: true, preferredCountries: ["tr", "eg", "sa", "ae", "jo", "dz"], utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js" });
-    // الترجمة
-    const translations = {
-      ar: {
-        dir: 'rtl', flag: '🇸🇦', name: 'العربية',
-        navUnis: 'الجامعات', navServices: 'الخدمات', navApply: 'التسجيل', navFaq: 'الأسئلة', navCta: 'سجل الآن',
-        heroBadge: 'شريكك الموثوق للتعليم في تركيا 🇹🇷', heroTitle: 'ابدأ مستقبلك الأكاديمي <br> في ', heroTitleSpan: 'أفضل الجامعات التركية', heroDesc: 'نساعدك في القبول والتسجيل والسكن — الدراسة بالإنكليزية أو التركية فقط.',
-        heroBtn1: 'ابدأ تسجيلك مجاناً', heroBtn2: 'اكتشف جامعاتنا',
-        stat1: 'طالب مسجّل', stat2: 'جامعة شريكة', stat3: 'سنوات خبرة', stat4: 'نسبة القبول',
-        aboutTag: 'من نحن', aboutTitle: 'شريكك الموثوق للتعليم في تركيا', aboutText: 'نحن فريق متخصص في تقديم خدمات القبول الجامعي للطلاب الدوليين.',
-        aboutYear: '+8', aboutYearLabel: 'سنوات خبرة', aboutUni: '+30', aboutUniLabel: 'جامعة شريكة', aboutStudent: '+500', aboutStudentLabel: 'طالب سعيد',
-        servicesTag: 'خدماتنا', servicesTitle: 'كل ما تحتاجه في مكان واحد', servicesSub: 'نرافقك من الاستشارة الأولى حتى بداية دراستك',
-        srv1: 'القبول الجامعي', srv1d: 'في الجامعات بكل سهولة', srv2: 'الإرشاد الأكاديمي', srv2d: 'اختيار التخصص المناسب', srv3: 'السكن الطلابي', srv3d: 'سكن آمن وقريب من جامعتك', srv4: 'التأشيرة والإقامة', srv4d: 'إنهاء كل الأوراق الرسمية', srv5: 'معادلة الشهادات', srv5d: 'تصديق ومعادلة مؤهلاتك', srv6: 'الاستقبال في إسطنبول', srv6d: 'فريقنا يستقبلك من المطار',
-        unisTag: 'جامعاتنا الشريكة', unisTitle: 'أفضل الجامعات في تركيا', tabAll: 'الكل', tabIst: 'إسطنبول', tabAnk: 'أنقرة',
-        galleryTag: 'معرض الصور', galleryTitle: 'جامعاتنا في صور',
-        testimonialsTag: 'آراء الطلاب', testimonialsTitle: 'ماذا يقولون عنا؟',
-        videoTag: 'شاهد قصص النجاح', videoTitle: 'تعرف على تجارب الطلاب في تركيا',
-        formTag: 'التسجيل', formTitle: 'سجّل الآن وابدأ مسيرتك', formSub: 'أرسل طلبك وسيتواصل معك مستشارنا خلال 24 ساعة', formSubmit: 'إرسال الطلب',
-        faqTag: 'الأسئلة الشائعة', faqTitle: 'إجابات لأكثر الأسئلة شيوعاً', faq1q: 'ما هي شروط القبول في الجامعات؟', faq1a: 'عادةً شهادة الثانوية العامة كافية.', faq2q: 'هل يمكن الدراسة باللغة الإنجليزية؟', faq2a: 'نعم، معظم البرامج متاحة باللغة الإنجليزية أو التركية.', faq3q: 'كم تكلفة الدراسة في تركيا؟', faq3a: 'تتراوح بين 3000 و 15000 دولار سنوياً.',
-        contactTag: 'تواصل معنا', contactTitle: 'نحن هنا لمساعدتك', contactWhatsapp: 'واتساب', contactEmail: 'البريد الإلكتروني', contactAddress: 'العنوان',
-        footer: '© 2025 Abou-Taleb Education — جميع الحقوق محفوظة — الدراسة بالإنكليزية أو التركية فقط'
+
+    menuBtn.addEventListener('click', toggleMenu);
+    overlay.addEventListener('click', toggleMenu);
+    mobileNav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', toggleMenu);
+    });
+
+    // Phone Input Initialization
+    const phoneInput = document.querySelector("#phone");
+    window.intlTelInput(phoneInput, {
+      initialCountry: "auto",
+      geoIpLookup: function(success, failure) {
+        fetch("https://ipapi.co/json").then(res => res.json()).then(data => success(data.country_code)).catch(() => success("tr"));
       },
-      en: {
-        dir: 'ltr', flag: '🇬🇧', name: 'English',
-        navUnis: 'Universities', navServices: 'Services', navApply: 'Apply', navFaq: 'FAQ', navCta: 'Apply Now',
-        heroBadge: 'Your Trusted Partner for Education in Turkey 🇹🇷', heroTitle: 'Start Your Academic Future <br> at ', heroTitleSpan: 'Top Turkish Universities', heroDesc: 'We assist with admission, housing, and visa — study in English or Turkish only.',
-        heroBtn1: 'Start Free Application', heroBtn2: 'Discover Universities',
-        stat1: 'Students', stat2: 'Partner Unis', stat3: 'Years Exp.', stat4: 'Acceptance Rate',
-        aboutTag: 'About Us', aboutTitle: 'Your Trusted Partner for Education in Turkey', aboutText: 'We are a specialized team providing university admission services.',
-        aboutYear: '+8', aboutYearLabel: 'Years Exp.', aboutUni: '+30', aboutUniLabel: 'Partner Unis', aboutStudent: '+500', aboutStudentLabel: 'Happy Students',
-        servicesTag: 'Our Services', servicesTitle: 'Everything You Need', servicesSub: 'From first consultation to your first day of study',
-        srv1: 'University Admission', srv1d: 'Easy admission to universities', srv2: 'Academic Advising', srv2d: 'Find the right major', srv3: 'Student Housing', srv3d: 'Safe accommodation near your university', srv4: 'Visa & Residence', srv4d: 'Complete official paperwork', srv5: 'Certificate Equivalency', srv5d: 'Attestation and equivalency', srv6: 'Istanbul Welcome', srv6d: 'Our team picks you up',
-        unisTag: 'Our Partner Universities', unisTitle: 'Top Universities in Turkey', tabAll: 'All', tabIst: 'Istanbul', tabAnk: 'Ankara',
-        galleryTag: 'Gallery', galleryTitle: 'Our Universities in Pictures',
-        testimonialsTag: 'Student Reviews', testimonialsTitle: 'What They Say About Us?',
-        videoTag: 'Watch Success Stories', videoTitle: 'Discover Student Experiences',
-        formTag: 'Apply', formTitle: 'Register Now & Start Your Journey', formSub: 'Send your request, our advisor will contact you within 24h', formSubmit: 'Submit Application',
-        faqTag: 'FAQ', faqTitle: 'Frequently Asked Questions', faq1q: 'Admission requirements?', faq1a: 'High school diploma is sufficient.', faq2q: 'Can I study in English?', faq2a: 'Yes, most programs in English or Turkish.', faq3q: 'Cost of studying?', faq3a: '$3,000–$15,000 per year.',
-        contactTag: 'Contact Us', contactTitle: 'We Are Here to Help', contactWhatsapp: 'WhatsApp', contactEmail: 'Email', contactAddress: 'Address',
-        footer: '© 2025 Abou-Taleb Education — All Rights Reserved — Study in English or Turkish only'
-      }
-    };
-    let currentLang = 'ar';
-    function applyLanguage(lang) {
-      currentLang = lang;
-      const t = translations[lang];
-      if (!t) return;
-      document.documentElement.setAttribute('dir', t.dir);
-      document.getElementById('navUnisLink').innerText = t.navUnis;
-      document.getElementById('navServicesLink').innerText = t.navServices;
-      document.getElementById('navApplyLink').innerText = t.navApply;
-      document.getElementById('navFaqLink').innerText = t.navFaq;
-      document.getElementById('navCtaBtn').innerText = t.navCta;
-      document.getElementById('mobUnisLink').innerText = t.navUnis;
-      document.getElementById('mobServicesLink').innerText = t.navServices;
-      document.getElementById('mobApplyLink').innerText = t.navApply;
-      document.getElementById('mobFaqLink').innerText = t.navFaq;
-      document.getElementById('heroBadge').innerText = t.heroBadge;
-      document.getElementById('heroTitle').innerHTML = t.heroTitle;
-      document.getElementById('heroTitleSpan').innerText = t.heroTitleSpan;
-      document.getElementById('heroDesc').innerText = t.heroDesc;
-      document.getElementById('heroBtn1').innerText = t.heroBtn1;
-      document.getElementById('heroBtn2').innerText = t.heroBtn2;
-      document.getElementById('statLabel1').innerText = t.stat1;
-      document.getElementById('statLabel2').innerText = t.stat2;
-      document.getElementById('statLabel3').innerText = t.stat3;
-      document.getElementById('statLabel4').innerText = t.stat4;
-      document.getElementById('aboutTag').innerText = t.aboutTag;
-      document.getElementById('aboutTitle').innerText = t.aboutTitle;
-      document.getElementById('aboutText').innerText = t.aboutText;
-      document.getElementById('aboutYear').innerText = t.aboutYear;
-      document.getElementById('aboutYearLabel').innerText = t.aboutYearLabel;
-      document.getElementById('aboutUni').innerText = t.aboutUni;
-      document.getElementById('aboutUniLabel').innerText = t.aboutUniLabel;
-      document.getElementById('aboutStudent').innerText = t.aboutStudent;
-      document.getElementById('aboutStudentLabel').innerText = t.aboutStudentLabel;
-      document.getElementById('servicesTag').innerText = t.servicesTag;
-      document.getElementById('servicesTitle').innerText = t.servicesTitle;
-      document.getElementById('servicesSub').innerText = t.servicesSub;
-      document.getElementById('srv1Title').innerText = t.srv1; document.getElementById('srv1Desc').innerText = t.srv1d;
-      document.getElementById('srv2Title').innerText = t.srv2; document.getElementById('srv2Desc').innerText = t.srv2d;
-      document.getElementById('srv3Title').innerText = t.srv3; document.getElementById('srv3Desc').innerText = t.srv3d;
-      document.getElementById('srv4Title').innerText = t.srv4; document.getElementById('srv4Desc').innerText = t.srv4d;
-      document.getElementById('srv5Title').innerText = t.srv5; document.getElementById('srv5Desc').innerText = t.srv5d;
-      document.getElementById('srv6Title').innerText = t.srv6; document.getElementById('srv6Desc').innerText = t.srv6d;
-      document.getElementById('unisTag').innerText = t.unisTag;
-      document.getElementById('unisTitle').innerText = t.unisTitle;
-      document.getElementById('tabAllBtn').innerText = t.tabAll;
-      document.getElementById('tabIstanbulBtn').innerText = t.tabIst;
-      document.getElementById('tabAnkaraBtn').innerText = t.tabAnk;
-      document.getElementById('galleryTag').innerText = t.galleryTag;
-      document.getElementById('galleryTitle').innerText = t.galleryTitle;
-      document.getElementById('testimonialsTag').innerText = t.testimonialsTag;
-      document.getElementById('testimonialsTitle').innerText = t.testimonialsTitle;
-      document.getElementById('videoTag').innerText = t.videoTag;
-      document.getElementById('videoTitle').innerText = t.videoTitle;
-      document.getElementById('formTag').innerText = t.formTag;
-      document.getElementById('formTitle').innerText = t.formTitle;
-      document.getElementById('formSub').innerText = t.formSub;
-      document.getElementById('formSubmitBtn').innerText = t.formSubmit;
-      document.getElementById('faqTag').innerText = t.faqTag;
-      document.getElementById('faqTitle').innerText = t.faqTitle;
-      document.getElementById('faq1Q').innerText = t.faq1q; document.getElementById('faq1A').innerText = t.faq1a;
-      document.getElementById('faq2Q').innerText = t.faq2q; document.getElementById('faq2A').innerText = t.faq2a;
-      document.getElementById('faq3Q').innerText = t.faq3q; document.getElementById('faq3A').innerText = t.faq3a;
-      document.getElementById('contactTag').innerText = t.contactTag;
-      document.getElementById('contactTitle').innerText = t.contactTitle;
-      document.getElementById('contactWhatsapp').innerText = t.contactWhatsapp;
-      document.getElementById('contactEmailLabel').innerText = t.contactEmail;
-      document.getElementById('contactAddressLabel').innerText = t.contactAddress;
-      document.getElementById('footerCopy').innerText = t.footer;
-      document.getElementById('langBtn').innerHTML = `${t.flag} ${t.name} ▾`;
-      const activeBtn = document.querySelector('.tab-btn.active');
-      const activeCity = activeBtn ? (activeBtn.innerText === t.tabAll ? 'all' : (activeBtn.innerText === t.tabIst ? 'istanbul' : 'ankara')) : 'all';
-      renderUniversities(activeCity);
-    }
-    const langList = ['ar','en']; const langDropdown = document.getElementById('langDropdown');
-    langList.forEach(code => { const t = translations[code]; const div = document.createElement('div'); div.className = 'lang-option' + (code === currentLang ? ' active' : ''); div.innerHTML = `${t.flag} ${t.name}`; div.onclick = (e) => { e.stopPropagation(); applyLanguage(code); langDropdown.classList.remove('open'); }; langDropdown.appendChild(div); });
-    function toggleLangDropdown() { langDropdown.classList.toggle('open'); }
-    document.getElementById('langBtn').onclick = (e) => { e.stopPropagation(); toggleLangDropdown(); };
-    document.addEventListener('click', () => langDropdown.classList.remove('open'));
-    window.goTo = (id) => document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-    function toggleMobileMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
-    function toggleFaq(el) { const ans = el.nextElementSibling; ans.style.display = ans.style.display === 'block' ? 'none' : 'block'; el.querySelector('span:last-child').innerText = ans.style.display === 'block' ? '−' : '+'; }
-    function showLogin() { document.getElementById('loginOverlay').style.visibility = 'visible'; }
-    function closeLogin() { document.getElementById('loginOverlay').style.visibility = 'hidden'; }
-    function closeLoginOnOutside(e) { if(e.target === document.getElementById('loginOverlay')) closeLogin(); }
-    function showErrorToast(message) { const toast = document.getElementById('errorToast'); const textSpan = document.getElementById('errorText'); textSpan.innerText = message; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 4000); }
-    function shakeLoginButton() { const btn = document.getElementById('loginBtn'); btn.classList.add('shake'); setTimeout(() => btn.classList.remove('shake'), 500); }
-    function doLogin() { const u = document.getElementById('loginUsername').value; const p = document.getElementById('loginPassword').value; if(u === 'admin' && p === 'admin') { isLoggedIn = true; closeLogin(); document.getElementById('userStatus').style.display = 'inline-block'; document.getElementById('userStatus').innerText = `مرحباً ${u}`; document.getElementById('loginBtn').style.display = 'none'; showErrorToast('✓ تم تسجيل الدخول بنجاح، يمكنك الآن إرسال الطلب.'); document.getElementById('loginUsername').value = ''; document.getElementById('loginPassword').value = ''; } else { showErrorToast('اسم المستخدم أو كلمة المرور غير صحيحة. حاول مرة أخرى.'); } }
-    async function submitApplication() { if(!isLoggedIn) { showErrorToast('⚠️ يجب عليك تسجيل الدخول أولاً لإرسال الطلب. يُرجى الضغط على زر "تسجيل الدخول" أعلى الصفحة.'); shakeLoginButton(); return; } const fullName = document.getElementById('fullName').value.trim(); let phone = document.getElementById('phone').value.trim(); const email = document.getElementById('email').value.trim(); const nationality = document.getElementById('nationality').value.trim(); const qualification = document.getElementById('degree').value; const desiredMajor = document.getElementById('major').value.trim(); const fullPhone = (iti && iti.getNumber) ? iti.getNumber() : phone; if (!fullName || !phone || !email) { showErrorToast('يرجى ملء الحقول الإلزامية: الاسم، الهاتف، البريد الإلكتروني'); return; } const submitBtn = document.getElementById('formSubmitBtn'); const originalText = submitBtn.innerText; submitBtn.innerText = 'جاري الإرسال...'; submitBtn.disabled = true; try { await fetch('https://script.google.com/macros/s/AKfycbwFPalgj95ZRW1Tm350wOArRyOWzfxteAJ7qWbb4IRYW0u7qfmm9q4BkyQo1ODnhIdh/exec', { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ fullName, phone: fullPhone, email, nationality, qualification, desiredMajor, message: '', fileUrl: '' }) }); document.getElementById('successMsg').style.display = 'block'; submitBtn.innerText = '✓ تم الإرسال بنجاح'; submitBtn.style.background = '#2c7a4a'; document.getElementById('fullName').value = ''; document.getElementById('phone').value = ''; document.getElementById('email').value = ''; document.getElementById('nationality').value = ''; document.getElementById('degree').value = 'المؤهل الدراسي'; document.getElementById('major').value = ''; setTimeout(() => { submitBtn.innerText = originalText; submitBtn.style.background = 'var(--primary)'; submitBtn.disabled = false; document.getElementById('successMsg').style.display = 'none'; }, 4000); } catch (error) { showErrorToast('حدث خطأ في الإرسال. حاول مرة أخرى.'); submitBtn.innerText = originalText; submitBtn.disabled = false; } }
-    renderUniversities('all');
-    const counters = document.querySelectorAll('.stat-number');
-    function startCounters() { counters.forEach(c => { const target = parseInt(c.innerText); let count = 0; const step = target/60; const interval = setInterval(() => { count += step; if(count >= target) { c.innerText = target; clearInterval(interval); } else c.innerText = Math.ceil(count); }, 30); }); }
-    const statsObserver = new IntersectionObserver((entries) => { if(entries[0].isIntersecting) startCounters(); }, { threshold: 0.5 });
-    if(document.querySelector('.hero-stats')) statsObserver.observe(document.querySelector('.hero-stats'));
+      utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+    });
+
+    // Form Submission
+    document.getElementById('leadForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('شكراً لتواصلك معنا! سيقوم مستشارنا التعليمي بالاتصال بك قريباً.');
+      this.reset();
+    });
   </script>
 </body>
 </html>
