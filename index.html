@@ -714,7 +714,6 @@
       border-radius: 50%;
       text-align: center;
       font-size: 30px;
-      line-height: 60px;
       z-index: 1000;
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
       transition: all 0.3s ease;
@@ -739,7 +738,6 @@
         width: 50px;
         height: 50px;
         font-size: 26px;
-        line-height: 50px;
         bottom: 15px;
         left: 15px;
       }
@@ -779,26 +777,26 @@
   <section class="hero" id="home">
     <div class="hero-inner" data-aos="fade-up">
       <span class="hero-badge">وكيل معتمد لأقوى الجامعات التركية</span>
-      <h1>مستقبلك الدراسي في <span>تركيا</span> يبدأ من هنا</h1>
-      <p>نحن في Abou-Taleb Education نوفر لك كافة التسهيلات والقبولات الجامعية المجانية في أفضل الجامعات الخاصة التركية مع خصومات حصرية تصل إلى 70%.</p>
+      <h1 id="heroTitle">مستقبلك الدراسي في <span>تركيا</span> يبدأ من هنا</h1>
+      <p id="heroDesc">نحن في Abou-Taleb Education نوفر لك كافة التسهيلات والقبولات الجامعية المجانية في أفضل الجامعات الخاصة التركية مع خصومات حصرية تصل إلى 70%.</p>
       <div class="hero-btns">
-        <a href="#contact" class="btn-primary">احصل على استشارة مجانية</a>
-        <a href="#services" class="btn-outline">اكتشف خدماتنا</a>
+        <a href="#contact" class="btn-primary" id="heroBtn1">احصل على استشارة مجانية</a>
+        <a href="#services" class="btn-outline" id="heroBtn2">اكتشف خدماتنا</a>
       </div>
     </div>
   </section>
 
   <div class="stats-bar" data-aos="fade-up">
-    <div class="stat-item"><span class="stat-num">+50</span><span class="stat-label">جامعة متعاقدة</span></div>
-    <div class="stat-item"><span class="stat-num">+1500</span><span class="stat-label">طالب مسجل</span></div>
-    <div class="stat-item"><span class="stat-num">100%</span><span class="stat-label">قبول مضمون</span></div>
-    <div class="stat-item"><span class="stat-num">+8</span><span class="stat-label">سنوات خبرة</span></div>
+    <div class="stat-item"><span class="stat-num">+50</span><span class="stat-label" id="statLabel1">جامعة متعاقدة</span></div>
+    <div class="stat-item"><span class="stat-num">+1500</span><span class="stat-label" id="statLabel2">طالب مسجل</span></div>
+    <div class="stat-item"><span class="stat-num">100%</span><span class="stat-label" id="statLabel3">قبول مضمون</span></div>
+    <div class="stat-item"><span class="stat-num">+8</span><span class="stat-label" id="statLabel4">سنوات خبرة</span></div>
   </div>
 
   <section class="section universities-section" id="universities">
     <div class="sec-header" data-aos="fade-up">
-      <span class="sec-tag">شركاؤنا في النجاح</span>
-      <h2 class="sec-title">أفضل الجامعات التركية</h2>
+      <span class="sec-tag" id="unisTag">شركاؤنا في النجاح</span>
+      <h2 class="sec-title" id="unisTitle">أفضل الجامعات التركية</h2>
       <p class="sec-sub">نحن وكلاء رسميون لأكثر من 50 جامعة خاصة في إسطنبول وأنقرة.</p>
     </div>
     <div class="unis-grid" id="unisContainer"></div>
@@ -806,32 +804,67 @@
 
   <section class="section bg-gray" id="services">
     <div class="sec-header" data-aos="fade-up">
-      <span class="sec-tag">لماذا نحن؟</span>
-      <h2 class="sec-title">خدماتنا المتكاملة للطلاب</h2>
+      <span class="sec-tag" id="servicesTag">لماذا نحن؟</span>
+      <h2 class="sec-title" id="servicesTitle">خدماتنا المتكاملة للطلاب</h2>
     </div>
     <div class="services-grid">
-      <div class="service-card" data-aos="zoom-in"><div class="service-icon"><i class="fas fa-graduation-cap"></i></div><h3 class="service-title">القبول الجامعي</h3><p class="service-desc">نضمن لك الحصول على قبولك الجامعي في الجامعات الخاصة مجاناً وبدون أي رسوم إضافية.</p></div>
-      <div class="service-card" data-aos="zoom-in" data-aos-delay="100"><div class="service-icon"><i class="fas fa-percent"></i></div><h3 class="service-title">خصومات حصرية</h3><p class="service-desc">بصفتنا وكلاء معتمدين، نوفر لك خصومات خاصة على الأقساط الدراسية لا تتوفر عند التقديم المباشر.</p></div>
-      <div class="service-card" data-aos="zoom-in" data-aos-delay="200"><div class="service-icon"><i class="fas fa-file-signature"></i></div><h3 class="service-title">تجهيز الملفات</h3><p class="service-desc">نساعدك في ترجمة وتصديق أوراقك وتجهيز ملف التقديم بشكل احترافي لضمان القبول.</p></div>
-      <div class="service-card" data-aos="zoom-in" data-aos-delay="300"><div class="service-icon"><i class="fas fa-home"></i></div><h3 class="service-title">تأمين السكن</h3><p class="service-desc">نوفر لك خيارات متنوعة للسكن الطلابي (حكومي أو خاص) بما يتناسب مع ميزانيتك وموقع جامعتك.</p></div>
+      <div class="service-card" data-aos="zoom-in">
+        <div class="service-icon"><i class="fas fa-graduation-cap"></i></div>
+        <h3 class="service-title" id="srv1Title">القبول الجامعي</h3>
+        <p class="service-desc" id="srv1Desc">نضمن لك الحصول على قبولك الجامعي في الجامعات الخاصة مجاناً وبدون أي رسوم إضافية.</p>
+      </div>
+      <div class="service-card" data-aos="zoom-in" data-aos-delay="100">
+        <div class="service-icon"><i class="fas fa-percent"></i></div>
+        <h3 class="service-title" id="srv2Title">خصومات حصرية</h3>
+        <p class="service-desc" id="srv2Desc">بصفتنا وكلاء معتمدين، نوفر لك خصومات خاصة على الأقساط الدراسية لا تتوفر عند التقديم المباشر.</p>
+      </div>
+      <div class="service-card" data-aos="zoom-in" data-aos-delay="200">
+        <div class="service-icon"><i class="fas fa-file-signature"></i></div>
+        <h3 class="service-title" id="srv3Title">تجهيز الملفات</h3>
+        <p class="service-desc" id="srv3Desc">نساعدك في ترجمة وتصديق أوراقك وتجهيز ملف التقديم بشكل احترافي لضمان القبول.</p>
+      </div>
+      <div class="service-card" data-aos="zoom-in" data-aos-delay="300">
+        <div class="service-icon"><i class="fas fa-home"></i></div>
+        <h3 class="service-title" id="srv4Title">تأمين السكن</h3>
+        <p class="service-desc" id="srv4Desc">نوفر لك خيارات متنوعة للسكن الطلابي (حكومي أو خاص) بما يتناسب مع ميزانيتك وموقع جامعتك.</p>
+      </div>
     </div>
   </section>
 
   <section class="section" id="steps">
-    <div class="sec-header" data-aos="fade-up"><span class="sec-tag">بساطة الإجراءات</span><h2 class="sec-title">خطوات رحلتك معنا</h2></div>
+    <div class="sec-header" data-aos="fade-up">
+      <span class="sec-tag" id="stepsTag">بساطة الإجراءات</span>
+      <h2 class="sec-title" id="stepsTitle">خطوات رحلتك معنا</h2>
+    </div>
     <div class="steps-container">
-      <div class="step-item" data-aos="fade-up"><div class="step-num">1</div><h3 class="step-title">تواصل معنا</h3><p>املأ النموذج أو تواصل عبر الواتساب لاستشارة مجانية.</p></div>
-      <div class="step-item" data-aos="fade-up" data-aos-delay="100"><div class="step-num">2</div><h3 class="step-title">اختر تخصصك</h3><p>نساعدك في اختيار الجامعة والتخصص الأنسب لمستقبلك.</p></div>
-      <div class="step-item" data-aos="fade-up" data-aos-delay="200"><div class="step-num">3</div><h3 class="step-title">أرسل أوراقك</h3><p>نقوم بتقديم ملفك للجامعة ومتابعة صدور القبول المبدئي.</p></div>
-      <div class="step-item" data-aos="fade-up" data-aos-delay="300"><div class="step-num">4</div><h3 class="step-title">ابدأ الدراسة</h3><p>نستقبلك في المطار وننهي إجراءات تثبيت القيد والإقامة.</p></div>
+      <div class="step-item" data-aos="fade-up">
+        <div class="step-num">1</div>
+        <h3 class="step-title" id="step1Title">تواصل معنا</h3>
+        <p>املأ النموذج أو تواصل عبر الواتساب لاستشارة مجانية.</p>
+      </div>
+      <div class="step-item" data-aos="fade-up" data-aos-delay="100">
+        <div class="step-num">2</div>
+        <h3 class="step-title" id="step2Title">اختر تخصصك</h3>
+        <p>نساعدك في اختيار الجامعة والتخصص الأنسب لمستقبلك.</p>
+      </div>
+      <div class="step-item" data-aos="fade-up" data-aos-delay="200">
+        <div class="step-num">3</div>
+        <h3 class="step-title" id="step3Title">أرسل أوراقك</h3>
+        <p>نقوم بتقديم ملفك للجامعة ومتابعة صدور القبول المبدئي.</p>
+      </div>
+      <div class="step-item" data-aos="fade-up" data-aos-delay="300">
+        <div class="step-num">4</div>
+        <h3 class="step-title" id="step4Title">ابدأ الدراسة</h3>
+        <p>نستقبلك في المطار وننهي إجراءات تثبيت القيد والإقامة.</p>
+      </div>
     </div>
   </section>
 
   <section class="section contact-section" id="contact">
     <div class="contact-container">
       <div class="contact-info" data-aos="fade-left">
-        <h2>هل أنت جاهز لبدء مستقبلك؟</h2>
-        <p>اترك بياناتك الآن وسيقوم أحد مستشارينا التعليميين بالتواصل معك خلال أقل من 24 ساعة.</p>
+        <h2 id="contactTitle">هل أنت جاهز لبدء مستقبلك؟</h2>
+        <p id="contactDesc">اترك بياناتك الآن وسيقوم أحد مستشارينا التعليميين بالتواصل معك خلال أقل من 24 ساعة.</p>
         <div class="social-item"><a href="https://wa.me/+905015959880" target="_blank"><i class="fab fa-whatsapp"></i><span>واتساب: +90 501 595 98 80</span></a></div>
         <div class="social-item"><a href="https://www.instagram.com/abou.taleb.education" target="_blank"><i class="fab fa-instagram"></i><span>إنستجرام</span></a></div>
         <div class="social-item"><a href="https://www.facebook.com/AbouTalebEducation" target="_blank"><i class="fab fa-facebook-f"></i><span>فيسبوك</span></a></div>
@@ -842,10 +875,10 @@
       </div>
       <div class="contact-form" data-aos="fade-right">
         <form id="leadForm">
-          <div class="form-group"><label>الاسم الكامل</label><input type="text" class="form-control" placeholder="أدخل اسمك الثلاثي" required id="fullNameInput"></div>
-          <div class="form-group"><label>رقم الهاتف</label><input type="tel" id="phoneInput" class="form-control" required></div>
-          <div class="form-group"><label>التخصص المطلوب</label><select class="form-control" id="majorSelect"><option>الطب البشري</option><option>طب الأسنان</option><option>الصيدلة</option><option>الهندسة</option><option>إدارة الأعمال</option></select></div>
-          <button type="submit" class="submit-btn">إرسال الطلب الآن</button>
+          <div class="form-group"><label id="formNameLabel">الاسم الكامل</label><input type="text" class="form-control" placeholder="أدخل اسمك الثلاثي" required id="fullNameInput"></div>
+          <div class="form-group"><label id="formPhoneLabel">رقم الهاتف</label><input type="tel" id="phoneInput" class="form-control" required></div>
+          <div class="form-group"><label id="formMajorLabel">التخصص المطلوب</label><select class="form-control" id="majorSelect"><option>الطب البشري</option><option>طب الأسنان</option><option>الصيدلة</option><option>الهندسة</option><option>إدارة الأعمال</option></select></div>
+          <button type="submit" class="submit-btn" id="submitBtnText">إرسال الطلب الآن</button>
           <div id="successMsgForm" style="display:none; text-align:center; margin-top:16px; color:#16a34a;">✓ تم إرسال طلبك بنجاح! سيتم التواصل معك قريباً.</div>
         </form>
       </div>
@@ -863,7 +896,7 @@
       <a href="mailto:info@aboutalebeducation.com"><i class="fas fa-envelope"></i></a>
       <a href="mailto:AboutalebEducation@gmail.com"><i class="fas fa-envelope"></i></a>
     </div>
-    <div class="copyright">&copy; 2026 Abou-Taleb Education. جميع الحقوق محفوظة.</div>
+    <div class="copyright" id="footerCopy">&copy; 2026 Abou-Taleb Education. جميع الحقوق محفوظة.</div>
   </footer>
 
   <a href="https://wa.me/+905015959880" class="whatsapp-float" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a>
@@ -964,24 +997,70 @@
     populateUnisDropdown();
     populateContactDropdown();
 
-    // نظام الترجمة للغتين
+    // نظام الترجمة الكامل مع نصوص كاملة
     const translations = {
-      ar: { dir: 'rtl', flag: '🇸🇦', name: 'العربية', navUnis: 'الجامعات', navServices: 'الخدمات', navApply: 'التسجيل', navFaq: 'الأسئلة', navCta: 'سجل الآن', heroBadge: 'وكيل معتمد لأقوى الجامعات التركية', heroTitle: 'مستقبلك الدراسي في ', heroTitleSpan: 'تركيا', heroDesc: 'نحن في Abou-Taleb Education نوفر لك كافة التسهيلات والقبولات الجامعية المجانية في أفضل الجامعات الخاصة التركية مع خصومات حصرية تصل إلى 70%.', heroBtn1: 'احصل على استشارة مجانية', heroBtn2: 'اكتشف خدماتنا', stat1: 'جامعة متعاقدة', stat2: 'طالب مسجل', stat3: 'قبول مضمون', stat4: 'سنوات خبرة', servicesTag: 'لماذا نحن؟', servicesTitle: 'خدماتنا المتكاملة للطلاب', srv1: 'القبول الجامعي', srv1d: 'نضمن لك الحصول على قبولك الجامعي في الجامعات الخاصة مجاناً', srv2: 'خصومات حصرية', srv2d: 'بصفتنا وكلاء معتمدين، نوفر لك خصومات خاصة', srv3: 'تجهيز الملفات', srv3d: 'نساعدك في ترجمة وتصديق أوراقك', srv4: 'تأمين السكن', srv4d: 'نوفر لك خيارات متنوعة للسكن الطلابي', unisTag: 'شركاؤنا في النجاح', unisTitle: 'أفضل الجامعات التركية', stepsTag: 'بساطة الإجراءات', stepsTitle: 'خطوات رحلتك معنا', step1: 'تواصل معنا', step2: 'اختر تخصصك', step3: 'أرسل أوراقك', step4: 'ابدأ الدراسة', contactTitle: 'هل أنت جاهز لبدء مستقبلك؟', contactDesc: 'اترك بياناتك الآن وسيقوم أحد مستشارينا التعليميين بالتواصل معك خلال أقل من 24 ساعة.', formName: 'الاسم الكامل', formPhone: 'رقم الهاتف', formMajor: 'التخصص المطلوب', submitBtn: 'إرسال الطلب الآن', footer: 'جميع الحقوق محفوظة.' },
-      en: { dir: 'ltr', flag: '🇬🇧', name: 'English', navUnis: 'Universities', navServices: 'Services', navApply: 'Apply', navFaq: 'FAQ', navCta: 'Apply Now', heroBadge: 'Authorized Agent for Top Turkish Universities', heroTitle: 'Your Academic Future in ', heroTitleSpan: 'Turkey', heroDesc: 'We provide all facilities and free university admissions to the best private Turkish universities with exclusive discounts up to 70%.', heroBtn1: 'Get Free Consultation', heroBtn2: 'Discover Our Services', stat1: 'Partner Universities', stat2: 'Registered Students', stat3: 'Guaranteed Admission', stat4: 'Years Experience', servicesTag: 'Why Us?', servicesTitle: 'Our Integrated Services', srv1: 'University Admission', srv1d: 'Guaranteed admission to private universities for free', srv2: 'Exclusive Discounts', srv2d: 'Special discounts on tuition fees', srv3: 'Document Preparation', srv3d: 'Translation and attestation of your documents', srv4: 'Accommodation', srv4d: 'Various student housing options', unisTag: 'Our Partners', unisTitle: 'Top Turkish Universities', stepsTag: 'Simple Steps', stepsTitle: 'Your Journey With Us', step1: 'Contact Us', step2: 'Choose Your Major', step3: 'Send Documents', step4: 'Start Studying', contactTitle: 'Ready to Start Your Future?', contactDesc: 'Leave your details and our consultant will contact you within 24 hours.', formName: 'Full Name', formPhone: 'Phone Number', formMajor: 'Desired Major', submitBtn: 'Submit Request', footer: 'All Rights Reserved.' }
+      ar: {
+        navUnis: "الجامعات", navServices: "الخدمات", navApply: "التسجيل", navFaq: "الأسئلة", navCta: "سجل الآن",
+        heroBadge: "وكيل معتمد لأقوى الجامعات التركية",
+        heroFull: "مستقبلك الدراسي في <span>تركيا</span> يبدأ من هنا",
+        heroDesc: "نحن في Abou-Taleb Education نوفر لك كافة التسهيلات والقبولات الجامعية المجانية في أفضل الجامعات الخاصة التركية مع خصومات حصرية تصل إلى 70%.",
+        heroBtn1: "احصل على استشارة مجانية",
+        heroBtn2: "اكتشف خدماتنا",
+        stat1: "جامعة متعاقدة", stat2: "طالب مسجل", stat3: "قبول مضمون", stat4: "سنوات خبرة",
+        servicesTag: "لماذا نحن؟", servicesTitle: "خدماتنا المتكاملة للطلاب",
+        srv1Title: "القبول الجامعي", srv1Desc: "نضمن لك الحصول على قبولك الجامعي في الجامعات الخاصة مجاناً",
+        srv2Title: "خصومات حصرية", srv2Desc: "بصفتنا وكلاء معتمدين، نوفر لك خصومات خاصة",
+        srv3Title: "تجهيز الملفات", srv3Desc: "نساعدك في ترجمة وتصديق أوراقك",
+        srv4Title: "تأمين السكن", srv4Desc: "نوفر لك خيارات متنوعة للسكن الطلابي",
+        unisTag: "شركاؤنا في النجاح", unisTitle: "أفضل الجامعات التركية",
+        stepsTag: "بساطة الإجراءات", stepsTitle: "خطوات رحلتك معنا",
+        step1: "تواصل معنا", step2: "اختر تخصصك", step3: "أرسل أوراقك", step4: "ابدأ الدراسة",
+        contactTitle: "هل أنت جاهز لبدء مستقبلك؟",
+        contactDesc: "اترك بياناتك الآن وسيقوم أحد مستشارينا التعليميين بالتواصل معك خلال أقل من 24 ساعة.",
+        formName: "الاسم الكامل", formPhone: "رقم الهاتف", formMajor: "التخصص المطلوب",
+        submitBtn: "إرسال الطلب الآن",
+        footer: "جميع الحقوق محفوظة."
+      },
+      en: {
+        navUnis: "Universities", navServices: "Services", navApply: "Apply", navFaq: "FAQ", navCta: "Apply Now",
+        heroBadge: "Authorized Agent for Top Turkish Universities",
+        heroFull: "Your Academic Future in <span>Turkey</span> Starts Here",
+        heroDesc: "We provide all facilities and free university admissions to the best private Turkish universities with exclusive discounts up to 70%.",
+        heroBtn1: "Get Free Consultation",
+        heroBtn2: "Discover Our Services",
+        stat1: "Partner Universities", stat2: "Registered Students", stat3: "Guaranteed Admission", stat4: "Years Experience",
+        servicesTag: "Why Us?", servicesTitle: "Our Integrated Services",
+        srv1Title: "University Admission", srv1Desc: "Guaranteed admission to private universities for free",
+        srv2Title: "Exclusive Discounts", srv2Desc: "Special discounts on tuition fees",
+        srv3Title: "Document Preparation", srv3Desc: "Translation and attestation of your documents",
+        srv4Title: "Accommodation", srv4Desc: "Various student housing options",
+        unisTag: "Our Partners", unisTitle: "Top Turkish Universities",
+        stepsTag: "Simple Steps", stepsTitle: "Your Journey With Us",
+        step1: "Contact Us", step2: "Choose Your Major", step3: "Send Documents", step4: "Start Studying",
+        contactTitle: "Ready to Start Your Future?",
+        contactDesc: "Leave your details and our consultant will contact you within 24 hours.",
+        formName: "Full Name", formPhone: "Phone Number", formMajor: "Desired Major",
+        submitBtn: "Submit Request",
+        footer: "All Rights Reserved."
+      }
     };
+
     let currentLang = 'ar';
+
     function applyLanguage(lang) {
       currentLang = lang;
       const t = translations[lang];
       if (!t) return;
-      document.documentElement.setAttribute('dir', t.dir);
+      document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+      
+      // تحديث جميع النصوص
       document.getElementById('navUnisLink').innerText = t.navUnis;
       document.getElementById('navServicesLink').innerText = t.navServices;
       document.getElementById('navApplyLink').innerText = t.navApply;
       document.getElementById('navFaqLink').innerText = t.navFaq;
       document.getElementById('navCtaBtn').innerText = t.navCta;
       document.getElementById('heroBadge').innerText = t.heroBadge;
-      document.getElementById('heroTitle').innerHTML = t.heroTitle + `<span>${t.heroTitleSpan}</span>`;
+      document.getElementById('heroTitle').innerHTML = t.heroFull;
       document.getElementById('heroDesc').innerText = t.heroDesc;
       document.getElementById('heroBtn1').innerText = t.heroBtn1;
       document.getElementById('heroBtn2').innerText = t.heroBtn2;
@@ -991,10 +1070,14 @@
       document.getElementById('statLabel4').innerText = t.stat4;
       document.getElementById('servicesTag').innerText = t.servicesTag;
       document.getElementById('servicesTitle').innerText = t.servicesTitle;
-      document.getElementById('srv1Title').innerText = t.srv1; document.getElementById('srv1Desc').innerText = t.srv1d;
-      document.getElementById('srv2Title').innerText = t.srv2; document.getElementById('srv2Desc').innerText = t.srv2d;
-      document.getElementById('srv3Title').innerText = t.srv3; document.getElementById('srv3Desc').innerText = t.srv3d;
-      document.getElementById('srv4Title').innerText = t.srv4; document.getElementById('srv4Desc').innerText = t.srv4d;
+      document.getElementById('srv1Title').innerText = t.srv1Title;
+      document.getElementById('srv1Desc').innerText = t.srv1Desc;
+      document.getElementById('srv2Title').innerText = t.srv2Title;
+      document.getElementById('srv2Desc').innerText = t.srv2Desc;
+      document.getElementById('srv3Title').innerText = t.srv3Title;
+      document.getElementById('srv3Desc').innerText = t.srv3Desc;
+      document.getElementById('srv4Title').innerText = t.srv4Title;
+      document.getElementById('srv4Desc').innerText = t.srv4Desc;
       document.getElementById('unisTag').innerText = t.unisTag;
       document.getElementById('unisTitle').innerText = t.unisTitle;
       document.getElementById('stepsTag').innerText = t.stepsTag;
@@ -1010,83 +1093,65 @@
       document.getElementById('formMajorLabel').innerText = t.formMajor;
       document.getElementById('submitBtnText').innerText = t.submitBtn;
       document.getElementById('footerCopy').innerHTML = `&copy; 2026 Abou-Taleb Education. ${t.footer}`;
-      document.getElementById('langBtn').innerHTML = `${t.flag} ${t.name} ▾`;
+      document.getElementById('langBtn').innerHTML = (lang === 'ar' ? '🇸🇦 العربية ▾' : '🇬🇧 English ▾');
+
+      // إغلاق القائمة المنسدلة للغة بعد التطبيق
+      document.getElementById('langDropdown').classList.remove('open');
     }
 
+    // بناء القائمة المنسدلة للغة
     const langList = ['ar', 'en'];
     const langDropdown = document.getElementById('langDropdown');
     langList.forEach(code => {
-      const t = translations[code];
       const div = document.createElement('div');
-      div.className = 'lang-option' + (code === currentLang ? ' active' : '');
-      div.innerHTML = `${t.flag} ${t.name}`;
-      div.onclick = (e) => { e.stopPropagation(); applyLanguage(code); toggleLangDropdown(); };
+      div.className = 'lang-option';
+      div.innerHTML = code === 'ar' ? '🇸🇦 العربية' : '🇬🇧 English';
+      div.onclick = (e) => {
+        e.stopPropagation();
+        applyLanguage(code);
+      };
       langDropdown.appendChild(div);
     });
 
-    function toggleLangDropdown() { document.getElementById('langDropdown').classList.toggle('open'); }
-    document.getElementById('langBtn').onclick = (e) => { e.stopPropagation(); toggleLangDropdown(); };
-    document.addEventListener('click', () => langDropdown.classList.remove('open'));
+    function toggleLangDropdown() {
+      document.getElementById('langDropdown').classList.toggle('open');
+    }
+    document.getElementById('langBtn').onclick = (e) => {
+      e.stopPropagation();
+      toggleLangDropdown();
+    };
+    document.addEventListener('click', () => {
+      document.getElementById('langDropdown').classList.remove('open');
+    });
 
-    // إضافة IDs للعناصر التي تحتاج ترجمة
-    document.getElementById('navUnisLink')?.setAttribute('id', 'navUnisLink');
-    document.getElementById('navServicesLink')?.setAttribute('id', 'navServicesLink');
-    document.getElementById('navApplyLink')?.setAttribute('id', 'navApplyLink');
-    document.getElementById('navFaqLink')?.setAttribute('id', 'navFaqLink');
-    document.getElementById('navCtaBtn')?.setAttribute('id', 'navCtaBtn');
-    document.getElementById('heroBadge')?.setAttribute('id', 'heroBadge');
-    document.getElementById('heroTitle')?.setAttribute('id', 'heroTitle');
-    document.getElementById('heroDesc')?.setAttribute('id', 'heroDesc');
-    document.getElementById('heroBtn1')?.setAttribute('id', 'heroBtn1');
-    document.getElementById('heroBtn2')?.setAttribute('id', 'heroBtn2');
-    document.getElementById('statLabel1')?.setAttribute('id', 'statLabel1');
-    document.getElementById('statLabel2')?.setAttribute('id', 'statLabel2');
-    document.getElementById('statLabel3')?.setAttribute('id', 'statLabel3');
-    document.getElementById('statLabel4')?.setAttribute('id', 'statLabel4');
-    document.getElementById('servicesTag')?.setAttribute('id', 'servicesTag');
-    document.getElementById('servicesTitle')?.setAttribute('id', 'servicesTitle');
-    document.getElementById('srv1Title')?.setAttribute('id', 'srv1Title');
-    document.getElementById('srv1Desc')?.setAttribute('id', 'srv1Desc');
-    document.getElementById('srv2Title')?.setAttribute('id', 'srv2Title');
-    document.getElementById('srv2Desc')?.setAttribute('id', 'srv2Desc');
-    document.getElementById('srv3Title')?.setAttribute('id', 'srv3Title');
-    document.getElementById('srv3Desc')?.setAttribute('id', 'srv3Desc');
-    document.getElementById('srv4Title')?.setAttribute('id', 'srv4Title');
-    document.getElementById('srv4Desc')?.setAttribute('id', 'srv4Desc');
-    document.getElementById('unisTag')?.setAttribute('id', 'unisTag');
-    document.getElementById('unisTitle')?.setAttribute('id', 'unisTitle');
-    document.getElementById('stepsTag')?.setAttribute('id', 'stepsTag');
-    document.getElementById('stepsTitle')?.setAttribute('id', 'stepsTitle');
-    document.getElementById('step1Title')?.setAttribute('id', 'step1Title');
-    document.getElementById('step2Title')?.setAttribute('id', 'step2Title');
-    document.getElementById('step3Title')?.setAttribute('id', 'step3Title');
-    document.getElementById('step4Title')?.setAttribute('id', 'step4Title');
-    document.getElementById('contactTitle')?.setAttribute('id', 'contactTitle');
-    document.getElementById('contactDesc')?.setAttribute('id', 'contactDesc');
-    document.getElementById('formNameLabel')?.setAttribute('id', 'formNameLabel');
-    document.getElementById('formPhoneLabel')?.setAttribute('id', 'formPhoneLabel');
-    document.getElementById('formMajorLabel')?.setAttribute('id', 'formMajorLabel');
-    document.getElementById('submitBtnText')?.setAttribute('id', 'submitBtnText');
-    document.getElementById('footerCopy')?.setAttribute('id', 'footerCopy');
-    document.getElementById('heroTitle').innerHTML = 'مستقبلك الدراسي في <span>تركيا</span> يبدأ من هنا';
-
+    // زر القائمة الجانبية للهاتف
     const menuBtn = document.getElementById('menuBtn');
     const mobileNav = document.getElementById('mobileNav');
     const overlay = document.getElementById('overlay');
-    function toggleMenu() { mobileNav.classList.toggle('active'); overlay.classList.toggle('active'); }
+    function toggleMenu() {
+      mobileNav.classList.toggle('active');
+      overlay.classList.toggle('active');
+    }
     if (menuBtn) menuBtn.addEventListener('click', toggleMenu);
     if (overlay) overlay.addEventListener('click', toggleMenu);
 
+    // تفعيل حقل رقم الهاتف مع رمز الدولة
     const phoneInput = document.querySelector("#phoneInput");
     let itiPhone = null;
     if (phoneInput && window.intlTelInput) {
       itiPhone = window.intlTelInput(phoneInput, {
         initialCountry: "auto",
-        geoIpLookup: function(success) { fetch("https://ipapi.co/json").then(res => res.json()).then(data => success(data.country_code)).catch(() => success("tr")); },
+        geoIpLookup: function(success) {
+          fetch("https://ipapi.co/json")
+            .then(res => res.json())
+            .then(data => success(data.country_code))
+            .catch(() => success("tr"));
+        },
         utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
       });
     }
 
+    // إرسال نموذج الاتصال إلى Google Sheets
     const leadForm = document.getElementById('leadForm');
     if (leadForm) {
       leadForm.addEventListener('submit', async function(e) {
@@ -1094,7 +1159,10 @@
         const fullName = document.getElementById('fullNameInput').value.trim();
         let rawPhone = document.getElementById('phoneInput').value.trim();
         const major = document.getElementById('majorSelect').value;
-        if (!fullName || !rawPhone) { alert('يرجى ملء الحقول الإلزامية: الاسم الكامل ورقم الهاتف'); return; }
+        if (!fullName || !rawPhone) {
+          alert('يرجى ملء الحقول الإلزامية: الاسم الكامل ورقم الهاتف');
+          return;
+        }
         let fullPhone = rawPhone;
         if (itiPhone && typeof itiPhone.getNumber === 'function') fullPhone = itiPhone.getNumber();
         const submitBtn = leadForm.querySelector('.submit-btn');
@@ -1104,8 +1172,19 @@
         const successMsgDiv = document.getElementById('successMsgForm');
         try {
           await fetch('https://script.google.com/macros/s/AKfycbwFPalgj95ZRW1Tm350wOArRyOWzfxteAJ7qWbb4IRYW0u7qfmm9q4BkyQo1ODnhIdh/exec', {
-            method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ fullName: fullName, phone: fullPhone, email: '', nationality: '', qualification: '', desiredMajor: major, message: '', fileUrl: '' })
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              fullName: fullName,
+              phone: fullPhone,
+              email: '',
+              nationality: '',
+              qualification: '',
+              desiredMajor: major,
+              message: '',
+              fileUrl: ''
+            })
           });
           if (successMsgDiv) successMsgDiv.style.display = 'block';
           submitBtn.innerText = '✓ تم الإرسال بنجاح';
@@ -1118,7 +1197,12 @@
             submitBtn.disabled = false;
             if (successMsgDiv) successMsgDiv.style.display = 'none';
           }, 4000);
-        } catch (error) { alert('حدث خطأ في الإرسال. حاول مرة أخرى أو تواصل معنا مباشرة.'); submitBtn.innerText = originalText; submitBtn.disabled = false; }
+        } catch (error) {
+          console.error(error);
+          alert('حدث خطأ في الإرسال. حاول مرة أخرى أو تواصل معنا مباشرة.');
+          submitBtn.innerText = originalText;
+          submitBtn.disabled = false;
+        }
       });
     }
   </script>
