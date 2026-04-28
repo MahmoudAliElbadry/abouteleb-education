@@ -265,7 +265,6 @@
     <div class="contact-info" data-aos="fade-left">
       <h2 id="contactTitle">هل أنت جاهز لبدء مستقبلك؟</h2>
       <p id="contactDesc">اترك بياناتك الآن وسيقوم أحد مستشارينا التعليميين بالتواصل معك خلال أقل من 24 ساعة.</p>
-      <!-- سيتم تحديث هذه العناصر بواسطة JavaScript -->
       <div class="social-item"><a href="https://wa.me/+905015959880" target="_blank"><i class="fab fa-whatsapp"></i><span id="socialWhatsapp">واتساب: +90 501 595 98 80</span></a></div>
       <div class="social-item"><a href="https://www.instagram.com/abou.taleb.education" target="_blank"><i class="fab fa-instagram"></i><span id="socialInstagram">إنستجرام</span></a></div>
       <div class="social-item"><a href="https://www.facebook.com/AbouTalebEducation" target="_blank"><i class="fab fa-facebook-f"></i><span id="socialFacebook">فيسبوك</span></a></div>
@@ -315,7 +314,7 @@
 <script>
   AOS.init({ duration: 800, once: true });
 
-  const universitiesList = [
+  const universitiesList = [ /* ... قائمة الجامعات ... */ 
     { name: "Acıbadem Mehmet Ali Aydınlar Üniversitesi", img: "ACIBADEM MEHMET ALI_ç AYDINLAR U_êNI_çVERSI_çTESI_ç.png" },
     { name: "Altınbaş Üniversitesi", img: "ALTINBAS_د U_êNI_çVERSI_çTESI_ç.png" },
     { name: "Ankara Bilim Üniversitesi", img: "ANKARA BI_çLI_çM U_êNI_çVERSI_çTESI_ç.png" },
@@ -378,18 +377,19 @@
     });
   }
 
+  // --- دالة بناء القائمة المنسدلة لوسائل التواصل (مع إضافة معرفات للترجمة) ---
   function populateContactDropdown() {
     const dropdown = document.getElementById('contactDropdown');
     if (!dropdown) return;
     dropdown.innerHTML = '';
     const contactItems = [
-      { name: "واتساب", url: "https://wa.me/+905015959880", icon: "fab fa-whatsapp" },
-      { name: "إنستجرام", url: "https://www.instagram.com/abou.taleb.education", icon: "fab fa-instagram" },
-      { name: "فيسبوك", url: "https://www.facebook.com/AbouTalebEducation", icon: "fab fa-facebook-f" },
-      { name: "إكس (تويتر)", url: "https://x.com/ABOUTALEBEDU", icon: "fab fa-x-twitter" },
-      { name: "لينكدإن", url: "https://www.linkedin.com/in/abou-taleb-education-108b413a7", icon: "fab fa-linkedin-in" },
-      { name: "info@aboutalebeducation.com", url: "mailto:info@aboutalebeducation.com", icon: "fas fa-envelope" },
-      { name: "AboutalebEducation@gmail.com", url: "mailto:AboutalebEducation@gmail.com", icon: "fas fa-envelope" }
+      { name: "واتساب", url: "https://wa.me/+905015959880", icon: "fab fa-whatsapp", id: "ddWhatsapp" },
+      { name: "إنستجرام", url: "https://www.instagram.com/abou.taleb.education", icon: "fab fa-instagram", id: "ddInstagram" },
+      { name: "فيسبوك", url: "https://www.facebook.com/AbouTalebEducation", icon: "fab fa-facebook-f", id: "ddFacebook" },
+      { name: "إكس (تويتر)", url: "https://x.com/ABOUTALEBEDU", icon: "fab fa-x-twitter", id: "ddTwitter" },
+      { name: "لينكدإن", url: "https://www.linkedin.com/in/abou-taleb-education-108b413a7", icon: "fab fa-linkedin-in", id: "ddLinkedin" },
+      { name: "info@aboutalebeducation.com", url: "mailto:info@aboutalebeducation.com", icon: "fas fa-envelope", id: "ddEmail1" },
+      { name: "AboutalebEducation@gmail.com", url: "mailto:AboutalebEducation@gmail.com", icon: "fas fa-envelope", id: "ddEmail2" }
     ];
     contactItems.forEach(item => {
       const link = document.createElement('a');
@@ -397,7 +397,8 @@
       link.className = 'dropdown-link';
       link.target = '_blank';
       link.rel = 'noopener noreferrer';
-      link.innerHTML = `<i class="${item.icon}" style="margin-left: 8px;"></i> ${item.name}`;
+      link.id = item.id;
+      link.innerHTML = `<i class="${item.icon}" style="margin-left: 8px;"></i> <span>${item.name}</span>`;
       dropdown.appendChild(link);
     });
   }
@@ -406,7 +407,7 @@
   populateUnisDropdown();
   populateContactDropdown();
 
-  // ========== الترجمة الشاملة ==========
+  // ========== الترجمة الشاملة مع ترجمة القائمة المنسدلة لوسائل التواصل ==========
   const translations = {
     ar: {
       navHome: "الرئيسية", navServices: "خدماتنا", navUnis: "الجامعات", navSteps: "خطوات التسجيل", navContact: "تواصل معنا", navCta: "سجل الآن",
@@ -430,15 +431,9 @@
       submitBtn: "إرسال الطلب الآن",
       footer: "جميع الحقوق محفوظة.",
       majorOptions: { medicine: "الطب البشري", dentistry: "طب الأسنان", pharmacy: "الصيدلة", engineering: "الهندسة", business: "إدارة الأعمال" },
-      // ترجمات وسائل التواصل
-      socialWhatsapp: "واتساب: +90 501 595 98 80",
-      socialInstagram: "إنستجرام",
-      socialFacebook: "فيسبوك",
-      socialTwitter: "إكس (تويتر)",
-      socialLinkedin: "لينكدإن",
-      socialEmail1: "info@aboutalebeducation.com",
-      socialEmail2: "AboutalebEducation@gmail.com",
-      namePlaceholder: "أدخل اسمك الثلاثي"
+      socialWhatsapp: "واتساب: +90 501 595 98 80", socialInstagram: "إنستجرام", socialFacebook: "فيسبوك", socialTwitter: "إكس (تويتر)", socialLinkedin: "لينكدإن", socialEmail1: "info@aboutalebeducation.com", socialEmail2: "AboutalebEducation@gmail.com",
+      namePlaceholder: "أدخل اسمك الثلاثي",
+      ddWhatsapp: "واتساب", ddInstagram: "إنستجرام", ddFacebook: "فيسبوك", ddTwitter: "إكس (تويتر)", ddLinkedin: "لينكدإن", ddEmail1: "info@aboutalebeducation.com", ddEmail2: "AboutalebEducation@gmail.com"
     },
     en: {
       navHome: "Home", navServices: "Services", navUnis: "Universities", navSteps: "Registration Steps", navContact: "Contact Us", navCta: "Apply Now",
@@ -462,14 +457,9 @@
       submitBtn: "Submit Request",
       footer: "All Rights Reserved.",
       majorOptions: { medicine: "Medicine", dentistry: "Dentistry", pharmacy: "Pharmacy", engineering: "Engineering", business: "Business Administration" },
-      socialWhatsapp: "WhatsApp: +90 501 595 98 80",
-      socialInstagram: "Instagram",
-      socialFacebook: "Facebook",
-      socialTwitter: "X (Twitter)",
-      socialLinkedin: "LinkedIn",
-      socialEmail1: "info@aboutalebeducation.com",
-      socialEmail2: "AboutalebEducation@gmail.com",
-      namePlaceholder: "Enter your full name"
+      socialWhatsapp: "WhatsApp: +90 501 595 98 80", socialInstagram: "Instagram", socialFacebook: "Facebook", socialTwitter: "X (Twitter)", socialLinkedin: "LinkedIn", socialEmail1: "info@aboutalebeducation.com", socialEmail2: "AboutalebEducation@gmail.com",
+      namePlaceholder: "Enter your full name",
+      ddWhatsapp: "WhatsApp", ddInstagram: "Instagram", ddFacebook: "Facebook", ddTwitter: "X (Twitter)", ddLinkedin: "LinkedIn", ddEmail1: "info@aboutalebeducation.com", ddEmail2: "AboutalebEducation@gmail.com"
     }
   };
 
@@ -496,20 +486,18 @@
     document.getElementById('mobStepsLink').innerText = t.mobSteps;
     document.getElementById('mobContactLink').innerText = t.mobContact;
     
-    // الهيرو
+    // الهيرو والإحصائيات...
     document.getElementById('heroBadge').innerText = t.heroBadge;
     document.getElementById('heroTitle').innerHTML = t.heroFull;
     document.getElementById('heroDesc').innerText = t.heroDesc;
     document.getElementById('heroBtn1').innerText = t.heroBtn1;
     document.getElementById('heroBtn2').innerText = t.heroBtn2;
-    
-    // الإحصائيات
     document.getElementById('statLabel1').innerText = t.stat1;
     document.getElementById('statLabel2').innerText = t.stat2;
     document.getElementById('statLabel3').innerText = t.stat3;
     document.getElementById('statLabel4').innerText = t.stat4;
     
-    // الخدمات
+    // الخدمات والجامعات والخطوات...
     document.getElementById('servicesTag').innerText = t.servicesTag;
     document.getElementById('servicesTitle').innerText = t.servicesTitle;
     document.getElementById('srv1Title').innerText = t.srv1Title;
@@ -520,12 +508,8 @@
     document.getElementById('srv3Desc').innerText = t.srv3Desc;
     document.getElementById('srv4Title').innerText = t.srv4Title;
     document.getElementById('srv4Desc').innerText = t.srv4Desc;
-    
-    // الجامعات
     document.getElementById('unisTag').innerText = t.unisTag;
     document.getElementById('unisTitle').innerText = t.unisTitle;
-    
-    // الخطوات
     document.getElementById('stepsTag').innerText = t.stepsTag;
     document.getElementById('stepsTitle').innerText = t.stepsTitle;
     document.getElementById('step1Title').innerText = t.step1;
@@ -541,19 +525,17 @@
     document.getElementById('formMajorLabel').innerText = t.formMajor;
     document.getElementById('submitBtnText').innerText = t.submitBtn;
     
-    // ترجمة خيارات القائمة المنسدلة للتخصصات
+    // ترجمة خيارات التخصصات
     const selectElem = document.getElementById('majorSelect');
     if (selectElem) {
       for (let i = 0; i < selectElem.options.length; i++) {
         const opt = selectElem.options[i];
         const val = opt.value;
-        if (t.majorOptions[val]) {
-          opt.textContent = t.majorOptions[val];
-        }
+        if (t.majorOptions[val]) opt.textContent = t.majorOptions[val];
       }
     }
     
-    // ترجمة وسائل التواصل في القسم الأيسر
+    // ترجمة وسائل التواصل في العمود الأيسر
     document.getElementById('socialWhatsapp').innerText = t.socialWhatsapp;
     document.getElementById('socialInstagram').innerText = t.socialInstagram;
     document.getElementById('socialFacebook').innerText = t.socialFacebook;
@@ -562,11 +544,25 @@
     document.getElementById('socialEmail1').innerText = t.socialEmail1;
     document.getElementById('socialEmail2').innerText = t.socialEmail2;
     
-    // ترجمة placeholder حقل الاسم الكامل
+    // ترجمة الـ placeholder
     const nameInput = document.getElementById('fullNameInput');
-    if (nameInput) {
-      nameInput.placeholder = t.namePlaceholder;
-    }
+    if (nameInput) nameInput.placeholder = t.namePlaceholder;
+    
+    // ترجمة القائمة المنسدلة لوسائل التواصل في الشريط العلوي
+    const ddWhatsapp = document.getElementById('ddWhatsapp');
+    if (ddWhatsapp) ddWhatsapp.querySelector('span').innerText = t.ddWhatsapp;
+    const ddInstagram = document.getElementById('ddInstagram');
+    if (ddInstagram) ddInstagram.querySelector('span').innerText = t.ddInstagram;
+    const ddFacebook = document.getElementById('ddFacebook');
+    if (ddFacebook) ddFacebook.querySelector('span').innerText = t.ddFacebook;
+    const ddTwitter = document.getElementById('ddTwitter');
+    if (ddTwitter) ddTwitter.querySelector('span').innerText = t.ddTwitter;
+    const ddLinkedin = document.getElementById('ddLinkedin');
+    if (ddLinkedin) ddLinkedin.querySelector('span').innerText = t.ddLinkedin;
+    const ddEmail1 = document.getElementById('ddEmail1');
+    if (ddEmail1) ddEmail1.querySelector('span').innerText = t.ddEmail1;
+    const ddEmail2 = document.getElementById('ddEmail2');
+    if (ddEmail2) ddEmail2.querySelector('span').innerText = t.ddEmail2;
     
     // التذييل
     document.getElementById('footerCopy').innerHTML = `&copy; 2026 Abou-Taleb Education. ${t.footer}`;
