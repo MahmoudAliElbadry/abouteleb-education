@@ -23,10 +23,11 @@
     .nav-item{position:relative}
     .nav-links a{color:#e2e8f0;font-weight:600;text-decoration:none;font-size:0.95rem;padding-bottom:4px;border-bottom:2px solid transparent;transition:var(--transition)}
     .nav-links a:hover{color:white;border-bottom-color:var(--primary)}
-    .nav-dropdown{position:absolute;top:65px;right:0;background:var(--white);width:260px;padding:12px 0;border-radius:16px;box-shadow:var(--shadow-hover);opacity:0;visibility:hidden;transition:all 0.3s ease;z-index:1100;border:1px solid var(--gray-border);max-height:400px;overflow-y:auto}
+    .nav-dropdown{position:absolute;top:65px;right:0;background:var(--white);width:300px;padding:12px 0;border-radius:16px;box-shadow:var(--shadow-hover);opacity:0;visibility:hidden;transition:all 0.3s ease;z-index:1100;border:1px solid var(--gray-border);max-height:400px;overflow-y:auto}
     .nav-item:hover .nav-dropdown{opacity:1;visibility:visible;top:80px}
-    .dropdown-link{display:block;padding:10px 20px;color:var(--text-dark)!important;font-size:0.85rem;font-weight:600;text-decoration:none;transition:var(--transition);text-align:right}
-    .dropdown-link:hover{background:var(--gray-bg);color:var(--primary)!important;padding-right:25px}
+    .dropdown-link{display:flex;align-items:center;gap:10px;padding:8px 16px;color:var(--text-dark)!important;font-size:0.85rem;font-weight:600;text-decoration:none;transition:var(--transition);text-align:right}
+    .dropdown-link:hover{background:var(--gray-bg);color:var(--primary)!important;padding-right:20px}
+    .dropdown-link img{width:30px;height:30px;object-fit:contain;border-radius:8px;background:#f8fafc;padding:2px}
     .nav-right{display:flex;align-items:center;gap:15px}
     .lang-wrap{position:relative}
     .lang-btn{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);padding:8px 18px;border-radius:40px;color:white;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:8px;transition:var(--transition)}
@@ -136,6 +137,7 @@
       .social-links a{width:35px;height:35px;font-size:1rem}
       .nav-dropdown{position:fixed;top:70px;right:5%;width:90%;left:auto;transform:none}
       .nav-item:hover .nav-dropdown{top:70px}
+      .dropdown-link img{width:25px;height:25px}
     }
     @media (max-width:480px){
       .stats-bar{grid-template-columns:1fr}
@@ -314,7 +316,7 @@
 <script>
   AOS.init({ duration: 800, once: true });
 
-  // ========== قائمة الجامعات الكاملة (45+ جامعة) ==========
+  // ========== قائمة الجامعات الكاملة (45+ جامعة) مع إضافة Beykoz ==========
   const universitiesList = [
     { name: "Acıbadem Mehmet Ali Aydınlar Üniversitesi", img: "ACIBADEM MEHMET ALI_ç AYDINLAR U_êNI_çVERSI_çTESI_ç.png" },
     { name: "Altınbaş Üniversitesi", img: "ALTINBAS_د U_êNI_çVERSI_çTESI_ç.png" },
@@ -322,6 +324,7 @@
     { name: "Ankara Medipol Üniversitesi", img: "ANKARA MEDI_çPOL U_êNI_çVERSI_çTESI_ç.png" },
     { name: "Atılım Üniversitesi", img: "ATILIM U_êNI_çVERSI_çTESI_ç.png" },
     { name: "Bahçeşehir Üniversitesi", img: "BAHC_دES_دEHI_çR U_êNI_çVERSI_çTESI_ç.png" },
+    { name: "Beykoz Üniversitesi", img: "BEYKOZ U_êNI_çVERSI_çTESI_ç.png" },
     { name: "Bezmialem Vakıf Üniversitesi", img: "BEZM-I_ç A_éLEM VAKIF U_êNI_çVERSI_çTESI_ç.png" },
     { name: "Biruni Üniversitesi", img: "BI_çRUNI_ç U_êNI_çVERSI_çTESI_ç.png" },
     { name: "Doğuş Üniversitesi", img: "DOG__US_د U_êNI_çVERSI_çTESI_ç.png" },
@@ -379,7 +382,7 @@
       const link = document.createElement('a');
       link.href = "#universities";
       link.className = 'dropdown-link';
-      link.innerText = uni.name;
+      link.innerHTML = `<img src="images/${uni.img}" alt="${uni.name}" onerror="this.src='https://placehold.co/30x30?text=Logo'"><span>${uni.name}</span>`;
       link.addEventListener('click', (e) => {
         e.preventDefault();
         document.getElementById('universities').scrollIntoView({ behavior: 'smooth' });
@@ -417,7 +420,7 @@
   populateUnisDropdown();
   populateContactDropdown();
 
-  // ========== الترجمة الشاملة (نفس الكود السابق دون تغيير) ==========
+  // ========== الترجمة (نفس الكود السابق دون تغيير) ==========
   const translations = {
     ar: {
       navHome: "الرئيسية", navServices: "خدماتنا", navUnis: "الجامعات", navSteps: "خطوات التسجيل", navContact: "تواصل معنا", navCta: "سجل الآن",
