@@ -14,7 +14,7 @@
       --primary:#C0392B;
       --primary-dark:#9a2e22;
       --primary-light:#e65c4a;
-      --black:#1a1a1a;
+      --black:#1a11a1a;
       --white:#fff;
       --gray-bg:#f8fafc;
       --gray-border:#eef2f5;
@@ -167,6 +167,42 @@
     .contact-container{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1.2fr;gap:60px;align-items:center}
     .contact-info h2{font-size:2.5rem;margin-bottom:1.5rem}
     .contact-info p{color:#94a3b8;margin-bottom:2rem}
+    .social-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+      transition: var(--transition);
+    }
+    .social-item a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: white;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+    .social-item a:hover {
+      color: var(--primary);
+      transform: translateX(-5px);
+    }
+    .social-item i {
+      width: 40px;
+      height: 40px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      transition: var(--transition);
+    }
+    .social-item a:hover i {
+      background: var(--primary);
+      transform: scale(1.05);
+    }
     .contact-form{background:white;padding:3rem;border-radius:40px;color:var(--black)}
     .form-group{margin-bottom:20px}
     .form-group label{display:block;margin-bottom:8px;font-weight:700;font-size:0.9rem}
@@ -359,21 +395,43 @@
       <div class="contact-info" data-aos="fade-left">
         <h2>هل أنت جاهز لبدء مستقبلك؟</h2>
         <p>اترك بياناتك الآن وسيقوم أحد مستشارينا التعليميين بالتواصل معك خلال أقل من 24 ساعة.</p>
-        <div style="display: flex; gap: 20px; flex-direction: column;">
-          <div style="display: flex; align-items: center; gap: 15px;">
-            <i class="fab fa-whatsapp" style="font-size: 2rem; color: #25D366;"></i>
-            <div>
-              <h4 style="margin: 0;">واتساب</h4>
-              <p style="margin: 0; color: #cbd5e1;">+90 501 595 98 80</p>
-            </div>
-          </div>
-          <div style="display: flex; align-items: center; gap: 15px;">
-            <i class="fas fa-envelope" style="font-size: 1.8rem; color: var(--primary);"></i>
-            <div>
-              <h4 style="margin: 0;">البريد الإلكتروني</h4>
-              <p style="margin: 0; color: #cbd5e1;">aboutalebeducation@gmail.com</p>
-            </div>
-          </div>
+        
+        <!-- وسائل التواصل مرتبة حسب الأولوية -->
+        <div class="social-item">
+          <a href="https://wa.me/+905015959880" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-whatsapp"></i>
+            <span>واتساب: +90 501 595 98 80</span>
+          </a>
+        </div>
+        <div class="social-item">
+          <a href="https://www.instagram.com/abou.taleb.education" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-instagram"></i>
+            <span>إنستجرام</span>
+          </a>
+        </div>
+        <div class="social-item">
+          <a href="https://www.facebook.com/AbouTalebEducation" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-facebook-f"></i>
+            <span>فيسبوك</span>
+          </a>
+        </div>
+        <div class="social-item">
+          <a href="https://x.com/ABOUTALEBEDU" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-x-twitter"></i>
+            <span>إكس (تويتر)</span>
+          </a>
+        </div>
+        <div class="social-item">
+          <a href="https://www.linkedin.com/in/abou-taleb-education-108b413a7" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-linkedin-in"></i>
+            <span>لينكدإن</span>
+          </a>
+        </div>
+        <div class="social-item">
+          <a href="mailto:aboutalebeducation@gmail.com">
+            <i class="fas fa-envelope"></i>
+            <span>البريد الإلكتروني</span>
+          </a>
         </div>
       </div>
       <div class="contact-form" data-aos="fade-right">
