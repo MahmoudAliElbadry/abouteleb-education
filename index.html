@@ -60,12 +60,63 @@
     .hero-image{flex:1;display:flex;justify-content:center;position:relative}
     .hero-image img{max-width:100%;border-radius:30px;box-shadow:var(--shadow-hover)}
 
-    /* Stats Section */
-    .stats-bar{background:white;padding:2rem 5%;margin-top:-50px;position:relative;z-index:10;border-radius:30px;max-width:1100px;margin-left:auto;margin-right:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:20px;box-shadow:var(--shadow-md)}
-    .stat-item{text-align:center;border-left:1px solid var(--gray-border)}
+    /* Stats Bar & Dropdown */
+    .stats-bar{background:white;padding:2rem 5%;margin-top:-50px;position:relative;z-index:100;border-radius:30px;max-width:1100px;margin-left:auto;margin-right:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:20px;box-shadow:var(--shadow-md)}
+    .stat-item{text-align:center;border-left:1px solid var(--gray-border);position:relative;cursor:pointer;padding:10px 0}
     .stat-item:first-child{border-left:none}
     .stat-num{font-size:2.2rem;font-weight:900;color:var(--primary);display:block}
     .stat-label{font-size:0.9rem;color:var(--text-light);font-weight:600}
+    
+    /* Universities Dropdown */
+    .uni-dropdown {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: white;
+      width: 600px;
+      padding: 25px;
+      border-radius: 25px;
+      box-shadow: var(--shadow-hover);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+      z-index: 1000;
+      border: 1px solid var(--gray-border);
+    }
+    .stat-item:hover .uni-dropdown {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(10px);
+    }
+    .uni-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 15px;
+      border-radius: 15px;
+      transition: var(--transition);
+      text-decoration: none;
+      color: var(--text-dark);
+    }
+    .uni-item:hover {
+      background: var(--gray-bg);
+      transform: translateY(-5px);
+    }
+    .uni-item img {
+      width: 80px; /* Increased size */
+      height: 80px;
+      object-fit: contain;
+      margin-bottom: 10px;
+    }
+    .uni-item span {
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
 
     /* Sections */
     .section{padding:6rem 5%}
@@ -73,6 +124,37 @@
     .sec-tag{color:var(--primary);font-weight:800;text-transform:uppercase;letter-spacing:1px;font-size:0.85rem;margin-bottom:10px;display:block}
     .sec-title{font-size:2.5rem;font-weight:800;color:var(--black);margin-bottom:15px}
     
+    /* Universities Grid Section (Restored) */
+    .universities-section { background: white; }
+    .unis-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .uni-card {
+      background: white;
+      border-radius: 25px;
+      padding: 2rem;
+      text-align: center;
+      border: 1px solid var(--gray-border);
+      transition: var(--transition);
+    }
+    .uni-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-10px);
+      box-shadow: var(--shadow-hover);
+    }
+    .uni-card img {
+      width: 120px; /* Larger logos */
+      height: 120px;
+      object-fit: contain;
+      margin-bottom: 1.5rem;
+    }
+    .uni-card h4 { font-weight: 800; margin-bottom: 0.5rem; }
+    .uni-card .location { font-size: 0.8rem; color: var(--text-light); }
+
     /* Services */
     .services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:30px;max-width:1200px;margin:0 auto}
     .service-card{background:white;padding:3rem 2rem;border-radius:30px;text-align:center;transition:var(--transition);border:1px solid var(--gray-border)}
@@ -126,6 +208,7 @@
       .hero-btns{justify-content:center}
       .stats-bar{grid-template-columns:repeat(2,1fr);margin-top:20px}
       .stat-item:nth-child(odd){border-left:none}
+      .uni-dropdown { width: 90vw; grid-template-columns: repeat(2, 1fr); }
       .contact-container{grid-template-columns:1fr}
       .nav-links{display:none}
       .hamburger{display:flex}
@@ -135,16 +218,9 @@
       .stats-bar{grid-template-columns:1fr}
       .stat-item{border-left:none;border-bottom:1px solid var(--gray-border);padding-bottom:15px}
       .stat-item:last-child{border-bottom:none}
+      .uni-dropdown { grid-template-columns: 1fr; }
       .contact-form{padding:2rem 1.5rem}
     }
-
-    /* Animations */
-    @keyframes shake {
-      0%, 100% {transform: translateX(0);}
-      25% {transform: translateX(-5px);}
-      75% {transform: translateX(5px);}
-    }
-    .shake {animation: shake 0.5s ease-in-out;}
   </style>
 </head>
 <body>
@@ -201,6 +277,33 @@
     <div class="stat-item">
       <span class="stat-num">+50</span>
       <span class="stat-label">جامعة متعاقدة</span>
+      <!-- Dropdown for Universities -->
+      <div class="uni-dropdown">
+        <a href="#" class="uni-item">
+          <img src="https://unitededucation.com/_next/image?url=https%3A%2F%2Fapi.unitededucation.com%2Fstorage%2Funiversities%2Flogos%2F1663414115.png&w=128&q=75" alt="Altinbas">
+          <span>جامعة ألتن باش</span>
+        </a>
+        <a href="#" class="uni-item">
+          <img src="https://unitededucation.com/_next/image?url=https%3A%2F%2Fapi.unitededucation.com%2Fstorage%2Funiversities%2Flogos%2F1663414166.png&w=128&q=75" alt="Aydin">
+          <span>جامعة إسطنبول أيدن</span>
+        </a>
+        <a href="#" class="uni-item">
+          <img src="https://unitededucation.com/_next/image?url=https%3A%2F%2Fapi.unitededucation.com%2Fstorage%2Funiversities%2Flogos%2F1663414212.png&w=128&q=75" alt="Nisantasi">
+          <span>جامعة نيشان تاشي</span>
+        </a>
+        <a href="#" class="uni-item">
+          <img src="https://unitededucation.com/_next/image?url=https%3A%2F%2Fapi.unitededucation.com%2Fstorage%2Funiversities%2Flogos%2F1663414258.png&w=128&q=75" alt="Bahcesehir">
+          <span>جامعة بهتشه شهير</span>
+        </a>
+        <a href="#" class="uni-item">
+          <img src="https://unitededucation.com/_next/image?url=https%3A%2F%2Fapi.unitededucation.com%2Fstorage%2Funiversities%2Flogos%2F1663414304.png&w=128&q=75" alt="Medipol">
+          <span>جامعة ميدي بول</span>
+        </a>
+        <a href="#" class="uni-item">
+          <img src="https://unitededucation.com/_next/image?url=https%3A%2F%2Fapi.unitededucation.com%2Fstorage%2Funiversities%2Flogos%2F1663414350.png&w=128&q=75" alt="Istinye">
+          <span>جامعة استينيا</span>
+        </a>
+      </div>
     </div>
     <div class="stat-item">
       <span class="stat-num">+1500</span>
@@ -216,29 +319,58 @@
     </div>
   </div>
 
-  <section class="section" id="services">
+  <section class="section universities-section" id="universities">
+    <div class="sec-header" data-aos="fade-up">
+      <span class="sec-tag">شركاؤنا في النجاح</span>
+      <h2 class="sec-title">أفضل الجامعات التركية</h2>
+      <p class="sec-sub">نحن وكلاء رسميون لأكثر من 50 جامعة خاصة في إسطنبول وأنقرة.</p>
+    </div>
+    <div class="unis-grid">
+      <div class="uni-card" data-aos="zoom-in">
+        <img src="https://unitededucation.com/_next/image?url=https%3A%2F%2Fapi.unitededucation.com%2Fstorage%2Funiversities%2Flogos%2F1663414115.png&w=128&q=75" alt="Altinbas">
+        <h4>جامعة ألتن باش</h4>
+        <p class="location">إسطنبول - تركيا</p>
+      </div>
+      <div class="uni-card" data-aos="zoom-in" data-aos-delay="100">
+        <img src="https://unitededucation.com/_next/image?url=https%3A%2F%2Fapi.unitededucation.com%2Fstorage%2Funiversities%2Flogos%2F1663414166.png&w=128&q=75" alt="Aydin">
+        <h4>جامعة إسطنبول أيدن</h4>
+        <p class="location">إسطنبول - تركيا</p>
+      </div>
+      <div class="uni-card" data-aos="zoom-in" data-aos-delay="200">
+        <img src="https://unitededucation.com/_next/image?url=https%3A%2F%2Fapi.unitededucation.com%2Fstorage%2Funiversities%2Flogos%2F1663414212.png&w=128&q=75" alt="Nisantasi">
+        <h4>جامعة نيشان تاشي</h4>
+        <p class="location">إسطنبول - تركيا</p>
+      </div>
+      <div class="uni-card" data-aos="zoom-in" data-aos-delay="300">
+        <img src="https://unitededucation.com/_next/image?url=https%3A%2F%2Fapi.unitededucation.com%2Fstorage%2Funiversities%2Flogos%2F1663414258.png&w=128&q=75" alt="Bahcesehir">
+        <h4>جامعة بهتشه شهير</h4>
+        <p class="location">إسطنبول - تركيا</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-gray" id="services">
     <div class="sec-header" data-aos="fade-up">
       <span class="sec-tag">لماذا نحن؟</span>
       <h2 class="sec-title">خدماتنا المتكاملة للطلاب</h2>
-      <p class="sec-sub">نرافقك في كل خطوة، من اختيار التخصص وحتى الاستقرار في سكنك الجامعي بتركيا.</p>
     </div>
     <div class="services-grid">
-      <div class="service-card" data-aos="zoom-in" data-aos-delay="100">
+      <div class="service-card" data-aos="zoom-in">
         <div class="service-icon"><i class="fas fa-graduation-cap"></i></div>
         <h3 class="service-title">قبولات مجانية</h3>
         <p class="service-desc">نضمن لك الحصول على قبولك الجامعي في الجامعات الخاصة مجاناً وبدون أي رسوم إضافية.</p>
       </div>
-      <div class="service-card" data-aos="zoom-in" data-aos-delay="200">
+      <div class="service-card" data-aos="zoom-in" data-aos-delay="100">
         <div class="service-icon"><i class="fas fa-percent"></i></div>
         <h3 class="service-title">خصومات حصرية</h3>
         <p class="service-desc">بصفتنا وكلاء معتمدين، نوفر لك خصومات خاصة على الأقساط الدراسية لا تتوفر عند التقديم المباشر.</p>
       </div>
-      <div class="service-card" data-aos="zoom-in" data-aos-delay="300">
+      <div class="service-card" data-aos="zoom-in" data-aos-delay="200">
         <div class="service-icon"><i class="fas fa-file-signature"></i></div>
         <h3 class="service-title">تجهيز الملفات</h3>
         <p class="service-desc">نساعدك في ترجمة وتصديق أوراقك وتجهيز ملف التقديم بشكل احترافي لضمان القبول.</p>
       </div>
-      <div class="service-card" data-aos="zoom-in" data-aos-delay="400">
+      <div class="service-card" data-aos="zoom-in" data-aos-delay="300">
         <div class="service-icon"><i class="fas fa-home"></i></div>
         <h3 class="service-title">تأمين السكن</h3>
         <p class="service-desc">نوفر لك خيارات متنوعة للسكن الطلابي (حكومي أو خاص) بما يتناسب مع ميزانيتك وموقع جامعتك.</p>
@@ -246,28 +378,28 @@
     </div>
   </section>
 
-  <section class="section bg-gray" id="steps">
+  <section class="section" id="steps">
     <div class="sec-header" data-aos="fade-up">
       <span class="sec-tag">بساطة الإجراءات</span>
       <h2 class="sec-title">خطوات رحلتك معنا</h2>
     </div>
     <div class="steps-container">
-      <div class="step-item" data-aos="fade-up" data-aos-delay="100">
+      <div class="step-item" data-aos="fade-up">
         <div class="step-num">1</div>
         <h3 class="step-title">تواصل معنا</h3>
         <p class="service-desc">املأ النموذج أو تواصل عبر الواتساب لاستشارة مجانية.</p>
       </div>
-      <div class="step-item" data-aos="fade-up" data-aos-delay="200">
+      <div class="step-item" data-aos="fade-up" data-aos-delay="100">
         <div class="step-num">2</div>
         <h3 class="step-title">اختر تخصصك</h3>
         <p class="service-desc">نساعدك في اختيار الجامعة والتخصص الأنسب لمستقبلك.</p>
       </div>
-      <div class="step-item" data-aos="fade-up" data-aos-delay="300">
+      <div class="step-item" data-aos="fade-up" data-aos-delay="200">
         <div class="step-num">3</div>
         <h3 class="step-title">أرسل أوراقك</h3>
         <p class="service-desc">نقوم بتقديم ملفك للجامعة ومتابعة صدور القبول المبدئي.</p>
       </div>
-      <div class="step-item" data-aos="fade-up" data-aos-delay="400">
+      <div class="step-item" data-aos="fade-up" data-aos-delay="300">
         <div class="step-num">4</div>
         <h3 class="step-title">ابدأ الدراسة</h3>
         <p class="service-desc">نستقبلك في المطار وننهي إجراءات تثبيت القيد والإقامة.</p>
@@ -279,20 +411,13 @@
     <div class="contact-container">
       <div class="contact-info" data-aos="fade-left">
         <h2>هل أنت جاهز لبدء مستقبلك؟</h2>
-        <p>اترك بياناتك الآن وسيقوم أحد مستشارينا التعليميين بالتواصل معك خلال أقل من 24 ساعة لتزويدك بكافة التفاصيل والخصومات المتاحة.</p>
+        <p>اترك بياناتك الآن وسيقوم أحد مستشارينا التعليميين بالتواصل معك خلال أقل من 24 ساعة.</p>
         <div style="display: flex; gap: 20px; flex-direction: column;">
           <div style="display: flex; align-items: center; gap: 15px;">
             <i class="fab fa-whatsapp" style="font-size: 2rem; color: #25D366;"></i>
             <div>
               <h4 style="margin: 0;">واتساب</h4>
               <p style="margin: 0; color: #cbd5e1;">+90 5XX XXX XX XX</p>
-            </div>
-          </div>
-          <div style="display: flex; align-items: center; gap: 15px;">
-            <i class="fas fa-envelope" style="font-size: 1.8rem; color: var(--primary);"></i>
-            <div>
-              <h4 style="margin: 0;">البريد الإلكتروني</h4>
-              <p style="margin: 0; color: #cbd5e1;">info@abou-taleb.com</p>
             </div>
           </div>
         </div>
@@ -304,7 +429,7 @@
             <input type="text" class="form-control" placeholder="أدخل اسمك الثلاثي" required>
           </div>
           <div class="form-group">
-            <label>رقم الهاتف (مع رمز الدولة)</label>
+            <label>رقم الهاتف</label>
             <input type="tel" id="phone" class="form-control" required>
           </div>
           <div class="form-group">
@@ -313,14 +438,9 @@
               <option>الطب البشري</option>
               <option>طب الأسنان</option>
               <option>الصيدلة</option>
-              <option>الهندسة (بكافة أنواعها)</option>
+              <option>الهندسة</option>
               <option>إدارة الأعمال</option>
-              <option>تخصصات أخرى</option>
             </select>
-          </div>
-          <div class="form-group">
-            <label>رسالتك (اختياري)</label>
-            <textarea class="form-control" rows="3" placeholder="أي استفسار إضافي؟"></textarea>
           </div>
           <button type="submit" class="submit-btn">إرسال الطلب الآن</button>
         </form>
@@ -331,13 +451,6 @@
   <footer>
     <div class="footer-logo">
       <div class="logo-text" style="color: white; font-size: 2rem;">Abou-Taleb<br><span style="color: var(--primary);">Education</span></div>
-    </div>
-    <div class="footer-links">
-      <a href="#home">الرئيسية</a>
-      <a href="#services">خدماتنا</a>
-      <a href="#universities">الجامعات</a>
-      <a href="#steps">خطوات التسجيل</a>
-      <a href="#contact">تواصل معنا</a>
     </div>
     <div class="social-links">
       <a href="#"><i class="fab fa-facebook-f"></i></a>
@@ -353,14 +466,8 @@
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
   <script>
-    // Initialize AOS
-    AOS.init({
-      duration: 1000,
-      once: true,
-      offset: 100
-    });
+    AOS.init({ duration: 1000, once: true });
 
-    // Mobile Menu Toggle
     const menuBtn = document.getElementById('menuBtn');
     const mobileNav = document.getElementById('mobileNav');
     const overlay = document.getElementById('overlay');
@@ -372,11 +479,7 @@
 
     menuBtn.addEventListener('click', toggleMenu);
     overlay.addEventListener('click', toggleMenu);
-    mobileNav.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', toggleMenu);
-    });
 
-    // Phone Input Initialization
     const phoneInput = document.querySelector("#phone");
     window.intlTelInput(phoneInput, {
       initialCountry: "auto",
@@ -386,10 +489,9 @@
       utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
     });
 
-    // Form Submission
     document.getElementById('leadForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      alert('شكراً لتواصلك معنا! سيقوم مستشارنا التعليمي بالاتصال بك قريباً.');
+      alert('شكراً لتواصلك معنا!');
       this.reset();
     });
   </script>
