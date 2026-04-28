@@ -14,7 +14,7 @@
       --primary:#C0392B;
       --primary-dark:#9a2e22;
       --primary-light:#e65c4a;
-      --black:#1a11a1a;
+      --black:#1a1a1a;
       --white:#fff;
       --gray-bg:#f8fafc;
       --gray-border:#eef2f5;
@@ -167,14 +167,16 @@
     .contact-container{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1.2fr;gap:60px;align-items:center}
     .contact-info h2{font-size:2.5rem;margin-bottom:1.5rem}
     .contact-info p{color:#94a3b8;margin-bottom:2rem}
-    .social-item {
+    /* تحسين روابط التواصل - خلفية سوداء ونصوص بيضاء */
+    .contact-info .social-item {
       display: flex;
       align-items: center;
       gap: 15px;
       margin-bottom: 20px;
       transition: var(--transition);
+      background: transparent;
     }
-    .social-item a {
+    .contact-info .social-item a {
       display: flex;
       align-items: center;
       gap: 12px;
@@ -183,23 +185,25 @@
       font-size: 1rem;
       font-weight: 500;
       transition: var(--transition);
+      background: transparent;
     }
-    .social-item a:hover {
-      color: var(--primary);
-      transform: translateX(-5px);
-    }
-    .social-item i {
+    .contact-info .social-item i {
       width: 40px;
       height: 40px;
-      background: rgba(255,255,255,0.05);
+      background: rgba(255,255,255,0.1);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 1.2rem;
       transition: var(--transition);
+      color: white;
     }
-    .social-item a:hover i {
+    .contact-info .social-item a:hover {
+      color: var(--primary);
+      transform: translateX(-5px);
+    }
+    .contact-info .social-item a:hover i {
       background: var(--primary);
       transform: scale(1.05);
     }
@@ -396,7 +400,7 @@
         <h2>هل أنت جاهز لبدء مستقبلك؟</h2>
         <p>اترك بياناتك الآن وسيقوم أحد مستشارينا التعليميين بالتواصل معك خلال أقل من 24 ساعة.</p>
         
-        <!-- وسائل التواصل مرتبة حسب الأولوية -->
+        <!-- وسائل التواصل مرتبة حسب الأولوية - خلفية سوداء -->
         <div class="social-item">
           <a href="https://wa.me/+905015959880" target="_blank" rel="noopener noreferrer">
             <i class="fab fa-whatsapp"></i>
