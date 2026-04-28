@@ -9,7 +9,6 @@
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css">
   <style>
-    /* جميع الأنماط كما هي بالضبط (لم أغير شيئاً) */
     *{margin:0;padding:0;box-sizing:border-box}
     html,body{width:100%;overflow-x:hidden}
     :root{--primary:#C0392B;--primary-dark:#9a2e22;--black:#0a0a0a;--white:#fff;--gray-bg:#f8fafc;--gray-border:#eef2f5;--text-dark:#1e293b;--text-light:#5a6e7c;--shadow-md:0 20px 25px -5px rgba(0,0,0,0.05);--shadow-hover:0 25px 35px -12px rgba(0,0,0,0.15);--transition:all 0.3s ease}
@@ -266,13 +265,14 @@
     <div class="contact-info" data-aos="fade-left">
       <h2 id="contactTitle">هل أنت جاهز لبدء مستقبلك؟</h2>
       <p id="contactDesc">اترك بياناتك الآن وسيقوم أحد مستشارينا التعليميين بالتواصل معك خلال أقل من 24 ساعة.</p>
-      <div class="social-item"><a href="https://wa.me/+905015959880" target="_blank"><i class="fab fa-whatsapp"></i><span>واتساب: +90 501 595 98 80</span></a></div>
-      <div class="social-item"><a href="https://www.instagram.com/abou.taleb.education" target="_blank"><i class="fab fa-instagram"></i><span>إنستجرام</span></a></div>
-      <div class="social-item"><a href="https://www.facebook.com/AbouTalebEducation" target="_blank"><i class="fab fa-facebook-f"></i><span>فيسبوك</span></a></div>
-      <div class="social-item"><a href="https://x.com/ABOUTALEBEDU" target="_blank"><i class="fab fa-x-twitter"></i><span>إكس (تويتر)</span></a></div>
-      <div class="social-item"><a href="https://www.linkedin.com/in/abou-taleb-education-108b413a7" target="_blank"><i class="fab fa-linkedin-in"></i><span>لينكدإن</span></a></div>
-      <div class="social-item"><a href="mailto:info@aboutalebeducation.com"><i class="fas fa-envelope"></i><span>info@aboutalebeducation.com</span></a></div>
-      <div class="social-item"><a href="mailto:AboutalebEducation@gmail.com"><i class="fas fa-envelope"></i><span>AboutalebEducation@gmail.com</span></a></div>
+      <!-- سيتم تحديث هذه العناصر بواسطة JavaScript -->
+      <div class="social-item"><a href="https://wa.me/+905015959880" target="_blank"><i class="fab fa-whatsapp"></i><span id="socialWhatsapp">واتساب: +90 501 595 98 80</span></a></div>
+      <div class="social-item"><a href="https://www.instagram.com/abou.taleb.education" target="_blank"><i class="fab fa-instagram"></i><span id="socialInstagram">إنستجرام</span></a></div>
+      <div class="social-item"><a href="https://www.facebook.com/AbouTalebEducation" target="_blank"><i class="fab fa-facebook-f"></i><span id="socialFacebook">فيسبوك</span></a></div>
+      <div class="social-item"><a href="https://x.com/ABOUTALEBEDU" target="_blank"><i class="fab fa-x-twitter"></i><span id="socialTwitter">إكس (تويتر)</span></a></div>
+      <div class="social-item"><a href="https://www.linkedin.com/in/abou-taleb-education-108b413a7" target="_blank"><i class="fab fa-linkedin-in"></i><span id="socialLinkedin">لينكدإن</span></a></div>
+      <div class="social-item"><a href="mailto:info@aboutalebeducation.com"><i class="fas fa-envelope"></i><span id="socialEmail1">info@aboutalebeducation.com</span></a></div>
+      <div class="social-item"><a href="mailto:AboutalebEducation@gmail.com"><i class="fas fa-envelope"></i><span id="socialEmail2">AboutalebEducation@gmail.com</span></a></div>
     </div>
     <div class="contact-form" data-aos="fade-right">
       <form id="leadForm">
@@ -315,7 +315,7 @@
 <script>
   AOS.init({ duration: 800, once: true });
 
-  const universitiesList = [ /* نفس القائمة كما هي */ 
+  const universitiesList = [
     { name: "Acıbadem Mehmet Ali Aydınlar Üniversitesi", img: "ACIBADEM MEHMET ALI_ç AYDINLAR U_êNI_çVERSI_çTESI_ç.png" },
     { name: "Altınbaş Üniversitesi", img: "ALTINBAS_د U_êNI_çVERSI_çTESI_ç.png" },
     { name: "Ankara Bilim Üniversitesi", img: "ANKARA BI_çLI_çM U_êNI_çVERSI_çTESI_ç.png" },
@@ -406,7 +406,7 @@
   populateUnisDropdown();
   populateContactDropdown();
 
-  // ========== الترجمة الكاملة (مع ترجمة خيارات القائمة المنسدلة) ==========
+  // ========== الترجمة الشاملة ==========
   const translations = {
     ar: {
       navHome: "الرئيسية", navServices: "خدماتنا", navUnis: "الجامعات", navSteps: "خطوات التسجيل", navContact: "تواصل معنا", navCta: "سجل الآن",
@@ -429,7 +429,16 @@
       formName: "الاسم الكامل", formPhone: "رقم الهاتف", formMajor: "التخصص المطلوب",
       submitBtn: "إرسال الطلب الآن",
       footer: "جميع الحقوق محفوظة.",
-      majorOptions: { medicine: "الطب البشري", dentistry: "طب الأسنان", pharmacy: "الصيدلة", engineering: "الهندسة", business: "إدارة الأعمال" }
+      majorOptions: { medicine: "الطب البشري", dentistry: "طب الأسنان", pharmacy: "الصيدلة", engineering: "الهندسة", business: "إدارة الأعمال" },
+      // ترجمات وسائل التواصل
+      socialWhatsapp: "واتساب: +90 501 595 98 80",
+      socialInstagram: "إنستجرام",
+      socialFacebook: "فيسبوك",
+      socialTwitter: "إكس (تويتر)",
+      socialLinkedin: "لينكدإن",
+      socialEmail1: "info@aboutalebeducation.com",
+      socialEmail2: "AboutalebEducation@gmail.com",
+      namePlaceholder: "أدخل اسمك الثلاثي"
     },
     en: {
       navHome: "Home", navServices: "Services", navUnis: "Universities", navSteps: "Registration Steps", navContact: "Contact Us", navCta: "Apply Now",
@@ -452,7 +461,15 @@
       formName: "Full Name", formPhone: "Phone Number", formMajor: "Desired Major",
       submitBtn: "Submit Request",
       footer: "All Rights Reserved.",
-      majorOptions: { medicine: "Medicine", dentistry: "Dentistry", pharmacy: "Pharmacy", engineering: "Engineering", business: "Business Administration" }
+      majorOptions: { medicine: "Medicine", dentistry: "Dentistry", pharmacy: "Pharmacy", engineering: "Engineering", business: "Business Administration" },
+      socialWhatsapp: "WhatsApp: +90 501 595 98 80",
+      socialInstagram: "Instagram",
+      socialFacebook: "Facebook",
+      socialTwitter: "X (Twitter)",
+      socialLinkedin: "LinkedIn",
+      socialEmail1: "info@aboutalebeducation.com",
+      socialEmail2: "AboutalebEducation@gmail.com",
+      namePlaceholder: "Enter your full name"
     }
   };
 
@@ -534,6 +551,21 @@
           opt.textContent = t.majorOptions[val];
         }
       }
+    }
+    
+    // ترجمة وسائل التواصل في القسم الأيسر
+    document.getElementById('socialWhatsapp').innerText = t.socialWhatsapp;
+    document.getElementById('socialInstagram').innerText = t.socialInstagram;
+    document.getElementById('socialFacebook').innerText = t.socialFacebook;
+    document.getElementById('socialTwitter').innerText = t.socialTwitter;
+    document.getElementById('socialLinkedin').innerText = t.socialLinkedin;
+    document.getElementById('socialEmail1').innerText = t.socialEmail1;
+    document.getElementById('socialEmail2').innerText = t.socialEmail2;
+    
+    // ترجمة placeholder حقل الاسم الكامل
+    const nameInput = document.getElementById('fullNameInput');
+    if (nameInput) {
+      nameInput.placeholder = t.namePlaceholder;
     }
     
     // التذييل
