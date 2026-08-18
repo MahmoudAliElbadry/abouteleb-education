@@ -18,6 +18,16 @@ enum UserStatus {
   DISABLED
 }
 
+enum OrderStatus {
+  NEW
+  CONTACTED
+  WAITING_FOR_CLIENT
+  IN_PROGRESS
+  COMPLETED
+  REJECTED
+  CANCELLED
+}
+
 model User {
   id              String     @id @default(cuid())
   email           String     @unique
@@ -33,8 +43,65 @@ model User {
   sessions             Session[]
   verificationRecords  VerificationChallenge[]
   auditLogs            AuditLog[]
+  orders               Order[] @relation("ClientOrders")
+  assignedOrders       Order[] @relation("AssignedOrders")
+  orderStatusChanges   OrderStatusHistory[] @relation("OrderStatusChangedBy")
+  orderResponses       OrderClientResponse[]
 
   @@index([role, status])
+}
+
+model Order {
+  id                  String      @id @default(cuid())
+  reference           String      @unique
+  clientId            String
+  fullName            String
+  email               String
+  phoneNumber         String
+  specialization      String
+  specializationLabel String
+  status              OrderStatus @default(NEW)
+  assignedAdminId     String?
+  submittedAt         DateTime    @default(now())
+  closedAt            DateTime?
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+
+  client         User                  @relation("ClientOrders", fields: [clientId], references: [id], onDelete: Restrict)
+  assignedAdmin  User?                 @relation("AssignedOrders", fields: [assignedAdminId], references: [id], onDelete: SetNull)
+  statusHistory  OrderStatusHistory[]
+  clientResponses OrderClientResponse[]
+
+  @@index([clientId, createdAt])
+  @@index([status, createdAt])
+  @@index([assignedAdminId, status])
+}
+
+model OrderStatusHistory {
+  id              String       @id @default(cuid())
+  orderId         String
+  fromStatus      OrderStatus?
+  toStatus        OrderStatus
+  changedByUserId String?
+  createdAt       DateTime     @default(now())
+
+  order         Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  changedByUser User? @relation("OrderStatusChangedBy", fields: [changedByUserId], references: [id], onDelete: SetNull)
+
+  @@index([orderId, createdAt])
+}
+
+model OrderClientResponse {
+  id        String   @id @default(cuid())
+  orderId   String
+  clientId  String
+  body      String
+  createdAt DateTime @default(now())
+
+  order  Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  client User  @relation(fields: [clientId], references: [id], onDelete: Restrict)
+
+  @@index([orderId, createdAt])
 }
 
 model ClientProfile {
