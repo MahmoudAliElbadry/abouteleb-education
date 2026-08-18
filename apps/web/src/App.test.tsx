@@ -20,7 +20,8 @@ describe('App', () => {
       </MemoryRouter>,
     );
 
-    expect(screen.getByText('Abou-Taleb Education')).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Explore universities' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Abou-Taleb Education' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /مستقبلك الدراسي/i })).toBeInTheDocument();
+    expect(screen.getAllByRole('article')).toHaveLength(45);
   });
 });
