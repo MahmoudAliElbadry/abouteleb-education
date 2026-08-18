@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { App } from './App.js';
 
 vi.mock('@tanstack/react-query', async () => {
@@ -15,9 +16,11 @@ vi.mock('@tanstack/react-query', async () => {
 describe('App', () => {
   it('renders the foundation landing page', () => {
     render(
-      <MemoryRouter>
-        <App />
-      </MemoryRouter>,
+      <QueryClientProvider client={new QueryClient()}>
+        <MemoryRouter>
+          <App />
+        </MemoryRouter>
+      </QueryClientProvider>,
     );
 
     expect(screen.getByRole('link', { name: 'Abou-Taleb Education' })).toBeInTheDocument();
