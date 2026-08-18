@@ -1,12 +1,12 @@
 import type { NextFunction, Request, Response } from 'express';
 import { env } from '../config/env.js';
-import { getSessionUser } from '../lib/session.js';
-import { hasValidCsrfToken } from '../lib/session.js';
+import { appErrors } from '../core/app-error.js';
+import { authModule } from '../modules/auth/auth.module.js';
 
 export async function requireAuth(request: Request, response: Response, next: NextFunction) {
-  const user = await getSessionUser(request.cookies[env.SESSION_COOKIE_NAME]);
+  const user = await authModule.sessions.getUser(request.cookies[env.SESSION_COOKIE_NAME]);
   if (!user) {
-    response.status(401).json({ error: { code: 'UNAUTHENTICATED', message: 'Sign in required' } });
+    next(appErrors.unauthenticated());
     return;
   }
 
@@ -15,8 +15,8 @@ export async function requireAuth(request: Request, response: Response, next: Ne
 }
 
 export function requireCsrf(request: Request, response: Response, next: NextFunction) {
-  if (!hasValidCsrfToken(request)) {
-    response.status(403).json({ error: { code: 'INVALID_CSRF', message: 'Invalid CSRF token' } });
+  if (!authModule.sessions.hasValidCsrfToken(request)) {
+    next(appErrors.invalidCsrf());
     return;
   }
 

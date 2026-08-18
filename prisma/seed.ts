@@ -18,8 +18,18 @@ async function main() {
     throw new Error(`The account ${email} must verify its email before receiving admin access.`);
   }
 
-  await prisma.user.update({ where: { id: user.id }, data: { role: UserRole.ADMIN } });
-  console.log(`Bootstrapped admin access for ${email}`);
+  await prisma.$transaction([
+    prisma.user.update({ where: { id: user.id }, data: { role: UserRole.ADMIN } }),
+    prisma.auditLog.create({
+      data: {
+        actorUserId: user.id,
+        action: 'auth.admin.bootstrap',
+        entityType: 'User',
+        entityId: user.id,
+      },
+    }),
+  ]);
+  process.stdout.write(JSON.stringify({ event: 'auth.admin.bootstrap', userId: user.id }) + '\n');
 }
 
 try {

@@ -7,6 +7,9 @@ import { ZodError } from 'zod';
 import { healthResponseSchema } from '@abou/contracts';
 import { env } from './config/env.js';
 import { authRouter } from './modules/auth/auth.routes.js';
+import { AppError, appErrors } from './core/app-error.js';
+import { logger } from './core/logger.js';
+import { requestContext } from './middleware/request-context.js';
 
 export const app = express();
 
@@ -16,6 +19,7 @@ app.use(cors({ origin: env.WEB_ORIGIN, credentials: true }));
 app.use(compression());
 app.use(express.json({ limit: '100kb' }));
 app.use(cookieParser());
+app.use(requestContext);
 
 app.use('/api/v1/auth', authRouter);
 
@@ -28,25 +32,54 @@ app.get('/api/v1/health/readiness', (_request, response) => {
 });
 
 app.use((_request, response) => {
-  response.status(404).json({ error: { code: 'NOT_FOUND', message: 'Route not found' } });
+  const error = appErrors.notFound();
+  response.status(error.status).json({
+    error: { code: error.code, message: error.publicMessage, requestId: response.locals.requestId },
+  });
 });
 
-const errorHandler: ErrorRequestHandler = (error, _request, response, _next) => {
+const errorHandler: ErrorRequestHandler = (error, request, response, _next) => {
   void _next;
   if (error instanceof ZodError) {
     response.status(400).json({
       error: {
         code: 'VALIDATION_ERROR',
         message: 'Request validation failed',
-        details: error.flatten(),
+        requestId: response.locals.requestId,
       },
     });
     return;
   }
-  console.error(error);
-  response
-    .status(500)
-    .json({ error: { code: 'INTERNAL_ERROR', message: 'Internal server error' } });
+  if (error instanceof AppError) {
+    logger.warn('request.failed', {
+      requestId: response.locals.requestId,
+      method: request.method,
+      path: request.path,
+      code: error.code,
+      metadata: error.metadata,
+    });
+    response.status(error.status).json({
+      error: {
+        code: error.code,
+        message: error.publicMessage,
+        requestId: response.locals.requestId,
+      },
+    });
+    return;
+  }
+  logger.error('request.failed', {
+    requestId: response.locals.requestId,
+    method: request.method,
+    path: request.path,
+    errorName: error instanceof Error ? error.name : 'UnknownError',
+  });
+  response.status(500).json({
+    error: {
+      code: 'INTERNAL_ERROR',
+      message: 'Internal server error',
+      requestId: response.locals.requestId,
+    },
+  });
 };
 
 app.use(errorHandler);
