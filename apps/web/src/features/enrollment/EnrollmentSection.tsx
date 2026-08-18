@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { createOrder } from '../auth/auth-client.js';
 import { useAuth } from '../auth/useAuth.js';
@@ -91,6 +91,10 @@ export function EnrollmentSection({ language }: { language: Language }) {
   const [submittedReference, setSubmittedReference] = useState('');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (user?.fullName) setForm((current) => ({ ...current, fullName: user.fullName ?? '' }));
+  }, [user?.fullName]);
 
   async function submit(event: FormEvent) {
     event.preventDefault();
