@@ -56,13 +56,13 @@ ordersRouter.post('/:orderId/responses', requireCsrf, async (request, response, 
   try {
     const orderId = request.params.orderId;
     if (typeof orderId !== 'string') throw appErrors.notFound();
-    await ordersService.addResponse(
+    const createdResponse = await ordersService.addResponse(
       orderId,
       response.locals.user!.id,
       orderResponseSchema.parse(request.body).body,
       request.ip,
     );
-    response.status(201).send();
+    response.status(201).json({ response: createdResponse });
   } catch (error) {
     next(error);
   }

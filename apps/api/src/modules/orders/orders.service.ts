@@ -1,7 +1,8 @@
 import { randomBytes } from 'node:crypto';
-import { OrderStatus, Prisma, type PrismaClient } from '@prisma/client';
+import { OrderStatus, Prisma, UserRole, type PrismaClient } from '@prisma/client';
 import { appErrors, AppError } from '../../core/app-error.js';
 import type { CreateOrderInput, Specialization } from '@abou/contracts';
+import { assertTransition, isTerminal } from './order-state.js';
 
 const specializationLabels: Record<Specialization, string> = {
   medicine: 'Medicine',
@@ -10,12 +11,6 @@ const specializationLabels: Record<Specialization, string> = {
   engineering: 'Engineering',
   business: 'Business Administration',
 };
-const cancellableStatuses: OrderStatus[] = [
-  OrderStatus.NEW,
-  OrderStatus.CONTACTED,
-  OrderStatus.WAITING_FOR_CLIENT,
-];
-
 const orderInclude = {
   statusHistory: { orderBy: { createdAt: 'asc' } },
   clientResponses: { orderBy: { createdAt: 'asc' } },
@@ -50,6 +45,46 @@ function toPublicOrder(order: Prisma.OrderGetPayload<{ include: typeof orderIncl
 
 export class OrdersService {
   constructor(private readonly prisma: PrismaClient) {}
+
+  private async transitionOrder(
+    orderId: string,
+    clientId: string,
+    toStatus: OrderStatus,
+    actorId: string,
+    actorRole: UserRole,
+    ipAddress?: string,
+  ) {
+    await this.prisma.$transaction(async (transaction) => {
+      const order = await transaction.order.findFirst({ where: { id: orderId, clientId } });
+      if (!order) throw appErrors.notFound();
+      assertTransition(order.status, toStatus, actorRole);
+
+      const updated = await transaction.order.updateMany({
+        where: { id: order.id, status: order.status },
+        data: { status: toStatus, ...(isTerminal(toStatus) ? { closedAt: new Date() } : {}) },
+      });
+      if (updated.count !== 1) {
+        throw new AppError(
+          'INVALID_ORDER_TRANSITION',
+          409,
+          'The application request changed before this action completed',
+        );
+      }
+      await transaction.orderStatusHistory.create({
+        data: { orderId: order.id, fromStatus: order.status, toStatus, changedByUserId: actorId },
+      });
+      await transaction.auditLog.create({
+        data: {
+          actorUserId: actorId,
+          action: 'order.status_changed',
+          entityType: 'Order',
+          entityId: order.id,
+          metadata: { reference: order.reference, fromStatus: order.status, toStatus },
+          ipAddress: ipAddress ?? null,
+        },
+      });
+    });
+  }
 
   async create(
     client: { id: string; email: string; emailVerifiedAt: Date | null; role: string },
@@ -107,54 +142,42 @@ export class OrdersService {
   }
 
   async cancel(orderId: string, clientId: string, ipAddress?: string) {
-    const order = await this.prisma.order.findFirst({ where: { id: orderId, clientId } });
-    if (!order) throw appErrors.notFound();
-    if (!cancellableStatuses.includes(order.status)) {
-      throw new AppError(
-        'INVALID_ORDER_TRANSITION',
-        409,
-        'This application request can no longer be cancelled',
-      );
-    }
-    await this.prisma.$transaction([
-      this.prisma.order.update({
-        where: { id: order.id },
-        data: { status: OrderStatus.CANCELLED, closedAt: new Date() },
-      }),
-      this.prisma.orderStatusHistory.create({
-        data: {
-          orderId: order.id,
-          fromStatus: order.status,
-          toStatus: OrderStatus.CANCELLED,
-          changedByUserId: clientId,
-        },
-      }),
-      this.prisma.auditLog.create({
-        data: {
-          actorUserId: clientId,
-          action: 'order.cancelled',
-          entityType: 'Order',
-          entityId: order.id,
-          metadata: { reference: order.reference },
-          ipAddress: ipAddress ?? null,
-        },
-      }),
-    ]);
+    await this.transitionOrder(
+      orderId,
+      clientId,
+      OrderStatus.CANCELLED,
+      clientId,
+      UserRole.CLIENT,
+      ipAddress,
+    );
   }
 
   async addResponse(orderId: string, clientId: string, body: string, ipAddress?: string) {
-    const order = await this.prisma.order.findFirst({ where: { id: orderId, clientId } });
-    if (!order) throw appErrors.notFound();
-    if (order.status !== OrderStatus.WAITING_FOR_CLIENT) {
-      throw new AppError(
-        'INVALID_ORDER_TRANSITION',
-        409,
-        'A response is not requested for this application request',
-      );
-    }
-    await this.prisma.$transaction([
-      this.prisma.orderClientResponse.create({ data: { orderId, clientId, body } }),
-      this.prisma.auditLog.create({
+    return this.prisma.$transaction(async (transaction) => {
+      const order = await transaction.order.findFirst({
+        where: { id: orderId, clientId, status: OrderStatus.WAITING_FOR_CLIENT },
+      });
+      if (!order) {
+        throw new AppError(
+          'INVALID_ORDER_TRANSITION',
+          409,
+          'A response is not requested for this application request',
+        );
+      }
+      const existingResponse = await transaction.orderClientResponse.findFirst({
+        where: { orderId },
+      });
+      if (existingResponse) {
+        throw new AppError(
+          'INVALID_ORDER_TRANSITION',
+          409,
+          'A response has already been submitted for this request',
+        );
+      }
+      const createdResponse = await transaction.orderClientResponse.create({
+        data: { orderId, clientId, body },
+      });
+      await transaction.auditLog.create({
         data: {
           actorUserId: clientId,
           action: 'order.client_responded',
@@ -163,7 +186,12 @@ export class OrdersService {
           metadata: { reference: order.reference },
           ipAddress: ipAddress ?? null,
         },
-      }),
-    ]);
+      });
+      return {
+        id: createdResponse.id,
+        body: createdResponse.body,
+        createdAt: createdResponse.createdAt,
+      };
+    });
   }
 }
