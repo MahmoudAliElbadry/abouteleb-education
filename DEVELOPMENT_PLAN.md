@@ -426,6 +426,8 @@ Recommended rules:
 - Status notifications are sent after the database transaction succeeds.
 - Invalid transitions return a conflict response rather than silently accepting arbitrary status changes.
 
+The state-machine diagram describes the staff/admin lifecycle. A client-cancel overlay additionally allows clients to cancel from `NEW`, `CONTACTED`, or `WAITING_FOR_CLIENT`; `IN_PROGRESS → CANCELLED` is staff-only. A client may submit one response per request while `WAITING_FOR_CLIENT`, and the response endpoint returns the created response receipt.
+
 The business must approve the final states and transition rules before dashboard implementation.
 
 ## 8. API outline
@@ -453,6 +455,8 @@ Prefix routes with `/api/v1`.
 - `GET /orders/:orderId`
 - `POST /orders/:orderId/cancel`
 - `POST /orders/:orderId/responses` for a response while `WAITING_FOR_CLIENT`
+
+`POST /orders/:orderId/cancel` applies the role-aware cancellation rules. `POST /orders/:orderId/responses` accepts one response per request and returns the created response.
 
 All order reads and writes must enforce ownership in the query/service layer.
 
