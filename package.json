@@ -21,7 +21,8 @@
     "db:seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
-    "@prisma/client": "^6.15.0"
+    "@prisma/client": "^6.15.0",
+    "dotenv": "^17.2.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.35.0",

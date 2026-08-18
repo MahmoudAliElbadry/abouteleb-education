@@ -2,8 +2,11 @@ import cors from 'cors';
 import compression from 'compression';
 import express, { type ErrorRequestHandler } from 'express';
 import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
+import { ZodError } from 'zod';
 import { healthResponseSchema } from '@abou/contracts';
 import { env } from './config/env.js';
+import { authRouter } from './modules/auth/auth.routes.js';
 
 export const app = express();
 
@@ -12,6 +15,9 @@ app.use(helmet());
 app.use(cors({ origin: env.WEB_ORIGIN, credentials: true }));
 app.use(compression());
 app.use(express.json({ limit: '100kb' }));
+app.use(cookieParser());
+
+app.use('/api/v1/auth', authRouter);
 
 app.get('/api/v1/health', (_request, response) => {
   response.json(healthResponseSchema.parse({ status: 'ok', service: 'api' }));
@@ -27,6 +33,16 @@ app.use((_request, response) => {
 
 const errorHandler: ErrorRequestHandler = (error, _request, response, _next) => {
   void _next;
+  if (error instanceof ZodError) {
+    response.status(400).json({
+      error: {
+        code: 'VALIDATION_ERROR',
+        message: 'Request validation failed',
+        details: error.flatten(),
+      },
+    });
+    return;
+  }
   console.error(error);
   response
     .status(500)

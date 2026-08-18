@@ -23,6 +23,12 @@ npm run dev
 
 The web app runs at `http://localhost:5173` and the API health endpoint is available at `http://localhost:4000/api/v1/health`.
 
+After registering and verifying the bootstrap account, promote it to admin with:
+
+```bash
+npm run db:seed
+```
+
 Run the quality checks with:
 
 ```bash
