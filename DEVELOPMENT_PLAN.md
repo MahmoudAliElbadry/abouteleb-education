@@ -701,6 +701,23 @@ Deliverables:
 
 Exit criteria: unauthorized, unverified, client, and admin behaviors are proven by automated tests.
 
+### Phase 2.1 — Authentication hardening (3–5 days)
+
+This required gate runs before Phase 3. It turns the initial authentication implementation into a maintainable and production-oriented subsystem.
+
+Deliverables:
+
+- Split authentication into account, challenge, session, audit, repository, and email-provider responsibilities.
+- Replace string-thrown errors with typed application errors and centralized API error handling.
+- Introduce repository and email-provider interfaces, with Prisma, Resend, and development implementations selected by the composition root.
+- Fix OTP attempt handling, duplicate-account races, session activity tracking, audit events, production environment checks, and structured/redacted logs.
+- Apply CSRF requirements to every authenticated mutation and document the required `X-CSRF-Token` header.
+- Add unit tests for service behavior and PostgreSQL integration tests for the complete registration, verification, login, session, logout, and reset flows.
+- Run the integration suite in GitHub Actions using an isolated PostgreSQL service and committed Prisma migrations.
+- Define Redis-backed rate limits and a durable email outbox as deployment-phase integrations only; do not provision either until hosting is selected.
+
+Exit criteria: formatting, linting, type checks, unit tests, PostgreSQL integration tests, and production builds pass; all authentication failures use the standard error response shape.
+
 ### Phase 3 — Public React site and university catalog (4–7 days)
 
 Deliverables:
@@ -814,7 +831,7 @@ Defer unless the business confirms immediate need:
 - Admin filters/pagination and content mutation.
 - Database constraints and transaction rollback.
 
-Use a separate test database and apply committed migrations before the suite.
+Use a separate test database and apply committed migrations before the suite. GitHub Actions runs the authentication integration suite against an isolated PostgreSQL service; local Docker remains optional.
 
 ### Frontend component tests
 
