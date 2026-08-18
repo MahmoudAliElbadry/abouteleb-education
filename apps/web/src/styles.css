@@ -96,6 +96,21 @@ nav a:hover {
   border-color: var(--primary);
   color: #fff;
 }
+.menu-button {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  display: none;
+  gap: 0.25rem;
+  padding: 0.5rem;
+}
+.menu-button span {
+  background: #fff;
+  border-radius: 2px;
+  display: block;
+  height: 2px;
+  width: 1.35rem;
+}
 .header-actions {
   align-items: center;
   display: flex;
@@ -369,6 +384,46 @@ nav a:hover {
   line-height: 1.75;
   margin: 0;
 }
+.steps {
+  padding-top: 5rem;
+}
+.steps-list {
+  counter-reset: step;
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(4, 1fr);
+  list-style: none;
+  margin: 0 auto;
+  max-width: 68rem;
+  padding: 0;
+}
+.steps-list li {
+  position: relative;
+  text-align: center;
+}
+.steps-list span {
+  align-items: center;
+  background: var(--black);
+  border: 3px solid var(--primary);
+  border-radius: 50%;
+  color: #fff;
+  display: inline-flex;
+  font-size: 1.1rem;
+  font-weight: 900;
+  height: 3.4rem;
+  justify-content: center;
+  width: 3.4rem;
+}
+.steps-list h3 {
+  font-size: 1rem;
+  margin: 0.85rem 0 0.3rem;
+}
+.steps-list p {
+  color: var(--text-light);
+  font-size: 0.82rem;
+  line-height: 1.7;
+  margin: 0;
+}
 .contact {
   align-items: center;
   background: var(--black);
@@ -413,9 +468,25 @@ nav a:hover {
 
 @media (max-width: 850px) {
   nav {
+    background: var(--black);
     display: none;
+    inset: 4.5rem 0 auto;
+    padding: 1rem 1.25rem;
+    position: absolute;
+  }
+  nav.open {
+    display: grid;
+  }
+  nav a {
+    padding: 0.65rem 0;
+  }
+  .menu-button {
+    display: grid;
   }
   .service-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .steps-list {
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -460,6 +531,9 @@ nav a:hover {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .service-grid {
+    grid-template-columns: 1fr;
+  }
+  .steps-list {
     grid-template-columns: 1fr;
   }
   .contact {

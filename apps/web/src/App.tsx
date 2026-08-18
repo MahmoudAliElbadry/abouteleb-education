@@ -10,6 +10,7 @@ const copy = {
     home: 'الرئيسية',
     services: 'خدماتنا',
     universities: 'الجامعات',
+    registrationSteps: 'خطوات التسجيل',
     contact: 'تواصل معنا',
     apply: 'سجل الآن',
     badge: 'وكيل معتمد لأقوى الجامعات التركية',
@@ -38,6 +39,14 @@ const copy = {
       ['تجهيز الملفات', 'نرتب ملف التقديم والترجمة والتصديقات المطلوبة خطوة بخطوة.'],
       ['تأمين السكن', 'نساعدك في الوصول إلى خيارات سكن مناسبة لميزانيتك وموقع جامعتك.'],
     ],
+    stepsTag: 'بساطة الإجراءات',
+    stepsTitle: 'خطوات رحلتك معنا',
+    steps: [
+      ['تواصل معنا', 'أخبرنا عن طموحك الدراسي وسنبدأ بمساعدتك.'],
+      ['اختر تخصصك', 'نقترح الخيارات المناسبة لاهتماماتك وميزانيتك.'],
+      ['أرسل أوراقك', 'نراجع أوراقك ونجهز ملف التقديم.'],
+      ['ابدأ الدراسة', 'نتابع معك حتى بداية رحلتك الجامعية في تركيا.'],
+    ],
     ready: 'هل أنت جاهز لبدء مستقبلك؟',
     readyDescription: 'تواصل معنا الآن، وسيتابع معك أحد مستشارينا التعليميين.',
     catalog: 'كتالوج الجامعات',
@@ -47,6 +56,7 @@ const copy = {
     home: 'Home',
     services: 'Services',
     universities: 'Universities',
+    registrationSteps: 'Registration steps',
     contact: 'Contact',
     apply: 'Apply now',
     badge: 'Authorized agent for leading Turkish universities',
@@ -88,6 +98,14 @@ const copy = {
         'We help you explore housing suited to your budget and university location.',
       ],
     ],
+    stepsTag: 'A simple process',
+    stepsTitle: 'Your journey with us',
+    steps: [
+      ['Contact us', 'Tell us about your academic goals and we will start guiding you.'],
+      ['Choose your major', 'We suggest options that fit your interests and budget.'],
+      ['Send your documents', 'We review your documents and prepare the application file.'],
+      ['Start studying', 'We stay with you until your university journey in Türkiye begins.'],
+    ],
     ready: 'Ready to start your future?',
     readyDescription: 'Contact us now and one of our educational consultants will guide you.',
     catalog: 'University catalog',
@@ -97,6 +115,7 @@ const copy = {
     home: 'Ana sayfa',
     services: 'Hizmetlerimiz',
     universities: 'Üniversiteler',
+    registrationSteps: 'Kayıt adımları',
     contact: 'İletişim',
     apply: 'Şimdi başvur',
     badge: 'Önde gelen Türk üniversitelerinin yetkili temsilcisi',
@@ -132,6 +151,17 @@ const copy = {
         'Bütçenize ve üniversite konumunuza uygun konaklama seçeneklerini araştırıyoruz.',
       ],
     ],
+    stepsTag: 'Basit süreç',
+    stepsTitle: 'Bizimle yolculuğunuz',
+    steps: [
+      [
+        'Bizimle iletişime geçin',
+        'Akademik hedeflerinizi paylaşın, size rehberlik etmeye başlayalım.',
+      ],
+      ['Bölümünüzü seçin', 'İlgi alanlarınıza ve bütçenize uygun seçenekler öneriyoruz.'],
+      ['Belgelerinizi gönderin', 'Belgelerinizi inceliyor ve başvuru dosyanızı hazırlıyoruz.'],
+      ['Eğitime başlayın', "Türkiye'deki üniversite yolculuğunuz başlayana kadar yanınızdayız."],
+    ],
     ready: 'Geleceğinize başlamaya hazır mısınız?',
     readyDescription: 'Şimdi iletişime geçin, eğitim danışmanlarımızdan biri size yardımcı olsun.',
     catalog: 'Üniversite kataloğu',
@@ -146,9 +176,11 @@ const cityLabels = {
 
 function PublicPage() {
   const [language, setLanguage] = useState<Language>('ar');
+  const [menuOpen, setMenuOpen] = useState(false);
   const [search, setSearch] = useState('');
   const [city, setCity] = useState('');
   const t = copy[language];
+  const steps: ReadonlyArray<readonly [string, string]> = t.steps;
   const direction = language === 'ar' ? 'rtl' : 'ltr';
   const filteredUniversities = useMemo(
     () =>
@@ -169,11 +201,18 @@ function PublicPage() {
             Abou-Taleb <strong>Education</strong>
           </span>
         </Link>
-        <nav aria-label="Primary navigation">
-          <a href="#home">{t.home}</a>
-          <a href="#services">{t.services}</a>
-          <a href="#universities">{t.universities}</a>
-          <a href="#contact">{t.contact}</a>
+        <nav className={menuOpen ? 'open' : undefined} aria-label="Primary navigation">
+          {[
+            ['#home', t.home],
+            ['#services', t.services],
+            ['#universities', t.universities],
+            ['#steps', t.registrationSteps],
+            ['#contact', t.contact],
+          ].map(([href, label]) => (
+            <a href={href} key={href} onClick={() => setMenuOpen(false)}>
+              {label}
+            </a>
+          ))}
         </nav>
         <div className="header-actions">
           <label className="language-picker">
@@ -192,6 +231,17 @@ function PublicPage() {
           <a className="button button-small" href="#contact">
             {t.apply}
           </a>
+          <button
+            className="menu-button"
+            type="button"
+            aria-label="Toggle navigation"
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
         </div>
       </header>
 
@@ -289,6 +339,22 @@ function PublicPage() {
               </article>
             ))}
           </div>
+        </section>
+
+        <section className="content-section steps" id="steps">
+          <div className="section-heading">
+            <p>{t.stepsTag}</p>
+            <h2>{t.stepsTitle}</h2>
+          </div>
+          <ol className="steps-list">
+            {steps.map(([title, description], index) => (
+              <li key={title}>
+                <span>{index + 1}</span>
+                <h3>{title}</h3>
+                <p>{description}</p>
+              </li>
+            ))}
+          </ol>
         </section>
       </main>
 
