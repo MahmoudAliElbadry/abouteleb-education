@@ -47,6 +47,7 @@ model User {
   assignedOrders       Order[] @relation("AssignedOrders")
   orderStatusChanges   OrderStatusHistory[] @relation("OrderStatusChangedBy")
   orderResponses       OrderClientResponse[]
+  internalNotes        OrderInternalNote[] @relation("OrderInternalNoteAuthor")
 
   @@index([role, status])
 }
@@ -71,6 +72,7 @@ model Order {
   assignedAdmin  User?                 @relation("AssignedOrders", fields: [assignedAdminId], references: [id], onDelete: SetNull)
   statusHistory  OrderStatusHistory[]
   clientResponses OrderClientResponse[]
+  internalNotes  OrderInternalNote[]
 
   @@index([clientId, createdAt])
   @@index([status, createdAt])
@@ -83,10 +85,25 @@ model OrderStatusHistory {
   fromStatus      OrderStatus?
   toStatus        OrderStatus
   changedByUserId String?
+  clientVisibleMessage String?
   createdAt       DateTime     @default(now())
 
   order         Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
   changedByUser User? @relation("OrderStatusChangedBy", fields: [changedByUserId], references: [id], onDelete: SetNull)
+
+  @@index([orderId, createdAt])
+}
+
+model OrderInternalNote {
+  id        String   @id @default(cuid())
+  orderId   String
+  adminId   String?
+  body      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  admin User? @relation("OrderInternalNoteAuthor", fields: [adminId], references: [id], onDelete: SetNull)
 
   @@index([orderId, createdAt])
 }

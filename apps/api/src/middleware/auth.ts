@@ -22,3 +22,12 @@ export function requireCsrf(request: Request, response: Response, next: NextFunc
 
   next();
 }
+
+export function requireAdmin(_request: Request, response: Response, next: NextFunction) {
+  if (response.locals.user?.role !== 'ADMIN') {
+    next(appErrors.forbidden());
+    return;
+  }
+
+  next();
+}
