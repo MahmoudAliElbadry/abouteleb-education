@@ -710,7 +710,8 @@ Deliverables:
 - Admin bootstrap/invite path.
 - Client/admin authorization middleware.
 - Rate limits, CSRF protection, secure cookie policy, and auth audit events.
-- Auth pages and protected route UX.
+- Sign-up, email-verification, login, password-reset, and session-aware protected-route pages.
+- Localized authentication forms with field validation, safe errors, loading states, and redirect-back behavior.
 - Unit, integration, and end-to-end auth tests.
 
 Exit criteria: unauthorized, unverified, client, and admin behaviors are proven by automated tests.
@@ -752,6 +753,11 @@ Exit criteria: public-site content parity is approved and catalog works across t
 Deliverables:
 
 - Final order schema and status-history model.
+- Public “Enroll now” / “Application Request” section at the end of the landing page.
+- When signed out, show the enrollment form dimmed and non-interactive with a lock icon, sign-in explanation, and button linking to the login page.
+- When signed in with a verified client account, unlock the same form for direct submission without requiring a second page.
+- When signed in but unverified, keep submission locked and provide the email-verification path.
+- Localize the enrollment section, lock state, sign-in CTA, validation errors, and specialization options in Arabic, English, and Turkish.
 - Authenticated, verified-only order creation.
 - Draft, submit, detail, list, requested-information, and allowed cancellation flows.
 - Client order dashboard and timeline.
@@ -759,7 +765,7 @@ Deliverables:
 - Notifications for successful submission and important status changes.
 - Integration and end-to-end tests.
 
-Exit criteria: a client cannot view another client's order or create an order without a verified session; the full happy path and critical failures pass.
+Exit criteria: sign-up and login pages work with session restoration; signed-out visitors cannot fill or submit enrollment; verified clients can submit directly from the landing page; a client cannot view another client's order; the full happy path and critical failures pass.
 
 ### Phase 5 — Admin order dashboard (5–8 days)
 
