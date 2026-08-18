@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 import { universities } from './data/universities.js';
 
@@ -27,6 +27,8 @@ const copy = {
     search: 'ابحث باسم الجامعة',
     allCities: 'كل المدن',
     noResults: 'لم نجد جامعة مطابقة. جرّب بحثاً أو مدينة أخرى.',
+    showMore: 'عرض المزيد من الجامعات',
+    showLess: 'عرض أقل',
     universitiesCount: 'جامعة متعاقدة',
     students: 'طالب مسجل',
     admission: 'قبول مضمون',
@@ -74,6 +76,8 @@ const copy = {
     search: 'Search by university name',
     allCities: 'All cities',
     noResults: 'No universities match that search. Try another name or city.',
+    showMore: 'Show more universities',
+    showLess: 'Show fewer',
     universitiesCount: 'Partner universities',
     students: 'Registered students',
     admission: 'Guaranteed admission',
@@ -133,6 +137,8 @@ const copy = {
     search: 'Üniversite adına göre ara',
     allCities: 'Tüm şehirler',
     noResults: 'Eşleşen üniversite bulunamadı. Başka bir ad veya şehir deneyin.',
+    showMore: 'Daha fazla üniversite göster',
+    showLess: 'Daha az göster',
     universitiesCount: 'Anlaşmalı üniversite',
     students: 'Kayıtlı öğrenci',
     admission: 'Garantili kabul',
@@ -168,6 +174,39 @@ const copy = {
   },
 } as const;
 
+function AnimatedStat({ value, label }: { value: string; label: string }) {
+  const [displayValue, setDisplayValue] = useState('0');
+
+  useEffect(() => {
+    const numericValue = Number(value.replace(/\D/g, ''));
+    const prefix = value.startsWith('+') ? '+' : '';
+    const suffix = value.endsWith('%') ? '%' : '';
+    const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+    if (reducedMotion) {
+      setDisplayValue(value);
+      return;
+    }
+
+    const duration = 900;
+    const startedAt = performance.now();
+    let animationFrame = 0;
+    const animate = (now: number) => {
+      const progress = Math.min((now - startedAt) / duration, 1);
+      setDisplayValue(`${prefix}${Math.round(numericValue * progress).toLocaleString()}${suffix}`);
+      if (progress < 1) animationFrame = requestAnimationFrame(animate);
+    };
+    animationFrame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrame);
+  }, [value]);
+
+  return (
+    <div>
+      <strong>{displayValue}</strong>
+      <span>{label}</span>
+    </div>
+  );
+}
+
 const cityLabels = {
   ar: { Istanbul: 'إسطنبول', Ankara: 'أنقرة', Kocaeli: 'كوجالي' },
   en: { Istanbul: 'Istanbul', Ankara: 'Ankara', Kocaeli: 'Kocaeli' },
@@ -179,8 +218,15 @@ function PublicPage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [search, setSearch] = useState('');
   const [city, setCity] = useState('');
+  const [showAllUniversities, setShowAllUniversities] = useState(false);
   const t = copy[language];
   const steps: ReadonlyArray<readonly [string, string]> = t.steps;
+  const stats: ReadonlyArray<readonly [string, string]> = [
+    ['+50', t.universitiesCount],
+    ['+1500', t.students],
+    ['100%', t.admission],
+    ['+8', t.experience],
+  ];
   const direction = language === 'ar' ? 'rtl' : 'ltr';
   const filteredUniversities = useMemo(
     () =>
@@ -191,6 +237,9 @@ function PublicPage() {
       ),
     [city, search],
   );
+  const shownUniversities = showAllUniversities
+    ? filteredUniversities
+    : filteredUniversities.slice(0, 8);
 
   return (
     <div className="public-site" dir={direction} lang={language}>
@@ -265,16 +314,8 @@ function PublicPage() {
         </section>
 
         <section className="stats" aria-label="Company statistics">
-          {[
-            ['+50', t.universitiesCount],
-            ['+1500', t.students],
-            ['100%', t.admission],
-            ['+8', t.experience],
-          ].map(([value, label]) => (
-            <div key={label}>
-              <strong>{value}</strong>
-              <span>{label}</span>
-            </div>
+          {stats.map(([value, label]) => (
+            <AnimatedStat key={label} value={value} label={label} />
           ))}
         </section>
 
@@ -294,7 +335,7 @@ function PublicPage() {
                 type="search"
               />
             </label>
-            <label>
+            <label className="city-picker">
               <span className="sr-only">{t.allCities}</span>
               <select value={city} onChange={(event) => setCity(event.target.value)}>
                 <option value="">{t.allCities}</option>
@@ -308,7 +349,7 @@ function PublicPage() {
           </div>
           {filteredUniversities.length ? (
             <div className="university-grid">
-              {filteredUniversities.map((university) => (
+              {shownUniversities.map((university) => (
                 <article className="university-card" key={university.id}>
                   <div className="university-logo">
                     <img src={university.image} alt={`${university.name} logo`} />
@@ -322,6 +363,15 @@ function PublicPage() {
             <p className="empty-state" role="status">
               {t.noResults}
             </p>
+          )}
+          {filteredUniversities.length > 8 && (
+            <button
+              className="catalog-toggle"
+              type="button"
+              onClick={() => setShowAllUniversities((showAll) => !showAll)}
+            >
+              {showAllUniversities ? t.showLess : t.showMore}
+            </button>
           )}
         </section>
 
@@ -375,7 +425,9 @@ function PublicPage() {
         rel="noreferrer"
         aria-label="WhatsApp"
       >
-        ◔
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M27.2 4.8A15.5 15.5 0 0 0 2.9 23.5L1 31l7.7-2A15.5 15.5 0 1 0 27.2 4.8Zm-11.1 23a12.4 12.4 0 0 1-6.3-1.7l-.5-.3-4.6 1.2 1.2-4.5-.3-.5a12.4 12.4 0 1 1 10.5 5.8Zm6.8-9.3c-.4-.2-2.4-1.2-2.8-1.3-.4-.1-.7-.2-1 .2-.3.4-1.1 1.3-1.3 1.6-.2.3-.5.3-.9.1a10.2 10.2 0 0 1-3-1.9 11.2 11.2 0 0 1-2.1-2.6c-.2-.4 0-.6.1-.8l.6-.7c.2-.2.2-.4.3-.7.1-.2 0-.5 0-.7-.1-.2-1-2.3-1.3-3.1-.3-.8-.7-.7-1-.7h-.8c-.3 0-.7.1-1 .5-.4.4-1.4 1.4-1.4 3.5 0 2 1.5 4 1.7 4.3.2.3 2.9 4.4 7 6.2 1 .4 1.7.7 2.3.9 1 .3 1.9.3 2.6.2.8-.1 2.4-1 2.8-2 .3-1 .3-1.8.2-2-.1-.2-.3-.3-.7-.5Z" />
+        </svg>
       </a>
     </div>
   );

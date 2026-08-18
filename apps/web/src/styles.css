@@ -117,12 +117,30 @@ nav a:hover {
   gap: 0.65rem;
 }
 .language-picker select {
+  appearance: none;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 99px;
   color: #fff;
   cursor: pointer;
-  padding: 0.5rem 0.75rem;
+  padding: 0.5rem 2.3rem 0.5rem 0.75rem;
+}
+.language-picker,
+.city-picker {
+  position: relative;
+}
+.language-picker::after,
+.city-picker::after {
+  border-bottom: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+  content: '';
+  height: 0.4rem;
+  inset-inline-end: 0.9rem;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-65%) rotate(45deg);
+  width: 0.4rem;
 }
 .language-picker option {
   color: #1e293b;
@@ -163,11 +181,23 @@ nav a:hover {
   background: linear-gradient(135deg, #0a0a0a 0%, #1e293b 100%);
   color: #fff;
   padding: clamp(5rem, 10vw, 8rem) 1.25rem clamp(6rem, 11vw, 9rem);
+  position: relative;
   text-align: center;
+}
+.hero::after {
+  background: linear-gradient(to top, #f8fafc, transparent);
+  bottom: 0;
+  content: '';
+  height: 6rem;
+  inset-inline: 0;
+  pointer-events: none;
+  position: absolute;
 }
 .hero-content {
   margin: 0 auto;
   max-width: 57rem;
+  position: relative;
+  z-index: 1;
 }
 .hero-badge,
 .section-heading > p,
@@ -286,7 +316,12 @@ nav a:hover {
   width: 100%;
 }
 .catalog-controls select {
+  appearance: none;
   min-width: 10rem;
+  padding-inline-end: 2.3rem;
+}
+.city-picker {
+  color: #1e293b;
 }
 .university-grid {
   display: grid;
@@ -343,6 +378,21 @@ nav a:hover {
   max-width: 34rem;
   padding: 2rem;
   text-align: center;
+}
+.catalog-toggle {
+  background: #fff;
+  border: 1px solid var(--primary);
+  border-radius: 99px;
+  color: var(--primary);
+  cursor: pointer;
+  display: block;
+  font-weight: 800;
+  margin: 2rem auto 0;
+  padding: 0.65rem 1.25rem;
+}
+.catalog-toggle:hover {
+  background: var(--primary);
+  color: #fff;
 }
 .services {
   background: #f1f5f9;
@@ -450,7 +500,6 @@ nav a:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   color: #fff;
   display: flex;
-  font-size: 2rem;
   height: 3.5rem;
   justify-content: center;
   left: 1.25rem;
@@ -458,6 +507,11 @@ nav a:hover {
   text-decoration: none;
   width: 3.5rem;
   z-index: 5;
+}
+.whatsapp svg {
+  fill: currentColor;
+  height: 2rem;
+  width: 2rem;
 }
 .not-found {
   display: grid;
