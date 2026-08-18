@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 import { universities } from './data/universities.js';
+import { ApplicationPage } from './ApplicationPage.js';
 
 type Language = 'ar' | 'en' | 'tr';
 
@@ -277,9 +278,9 @@ function PublicPage() {
               ))}
             </select>
           </label>
-          <a className="button button-small" href="#contact">
+          <Link className="button button-small" to="/applications">
             {t.apply}
-          </a>
+          </Link>
           <button
             className="menu-button"
             type="button"
@@ -446,6 +447,7 @@ export function App() {
   return (
     <Routes>
       <Route path="/" element={<PublicPage />} />
+      <Route path="/applications" element={<ApplicationPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
