@@ -34,7 +34,10 @@ describe('ChallengeService', () => {
       attemptCount: 0,
       expiresAt: new Date(Date.now() + 60_000),
     });
-    const service = new ChallengeService(repository, { sendOtp: vi.fn() } satisfies EmailProvider);
+    const service = new ChallengeService(repository, {
+      sendOtp: vi.fn(),
+      sendOrderNotification: vi.fn(),
+    } satisfies EmailProvider);
 
     await expect(service.verify('user-1', '654321', 'PASSWORD_RESET')).rejects.toMatchObject({
       code: 'INVALID_RESET',
@@ -53,7 +56,10 @@ describe('ChallengeService', () => {
       attemptCount: MAX_OTP_ATTEMPTS,
       expiresAt: new Date(Date.now() + 60_000),
     });
-    const service = new ChallengeService(repository, { sendOtp: vi.fn() } satisfies EmailProvider);
+    const service = new ChallengeService(repository, {
+      sendOtp: vi.fn(),
+      sendOrderNotification: vi.fn(),
+    } satisfies EmailProvider);
 
     await expect(service.verify('user-1', '123456', 'EMAIL_VERIFY')).rejects.toMatchObject({
       code: 'INVALID_VERIFICATION',
@@ -64,7 +70,10 @@ describe('ChallengeService', () => {
   it('treats a missing active challenge, including an expired one filtered by the repository, as invalid', async () => {
     const repository = repositoryStub();
     vi.mocked(repository.findActiveChallenge).mockResolvedValue(null);
-    const service = new ChallengeService(repository, { sendOtp: vi.fn() } satisfies EmailProvider);
+    const service = new ChallengeService(repository, {
+      sendOtp: vi.fn(),
+      sendOrderNotification: vi.fn(),
+    } satisfies EmailProvider);
 
     await expect(service.verify('user-1', '123456', 'PASSWORD_RESET')).rejects.toMatchObject({
       code: 'INVALID_RESET',

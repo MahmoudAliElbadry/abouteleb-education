@@ -3,13 +3,27 @@ import { AppError } from '../../core/app-error.js';
 import { logger } from '../../core/logger.js';
 
 export type EmailPurpose = 'EMAIL_VERIFY' | 'PASSWORD_RESET';
+export type OrderNotificationEvent = 'submitted' | 'status_changed';
 
 export interface EmailProvider {
   sendOtp(input: { recipient: string; code: string; purpose: EmailPurpose }): Promise<void>;
+  sendOrderNotification(input: {
+    recipient: string;
+    reference: string;
+    event: OrderNotificationEvent;
+    newStatus?: string;
+  }): Promise<void>;
 }
 
 type DevelopmentMessage = { recipient: string; code: string; purpose: EmailPurpose };
+type DevelopmentOrderMessage = {
+  recipient: string;
+  reference: string;
+  event: OrderNotificationEvent;
+  newStatus?: string;
+};
 const developmentMailbox: DevelopmentMessage[] = [];
+const developmentOrderMailbox: DevelopmentOrderMessage[] = [];
 
 export function getDevelopmentMailbox() {
   return [...developmentMailbox];
@@ -17,6 +31,11 @@ export function getDevelopmentMailbox() {
 
 export function clearDevelopmentMailbox() {
   developmentMailbox.length = 0;
+  developmentOrderMailbox.length = 0;
+}
+
+export function getDevelopmentOrderMailbox() {
+  return [...developmentOrderMailbox];
 }
 
 export class DevelopmentEmailProvider implements EmailProvider {
@@ -26,6 +45,16 @@ export class DevelopmentEmailProvider implements EmailProvider {
       recipient: input.recipient,
       purpose: input.purpose,
       code: input.code,
+    });
+  }
+
+  async sendOrderNotification(input: DevelopmentOrderMessage) {
+    developmentOrderMailbox.push(input);
+    logger.info('email.development.order_sent', {
+      recipient: input.recipient,
+      reference: input.reference,
+      event: input.event,
+      newStatus: input.newStatus,
     });
   }
 }
@@ -48,6 +77,43 @@ export class ResendEmailProvider implements EmailProvider {
           to: [input.recipient],
           subject,
           text: `Your Abou-Taleb Education code is ${input.code}. It expires in 10 minutes.`,
+        }),
+      });
+      if (!response.ok) {
+        throw new AppError(
+          'EMAIL_DELIVERY_FAILED',
+          503,
+          'Unable to send email. Please try again shortly.',
+          { providerStatus: response.status },
+        );
+      }
+    } catch (error) {
+      if (error instanceof AppError) throw error;
+      throw new AppError(
+        'EMAIL_DELIVERY_FAILED',
+        503,
+        'Unable to send email. Please try again shortly.',
+      );
+    }
+  }
+
+  async sendOrderNotification(input: DevelopmentOrderMessage) {
+    const subject =
+      input.event === 'submitted'
+        ? `Application request received: ${input.reference}`
+        : `Application request update: ${input.reference}`;
+    try {
+      const response = await this.fetcher('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${this.apiKey}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          from: this.from,
+          to: [input.recipient],
+          subject,
+          text:
+            input.event === 'submitted'
+              ? `We received your application request ${input.reference}.`
+              : `Your application request ${input.reference} is now ${input.newStatus ?? 'updated'}.`,
         }),
       });
       if (!response.ok) {

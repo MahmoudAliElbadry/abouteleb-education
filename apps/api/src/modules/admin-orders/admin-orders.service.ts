@@ -200,7 +200,7 @@ export class AdminOrdersService {
     return this.prisma.$transaction(async (transaction) => {
       const order = await transaction.order.findUnique({
         where: { id: orderId },
-        select: { id: true, reference: true, status: true },
+        select: { id: true, reference: true, email: true, status: true },
       });
       if (!order) throw appErrors.notFound();
       const toStatus = input.to as OrderStatus;
@@ -242,6 +242,7 @@ export class AdminOrdersService {
       });
       return {
         orderId: order.id,
+        recipient: order.email,
         reference: order.reference,
         fromStatus: order.status,
         toStatus,

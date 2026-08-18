@@ -4,8 +4,11 @@ import { prisma } from '../../lib/prisma.js';
 import { requireAuth, requireCsrf } from '../../middleware/auth.js';
 import { OrdersService } from './orders.service.js';
 import { appErrors } from '../../core/app-error.js';
+import { createEmailProvider } from '../auth/email.provider.js';
+import { createOrderNotifier } from './notifier.js';
 
 const ordersService = new OrdersService(prisma);
+const orderNotifier = createOrderNotifier(createEmailProvider());
 export const ordersRouter = Router();
 
 ordersRouter.use(requireAuth);
@@ -25,6 +28,7 @@ ordersRouter.post('/', requireCsrf, async (request, response, next) => {
       createOrderSchema.parse(request.body),
       request.ip,
     );
+    await orderNotifier.notifySubmitted({ recipient: order.email, reference: order.reference });
     response.status(201).json({ order });
   } catch (error) {
     next(error);

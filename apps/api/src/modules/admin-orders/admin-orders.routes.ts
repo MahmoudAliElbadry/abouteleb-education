@@ -9,8 +9,11 @@ import { prisma } from '../../lib/prisma.js';
 import { appErrors } from '../../core/app-error.js';
 import { requireAdmin, requireAuth, requireCsrf } from '../../middleware/auth.js';
 import { AdminOrdersService } from './admin-orders.service.js';
+import { createEmailProvider } from '../auth/email.provider.js';
+import { createOrderNotifier } from '../orders/notifier.js';
 
 const adminOrdersService = new AdminOrdersService(prisma);
+const orderNotifier = createOrderNotifier(createEmailProvider());
 export const adminOrdersRouter = Router();
 
 function orderIdFrom(request: Request) {
@@ -67,6 +70,11 @@ adminOrdersRouter.post('/:orderId/status', requireCsrf, async (request, response
       response.locals.user!.id,
       request.ip,
     );
+    await orderNotifier.notifyStatusChanged({
+      recipient: result.recipient,
+      reference: result.reference,
+      newStatus: result.toStatus,
+    });
     response.json({ transition: result });
   } catch (error) {
     next(error);
