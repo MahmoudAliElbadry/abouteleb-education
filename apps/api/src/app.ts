@@ -11,6 +11,7 @@ import { AppError, appErrors } from './core/app-error.js';
 import { logger } from './core/logger.js';
 import { requestContext } from './middleware/request-context.js';
 import { ordersRouter } from './modules/orders/orders.routes.js';
+import { adminOrdersRouter } from './modules/admin-orders/admin-orders.routes.js';
 
 export const app = express();
 
@@ -24,6 +25,7 @@ app.use(requestContext);
 
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/orders', ordersRouter);
+app.use('/api/v1/admin/orders', adminOrdersRouter);
 
 app.get('/api/v1/health', (_request, response) => {
   response.json(healthResponseSchema.parse({ status: 'ok', service: 'api' }));
