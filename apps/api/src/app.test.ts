@@ -15,6 +15,7 @@ describe('API foundation', () => {
 
     expect(response.status).toBe(404);
     expect(response.body.error.code).toBe('NOT_FOUND');
+    expect(response.body.error.requestId).toEqual(expect.any(String));
   });
 
   it('returns validation errors as 400 responses', async () => {
@@ -22,5 +23,6 @@ describe('API foundation', () => {
 
     expect(response.status).toBe(400);
     expect(response.body.error.code).toBe('VALIDATION_ERROR');
+    expect(response.body.error.requestId).toEqual(expect.any(String));
   });
 });

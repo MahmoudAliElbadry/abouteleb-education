@@ -718,6 +718,8 @@ Deliverables:
 
 Exit criteria: formatting, linting, type checks, unit tests, PostgreSQL integration tests, and production builds pass; all authentication failures use the standard error response shape.
 
+API note: every authenticated, cookie-based mutation must send `X-CSRF-Token` with the same value as the readable CSRF cookie issued at login. Add `requireAuth` and `requireCsrf` to all future authenticated mutation routes.
+
 ### Phase 3 — Public React site and university catalog (4–7 days)
 
 Deliverables:
