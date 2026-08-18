@@ -34,6 +34,7 @@ function toPublicOrder(order: Prisma.OrderGetPayload<{ include: typeof orderIncl
     statusHistory: order.statusHistory.map((entry) => ({
       fromStatus: entry.fromStatus,
       toStatus: entry.toStatus,
+      clientVisibleMessage: entry.clientVisibleMessage,
       createdAt: entry.createdAt,
     })),
     responses: order.clientResponses.map((response) => ({
