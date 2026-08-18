@@ -743,16 +743,6 @@ Deliverables:
 
 Exit criteria: public-site content parity is approved and catalog works across the viewport matrix.
 
-### Phase 3.1 — Public-site acceptance checkpoint (1 day)
-
-Deliverables:
-
-- Manual owner review of the GitHub Pages preview across desktop and mobile widths.
-- TestSprite browser testing for navigation, catalog search/filtering, language direction, mobile menu, external links, and visual responsiveness.
-- Record and fix confirmed defects before Phase 4 begins.
-
-Exit criteria: manual owner acceptance and TestSprite evidence are recorded; no critical public-site usability defect remains.
-
 ### Phase 4 — Client order workflow (4–7 days)
 
 Deliverables:
@@ -779,6 +769,15 @@ Deliverables:
 - Permission and workflow tests.
 
 Exit criteria: admins can process an order from submission to a terminal state with a complete history and no client-data isolation failure.
+
+### Phase 5.1 — Public and operations acceptance checkpoint (1 day)
+
+Deliverables:
+
+- TestSprite browser testing for public navigation, catalog search/filtering, language direction, mobile menu, external links, client order flow, and responsive admin views.
+- Record and fix confirmed defects before Phase 6 begins.
+
+Exit criteria: TestSprite evidence is recorded; no critical public, client, or admin usability defect remains.
 
 ### Phase 6 — Content management (4–7 days)
 
