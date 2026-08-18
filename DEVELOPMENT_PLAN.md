@@ -119,12 +119,22 @@ The current GitHub Pages deployment cannot run Express. The target deployment ne
 - Automated database backups.
 - A staging environment separate from production.
 
-Recommended domain layout:
+Approved initial deployment layout:
 
-- `aboutalebeducation.com` — public React app.
-- `aboutalebeducation.com/api` — Express API behind the same origin when the host supports routing.
+- `aboutalebeducation.com` — static React app on GitHub Pages.
+- `api.aboutalebeducation.com` — Express API on Render's free tier.
+- Managed PostgreSQL — Neon, connected through `DATABASE_URL`.
+- OTP delivery — Resend, after domain DNS verification.
 
-Same-origin deployment simplifies cookies, CORS, and CSRF handling. If infrastructure requires `api.aboutalebeducation.com`, cookie scope and CORS rules must be reviewed carefully.
+Start with Render's free tier to control costs. Its inactivity spin-down/cold-start delay is acceptable during the early validation period. Upgrade the API to an always-on paid Render plan when real users, OTP delivery speed, uptime expectations, or project income justify it; no application rewrite should be required.
+
+Cross-subdomain production requirements:
+
+- Set `WEB_ORIGIN=https://aboutalebeducation.com` and allow credentials only for that origin.
+- Use HTTPS-only cookies with `SameSite=Lax` and production `Domain=.aboutalebeducation.com` so the frontend can read the CSRF cookie while the session cookie remains `HttpOnly`.
+- Keep the API at `https://api.aboutalebeducation.com`; never expose API keys, database URLs, or Resend credentials to the React build.
+- Verify CORS, login, session restore, CSRF-protected mutation, logout, and password reset on both the custom domain and the final API subdomain before launch.
+- Add a configurable production cookie domain before enabling cross-subdomain authentication.
 
 The business may already own hosting, but we still need the **hosting company and plan/control-panel details**. We must verify that it supports a persistent Node.js process, environment variables, HTTPS routing, and access to PostgreSQL. Owning a domain or having static/PHP hosting does not automatically mean it can run Express.
 
@@ -732,6 +742,16 @@ Deliverables:
 - SEO, accessibility, and browser baseline.
 
 Exit criteria: public-site content parity is approved and catalog works across the viewport matrix.
+
+### Phase 3.1 — Public-site acceptance checkpoint (1 day)
+
+Deliverables:
+
+- Manual owner review of the GitHub Pages preview across desktop and mobile widths.
+- TestSprite browser testing for navigation, catalog search/filtering, language direction, mobile menu, external links, and visual responsiveness.
+- Record and fix confirmed defects before Phase 4 begins.
+
+Exit criteria: manual owner acceptance and TestSprite evidence are recorded; no critical public-site usability defect remains.
 
 ### Phase 4 — Client order workflow (4–7 days)
 
