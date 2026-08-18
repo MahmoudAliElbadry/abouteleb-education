@@ -710,8 +710,6 @@ Deliverables:
 - Admin bootstrap/invite path.
 - Client/admin authorization middleware.
 - Rate limits, CSRF protection, secure cookie policy, and auth audit events.
-- Sign-up, email-verification, login, password-reset, and session-aware protected-route pages.
-- Localized authentication forms with field validation, safe errors, loading states, and redirect-back behavior.
 - Unit, integration, and end-to-end auth tests.
 
 Exit criteria: unauthorized, unverified, client, and admin behaviors are proven by automated tests.
@@ -753,11 +751,6 @@ Exit criteria: public-site content parity is approved and catalog works across t
 Deliverables:
 
 - Final order schema and status-history model.
-- Public “Enroll now” / “Application Request” section at the end of the landing page.
-- When signed out, show the enrollment form dimmed and non-interactive with a lock icon, sign-in explanation, and button linking to the login page.
-- When signed in with a verified client account, unlock the same form for direct submission without requiring a second page.
-- When signed in but unverified, keep submission locked and provide the email-verification path.
-- Localize the enrollment section, lock state, sign-in CTA, validation errors, and specialization options in Arabic, English, and Turkish.
 - Authenticated, verified-only order creation.
 - Draft, submit, detail, list, requested-information, and allowed cancellation flows.
 - Client order dashboard and timeline.
@@ -765,7 +758,7 @@ Deliverables:
 - Notifications for successful submission and important status changes.
 - Integration and end-to-end tests.
 
-Exit criteria: sign-up and login pages work with session restoration; signed-out visitors cannot fill or submit enrollment; verified clients can submit directly from the landing page; a client cannot view another client's order; the full happy path and critical failures pass.
+Exit criteria: a client cannot view another client's order or create an order without a verified session; the full order happy path and critical failures pass.
 
 ### Phase 5 — Admin order dashboard (5–8 days)
 
@@ -774,11 +767,18 @@ Deliverables:
 - Admin metrics and paginated order list.
 - Search, sorting, and filters.
 - Order detail, assignment, valid status transitions, internal notes, and client-visible messages.
+- Sign-up, email-verification, login, password-reset, and session-aware protected-route pages.
+- Localized authentication forms with field validation, safe errors, loading states, and redirect-back behavior.
+- Public “Enroll now” / “Application Request” section at the end of the landing page.
+- Signed-out enrollment state: dimmed, non-interactive form with a lock icon, explanation, and login button.
+- Signed-in verified-client state: the same enrollment form becomes directly usable without a second page.
+- Signed-in unverified-client state: submission remains locked and provides the email-verification path.
+- Arabic, English, and Turkish localization for the enrollment section, lock state, CTA, validation errors, and specializations.
 - Audit records and notification triggers.
 - Responsive admin presentation.
 - Permission and workflow tests.
 
-Exit criteria: admins can process an order from submission to a terminal state with a complete history and no client-data isolation failure.
+Exit criteria: admins can process an order from submission to a terminal state with a complete history and no client-data isolation failure; authentication pages and the session-aware enrollment experience work across the supported languages.
 
 ### Phase 5.1 — Public and operations acceptance checkpoint (1 day)
 
