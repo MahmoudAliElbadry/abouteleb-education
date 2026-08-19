@@ -785,9 +785,30 @@ Exit criteria: admins can process an order from submission to a terminal state w
 Deliverables:
 
 - TestSprite browser testing for public navigation, catalog search/filtering, language direction, mobile menu, external links, client order flow, and responsive admin views.
+- TestSprite backend testing for health, authentication, sessions, CSRF, client order ownership, and admin order authorization/workflows.
 - Record and fix confirmed defects before Phase 6 begins.
 
 Exit criteria: TestSprite evidence is recorded; no critical public, client, or admin usability defect remains.
+
+#### TestSprite execution status and resume conditions
+
+TestSprite has successfully analyzed this repository, generated the standardized PRD, and generated both frontend and backend test plans. The generated backend plan is stored at `testsprite_tests/testsprite_backend_test_plan.json`.
+
+The local execution attempts are currently treated as **blocked acceptance evidence**, not as application failures, for these reasons:
+
+- The TestSprite MCP planning call prepares a terminal handoff; the returned CLI command must be executed as a separate step.
+- TestSprite execution depends on a cloud tunnel reaching the local server. The previous run recorded tunnel stream aborts, closed control WebSockets, local-port timeouts, and failed external-resource connections.
+- This workspace has separate React (`4173`) and Express (`4000`) servers, so the correct server and endpoint must be selected for each test type.
+- Backend flows require PostgreSQL, seeded client/admin accounts, session state, and a testable OTP delivery path. Local PostgreSQL/Docker is unavailable in the current environment, and Render/Neon have not been connected yet.
+
+Do not spend additional TestSprite execution credits on the full stateful suite until the hosting flag is resolved. After Render and Neon are connected, resume in this order:
+
+1. Deploy the Express API to a Render staging service and connect it to a Neon PostgreSQL database.
+2. Apply reviewed Prisma migrations with `prisma migrate deploy` and seed non-production test accounts/data.
+3. Configure the development/test email provider or an approved test mailbox for OTP retrieval; configure Resend and DNS separately for production.
+4. Run API health/readiness smoke tests, then execute the TestSprite backend plan against the stable staging target.
+5. Execute the frontend plan against the deployed React site/API combination, record failures, and fix only confirmed defects.
+6. Re-run the application test suite, builds, and TestSprite evidence before starting Phase 6.
 
 ### Phase 6 — Content management (4–7 days)
 
@@ -979,6 +1000,7 @@ These items are intentionally flagged and do not prevent local foundation work:
 3. **`[FLAG: BUSINESS/LEGAL]`** Confirm the provisional retention periods and final privacy-policy wording before production launch.
 4. **`[FLAG: CONTENT]`** Collect approved Arabic, English, and Turkish testimonial content and consent evidence before publishing the “Our Clients” section with real people.
 5. **`[FLAG: EMAIL/DNS]`** Approve the Resend account and add SPF, DKIM, and DMARC DNS records before production OTP testing.
+6. **`[FLAG: TESTSPRITE/STAGING]`** Defer full TestSprite execution until a stable staging API/site is available with Render + Neon, database migrations applied, seeded test accounts, and a deterministic OTP test path. TestSprite plan generation is complete; local execution evidence is currently inconclusive because of tunnel/network and missing stateful dependencies.
 
 ### Provisional privacy and retention baseline
 
