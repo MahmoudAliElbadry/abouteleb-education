@@ -24,8 +24,17 @@ export class SessionService {
 
   async revoke(rawToken: string | undefined, response: Response) {
     if (rawToken) await this.repository.revokeSession(hashToken(rawToken), this.now());
-    response.clearCookie(env.SESSION_COOKIE_NAME, { httpOnly: true, path: '/' });
-    response.clearCookie(env.CSRF_COOKIE_NAME, { httpOnly: false, path: '/' });
+    const cookieScope = env.COOKIE_DOMAIN ? { domain: env.COOKIE_DOMAIN } : {};
+    response.clearCookie(env.SESSION_COOKIE_NAME, {
+      httpOnly: true,
+      path: '/',
+      ...cookieScope,
+    });
+    response.clearCookie(env.CSRF_COOKIE_NAME, {
+      httpOnly: false,
+      path: '/',
+      ...cookieScope,
+    });
   }
 
   async getUser(rawToken: string | undefined): Promise<AuthUser | null> {
@@ -52,6 +61,7 @@ export class SessionService {
       sameSite: 'lax' as const,
       path: '/',
       expires: expiresAt,
+      ...(env.COOKIE_DOMAIN ? { domain: env.COOKIE_DOMAIN } : {}),
     };
     response.cookie(env.SESSION_COOKIE_NAME, rawToken, { ...cookieOptions, httpOnly: true });
     response.cookie(env.CSRF_COOKIE_NAME, randomBytes(32).toString('base64url'), {

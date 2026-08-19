@@ -5,6 +5,7 @@ const baseEnvSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   API_PORT: z.coerce.number().int().min(1).max(65_535).default(4000),
   WEB_ORIGIN: z.string().url().default('http://localhost:5173'),
+  COOKIE_DOMAIN: z.string().min(1).optional(),
   DATABASE_URL: z.string().url().optional(),
   BOOTSTRAP_ADMIN_EMAIL: z.string().email().default('mostafa.ahmed.abuhamed@gmail.com'),
   RESEND_API_KEY: z.string().min(1).optional(),
@@ -18,8 +19,9 @@ const baseEnvSchema = z.object({
 function parseEnv() {
   const parsed = baseEnvSchema.parse({
     NODE_ENV: process.env.NODE_ENV,
-    API_PORT: process.env.API_PORT,
+    API_PORT: process.env.PORT ?? process.env.API_PORT,
     WEB_ORIGIN: process.env.WEB_ORIGIN,
+    COOKIE_DOMAIN: process.env.COOKIE_DOMAIN || undefined,
     DATABASE_URL: process.env.DATABASE_URL,
     BOOTSTRAP_ADMIN_EMAIL: process.env.BOOTSTRAP_ADMIN_EMAIL,
     RESEND_API_KEY: process.env.RESEND_API_KEY || undefined,

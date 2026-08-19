@@ -13,3 +13,5 @@ test-results/
 # Local database/runtime files
 *.db
 *.db-journal
+testsprite_tests/tmp/
+testsprite_tests/tmp/config.json
