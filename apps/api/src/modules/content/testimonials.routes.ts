@@ -47,15 +47,13 @@ adminTestimonialsRouter.post(
   requireCsrf,
   async (request, response, next) => {
     try {
-      response
-        .status(201)
-        .json({
-          testimonial: await service.create(
-            testimonialCreateSchema.parse(request.body),
-            response.locals.user!.id,
-            request.ip,
-          ),
-        });
+      response.status(201).json({
+        testimonial: await service.create(
+          testimonialCreateSchema.parse(request.body),
+          response.locals.user!.id,
+          request.ip,
+        ),
+      });
     } catch (error) {
       next(error);
     }

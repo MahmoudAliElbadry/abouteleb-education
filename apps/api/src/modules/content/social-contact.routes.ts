@@ -52,15 +52,13 @@ adminSocialRouter.post(
   requireCsrf,
   async (request, response, next) => {
     try {
-      response
-        .status(201)
-        .json({
-          item: await service.createSocial(
-            socialLinkCreateSchema.parse(request.body),
-            response.locals.user!.id,
-            request.ip,
-          ),
-        });
+      response.status(201).json({
+        item: await service.createSocial(
+          socialLinkCreateSchema.parse(request.body),
+          response.locals.user!.id,
+          request.ip,
+        ),
+      });
     } catch (error) {
       next(error);
     }

@@ -12,8 +12,6 @@ import {
   updateContact,
   updateSocialLink,
   updateTestimonial,
-  type ManagedSocialLink,
-  type ManagedTestimonial,
 } from './managed-content-client.js';
 
 type Language = 'ar' | 'en' | 'tr';
@@ -146,15 +144,16 @@ export function AdminManagedContentPage({
     sortOrder: 0,
   });
   const [error, setError] = useState('');
-  const mutation = useMutation<any, unknown, { type: string; id?: string; value: any }>({
-    mutationFn: (input: { type: string; id?: string; value: any }) =>
+  type MutationInput = { type: string; id?: string; value: Record<string, unknown> };
+  const mutation = useMutation<unknown, unknown, MutationInput>({
+    mutationFn: (input: MutationInput) =>
       input.type === 'testimonial'
         ? input.id
-          ? updateTestimonial(input.id, input.value)
-          : createTestimonial(input.value)
+          ? updateTestimonial(input.id, input.value as Parameters<typeof updateTestimonial>[1])
+          : createTestimonial(input.value as Parameters<typeof createTestimonial>[0])
         : input.id
-          ? updateSocialLink(input.id, input.value)
-          : createSocialLink(input.value),
+          ? updateSocialLink(input.id, input.value as Parameters<typeof updateSocialLink>[1])
+          : createSocialLink(input.value as Parameters<typeof createSocialLink>[0]),
     onSuccess: () => {
       setError('');
       void client.invalidateQueries();

@@ -67,18 +67,70 @@ async function main() {
   await prisma.$transaction([
     prisma.socialLink.upsert({
       where: { platform_url: { platform: 'whatsapp', url: 'https://wa.me/905015959880' } },
-      update: { labelAr: 'واتساب', labelEn: 'WhatsApp', labelTr: 'WhatsApp', isVisible: true, archivedAt: null, sortOrder: 0 },
-      create: { platform: 'whatsapp', labelAr: 'واتساب', labelEn: 'WhatsApp', labelTr: 'WhatsApp', url: 'https://wa.me/905015959880', iconKey: 'whatsapp', sortOrder: 0 },
+      update: {
+        labelAr: 'واتساب',
+        labelEn: 'WhatsApp',
+        labelTr: 'WhatsApp',
+        isVisible: true,
+        archivedAt: null,
+        sortOrder: 0,
+      },
+      create: {
+        platform: 'whatsapp',
+        labelAr: 'واتساب',
+        labelEn: 'WhatsApp',
+        labelTr: 'WhatsApp',
+        url: 'https://wa.me/905015959880',
+        iconKey: 'whatsapp',
+        sortOrder: 0,
+      },
     }),
     prisma.socialLink.upsert({
-      where: { platform_url: { platform: 'instagram', url: 'https://www.instagram.com/abou.taleb.education' } },
-      update: { labelAr: 'إنستجرام', labelEn: 'Instagram', labelTr: 'Instagram', isVisible: true, archivedAt: null, sortOrder: 1 },
-      create: { platform: 'instagram', labelAr: 'إنستجرام', labelEn: 'Instagram', labelTr: 'Instagram', url: 'https://www.instagram.com/abou.taleb.education', iconKey: 'instagram', sortOrder: 1 },
+      where: {
+        platform_url: {
+          platform: 'instagram',
+          url: 'https://www.instagram.com/abou.taleb.education',
+        },
+      },
+      update: {
+        labelAr: 'إنستجرام',
+        labelEn: 'Instagram',
+        labelTr: 'Instagram',
+        isVisible: true,
+        archivedAt: null,
+        sortOrder: 1,
+      },
+      create: {
+        platform: 'instagram',
+        labelAr: 'إنستجرام',
+        labelEn: 'Instagram',
+        labelTr: 'Instagram',
+        url: 'https://www.instagram.com/abou.taleb.education',
+        iconKey: 'instagram',
+        sortOrder: 1,
+      },
     }),
     prisma.socialLink.upsert({
-      where: { platform_url: { platform: 'facebook', url: 'https://www.facebook.com/AbouTalebEducation' } },
-      update: { labelAr: 'فيسبوك', labelEn: 'Facebook', labelTr: 'Facebook', isVisible: true, archivedAt: null, sortOrder: 2 },
-      create: { platform: 'facebook', labelAr: 'فيسبوك', labelEn: 'Facebook', labelTr: 'Facebook', url: 'https://www.facebook.com/AbouTalebEducation', iconKey: 'facebook', sortOrder: 2 },
+      where: {
+        platform_url: { platform: 'facebook', url: 'https://www.facebook.com/AbouTalebEducation' },
+      },
+      update: {
+        labelAr: 'فيسبوك',
+        labelEn: 'Facebook',
+        labelTr: 'Facebook',
+        isVisible: true,
+        archivedAt: null,
+        sortOrder: 2,
+      },
+      create: {
+        platform: 'facebook',
+        labelAr: 'فيسبوك',
+        labelEn: 'Facebook',
+        labelTr: 'Facebook',
+        url: 'https://www.facebook.com/AbouTalebEducation',
+        iconKey: 'facebook',
+        sortOrder: 2,
+      },
     }),
     ...[
       ['contact_phone', '+90 501 595 98 80'],
