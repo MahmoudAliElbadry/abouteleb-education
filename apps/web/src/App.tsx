@@ -13,6 +13,7 @@ import {
 import { RequireAdmin, RequireAuth } from './features/auth/guards.js';
 import { AdminOrderDetailPage, AdminOrdersPage } from './features/admin-orders/AdminOrdersPages.js';
 import { ClientOrdersPage } from './features/client-orders/ClientOrdersPage.js';
+import { AdminUniversityPage } from './features/admin-content/AdminUniversityPage.js';
 
 type Language = 'ar' | 'en' | 'tr';
 
@@ -491,6 +492,14 @@ export function App() {
           <RequireAuth>
             <ClientOrdersPage />
           </RequireAuth>
+        }
+      />
+      <Route
+        path="/admin/universities"
+        element={
+          <RequireAdmin>
+            <AdminUniversityPage />
+          </RequireAdmin>
         }
       />
       <Route
