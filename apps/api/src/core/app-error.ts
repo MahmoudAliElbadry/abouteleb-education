@@ -1,5 +1,6 @@
 export type AppErrorCode =
   | 'ACCOUNT_EXISTS'
+  | 'CONTENT_CONFLICT'
   | 'EMAIL_NOT_VERIFIED'
   | 'FORBIDDEN'
   | 'EMAIL_DELIVERY_FAILED'
@@ -27,6 +28,8 @@ export class AppError extends Error {
 
 export const appErrors = {
   accountExists: () => new AppError('ACCOUNT_EXISTS', 409, 'Account already exists'),
+  contentConflict: () =>
+    new AppError('CONTENT_CONFLICT', 409, 'Managed content conflicts with an existing record'),
   emailDeliveryFailed: () =>
     new AppError('EMAIL_DELIVERY_FAILED', 503, 'Unable to send email. Please try again shortly.'),
   emailNotVerified: () =>
