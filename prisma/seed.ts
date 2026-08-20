@@ -1,10 +1,15 @@
 import 'dotenv/config';
 import { PrismaClient } from '@prisma/client';
 import { UserRole } from '@prisma/client';
-import { CONTACT_KEYS } from '@abou/contracts';
 import { universities } from '../apps/web/src/data/universities.ts';
 
 const prisma = new PrismaClient();
+const contactKeys = new Set([
+  'contact_phone',
+  'contact_email_primary',
+  'contact_email_secondary',
+  'contact_whatsapp',
+]);
 
 async function main() {
   const email = process.env.BOOTSTRAP_ADMIN_EMAIL?.trim().toLowerCase();
@@ -184,7 +189,7 @@ async function main() {
       ['contact_email_secondary', 'AboutalebEducation@gmail.com'],
       ['contact_whatsapp', 'https://wa.me/905015959880'],
     ]
-      .filter(([key]) => CONTACT_KEYS.includes(key as (typeof CONTACT_KEYS)[number]))
+      .filter(([key]) => contactKeys.has(key))
       .map(([key, value]) =>
         prisma.managedContent.upsert({ where: { key }, update: { value }, create: { key, value } }),
       ),
@@ -192,8 +197,11 @@ async function main() {
   process.stdout.write(JSON.stringify({ event: 'auth.admin.bootstrap', userId: user.id }) + '\n');
 }
 
-try {
-  await main();
-} finally {
-  await prisma.$disconnect();
-}
+main()
+  .catch((error: unknown) => {
+    process.stderr.write(`${error instanceof Error ? error.stack : String(error)}\n`);
+    process.exitCode = 1;
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
