@@ -39,15 +39,15 @@ model User {
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
 
-  profile              ClientProfile?
-  sessions             Session[]
-  verificationRecords  VerificationChallenge[]
-  auditLogs            AuditLog[]
-  orders               Order[] @relation("ClientOrders")
-  assignedOrders       Order[] @relation("AssignedOrders")
-  orderStatusChanges   OrderStatusHistory[] @relation("OrderStatusChangedBy")
-  orderResponses       OrderClientResponse[]
-  internalNotes        OrderInternalNote[] @relation("OrderInternalNoteAuthor")
+  profile             ClientProfile?
+  sessions            Session[]
+  verificationRecords VerificationChallenge[]
+  auditLogs           AuditLog[]
+  orders              Order[]                 @relation("ClientOrders")
+  assignedOrders      Order[]                 @relation("AssignedOrders")
+  orderStatusChanges  OrderStatusHistory[]    @relation("OrderStatusChangedBy")
+  orderResponses      OrderClientResponse[]
+  internalNotes       OrderInternalNote[]     @relation("OrderInternalNoteAuthor")
 
   @@index([role, status])
 }
@@ -68,11 +68,11 @@ model Order {
   createdAt           DateTime    @default(now())
   updatedAt           DateTime    @updatedAt
 
-  client         User                  @relation("ClientOrders", fields: [clientId], references: [id], onDelete: Restrict)
-  assignedAdmin  User?                 @relation("AssignedOrders", fields: [assignedAdminId], references: [id], onDelete: SetNull)
-  statusHistory  OrderStatusHistory[]
+  client          User                  @relation("ClientOrders", fields: [clientId], references: [id], onDelete: Restrict)
+  assignedAdmin   User?                 @relation("AssignedOrders", fields: [assignedAdminId], references: [id], onDelete: SetNull)
+  statusHistory   OrderStatusHistory[]
   clientResponses OrderClientResponse[]
-  internalNotes  OrderInternalNote[]
+  internalNotes   OrderInternalNote[]
 
   @@index([clientId, createdAt])
   @@index([status, createdAt])
@@ -80,13 +80,13 @@ model Order {
 }
 
 model OrderStatusHistory {
-  id              String       @id @default(cuid())
-  orderId         String
-  fromStatus      OrderStatus?
-  toStatus        OrderStatus
-  changedByUserId String?
+  id                   String       @id @default(cuid())
+  orderId              String
+  fromStatus           OrderStatus?
+  toStatus             OrderStatus
+  changedByUserId      String?
   clientVisibleMessage String?
-  createdAt       DateTime     @default(now())
+  createdAt            DateTime     @default(now())
 
   order         Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
   changedByUser User? @relation("OrderStatusChangedBy", fields: [changedByUserId], references: [id], onDelete: SetNull)
@@ -140,14 +140,14 @@ enum VerificationPurpose {
 }
 
 model VerificationChallenge {
-  id            String             @id @default(cuid())
-  userId        String
-  purpose       VerificationPurpose
-  codeHash      String
-  expiresAt     DateTime
-  attemptCount  Int                @default(0)
-  consumedAt    DateTime?
-  createdAt     DateTime           @default(now())
+  id           String              @id @default(cuid())
+  userId       String
+  purpose      VerificationPurpose
+  codeHash     String
+  expiresAt    DateTime
+  attemptCount Int                 @default(0)
+  consumedAt   DateTime?
+  createdAt    DateTime            @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -156,13 +156,13 @@ model VerificationChallenge {
 }
 
 model Session {
-  id        String    @id @default(cuid())
-  userId    String
-  tokenHash String    @unique
-  expiresAt DateTime
-  lastSeenAt DateTime @default(now())
-  revokedAt DateTime?
-  createdAt DateTime  @default(now())
+  id         String    @id @default(cuid())
+  userId     String
+  tokenHash  String    @unique
+  expiresAt  DateTime
+  lastSeenAt DateTime  @default(now())
+  revokedAt  DateTime?
+  createdAt  DateTime  @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -171,17 +171,85 @@ model Session {
 }
 
 model AuditLog {
-  id         String   @id @default(cuid())
+  id          String   @id @default(cuid())
   actorUserId String?
-  action     String
-  entityType String?
-  entityId   String?
-  metadata   Json?
-  ipAddress  String?
-  createdAt  DateTime @default(now())
+  action      String
+  entityType  String?
+  entityId    String?
+  metadata    Json?
+  ipAddress   String?
+  createdAt   DateTime @default(now())
 
   actor User? @relation(fields: [actorUserId], references: [id], onDelete: SetNull)
 
   @@index([actorUserId, createdAt])
   @@index([action, createdAt])
+}
+
+model University {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  nameAr      String
+  nameEn      String
+  nameTr      String
+  summaryAr   String
+  summaryEn   String
+  summaryTr   String
+  city        String
+  imageUrl    String
+  websiteUrl  String?
+  featured    Boolean   @default(false)
+  isPublished Boolean   @default(false)
+  archivedAt  DateTime?
+  sortOrder   Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([isPublished, archivedAt, sortOrder])
+  @@index([city, isPublished])
+}
+
+model Testimonial {
+  id               String    @id @default(cuid())
+  clientNameAr     String
+  clientNameEn     String
+  clientNameTr     String
+  quoteAr          String
+  quoteEn          String
+  quoteTr          String
+  imageUrl         String?
+  consentConfirmed Boolean   @default(false)
+  isPublished      Boolean   @default(false)
+  archivedAt       DateTime?
+  sortOrder        Int       @default(0)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  @@index([isPublished, archivedAt, sortOrder])
+}
+
+model SocialLink {
+  id         String    @id @default(cuid())
+  platform   String
+  labelAr    String
+  labelEn    String
+  labelTr    String
+  url        String
+  iconKey    String
+  isVisible  Boolean   @default(true)
+  archivedAt DateTime?
+  sortOrder  Int       @default(0)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@unique([platform, url])
+  @@index([isVisible, archivedAt, sortOrder])
+}
+
+model ManagedContent {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
 }
