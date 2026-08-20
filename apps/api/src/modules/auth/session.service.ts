@@ -22,6 +22,19 @@ export class SessionService {
     this.setCookies(rawToken, expiresAt, response);
   }
 
+  issueCsrf(response: Response) {
+    const token = randomBytes(32).toString('base64url');
+    const cookieScope = env.COOKIE_DOMAIN ? { domain: env.COOKIE_DOMAIN } : {};
+    response.cookie(env.CSRF_COOKIE_NAME, token, {
+      secure: env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      httpOnly: false,
+      path: '/',
+      ...cookieScope,
+    });
+    return token;
+  }
+
   async revoke(rawToken: string | undefined, response: Response) {
     if (rawToken) await this.repository.revokeSession(hashToken(rawToken), this.now());
     const cookieScope = env.COOKIE_DOMAIN ? { domain: env.COOKIE_DOMAIN } : {};

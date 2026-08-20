@@ -3,10 +3,16 @@ import { AppError } from '../../core/app-error.js';
 import { logger } from '../../core/logger.js';
 
 export type EmailPurpose = 'EMAIL_VERIFY' | 'PASSWORD_RESET';
+export type EmailLocale = 'ar' | 'en' | 'tr';
 export type OrderNotificationEvent = 'submitted' | 'status_changed';
 
 export interface EmailProvider {
-  sendOtp(input: { recipient: string; code: string; purpose: EmailPurpose }): Promise<void>;
+  sendOtp(input: {
+    recipient: string;
+    code: string;
+    purpose: EmailPurpose;
+    locale?: EmailLocale;
+  }): Promise<void>;
   sendOrderNotification(input: {
     recipient: string;
     reference: string;
@@ -15,7 +21,12 @@ export interface EmailProvider {
   }): Promise<void>;
 }
 
-type DevelopmentMessage = { recipient: string; code: string; purpose: EmailPurpose };
+type DevelopmentMessage = {
+  recipient: string;
+  code: string;
+  purpose: EmailPurpose;
+  locale?: EmailLocale;
+};
 type DevelopmentOrderMessage = {
   recipient: string;
   reference: string;
@@ -44,7 +55,7 @@ export function getDevelopmentOrderMailbox() {
 }
 
 export class DevelopmentEmailProvider implements EmailProvider {
-  async sendOtp(input: { recipient: string; code: string; purpose: EmailPurpose }) {
+  async sendOtp(input: DevelopmentMessage) {
     developmentMailbox.push(input);
     logger.info('email.development.sent', {
       recipient: input.recipient,
@@ -70,12 +81,22 @@ export class ResendEmailProvider implements EmailProvider {
     private readonly fetcher: typeof fetch = fetch,
   ) {}
 
-  async sendOtp(input: { recipient: string; code: string; purpose: EmailPurpose }) {
-    const subject = input.purpose === 'EMAIL_VERIFY' ? 'Verify your email' : 'Reset your password';
+  async sendOtp(input: DevelopmentMessage) {
+    const locale = input.locale ?? 'en';
+    const subject = {
+      ar: input.purpose === 'EMAIL_VERIFY' ? 'تحقق من بريدك الإلكتروني' : 'إعادة تعيين كلمة المرور',
+      en: input.purpose === 'EMAIL_VERIFY' ? 'Verify your email' : 'Reset your password',
+      tr: input.purpose === 'EMAIL_VERIFY' ? 'E-postanızı doğrulayın' : 'Şifrenizi sıfırlayın',
+    }[locale];
+    const text = {
+      ar: `رمزك من Abou-Taleb Education هو ${input.code}. تنتهي صلاحيته خلال 10 دقائق.`,
+      en: `Your Abou-Taleb Education code is ${input.code}. It expires in 10 minutes.`,
+      tr: `Abou-Taleb Education kodunuz: ${input.code}. Kod 10 dakika içinde geçerliliğini yitirir.`,
+    }[locale];
     await this.send({
       recipient: input.recipient,
       subject,
-      text: `Your Abou-Taleb Education code is ${input.code}. It expires in 10 minutes.`,
+      text,
     });
   }
 

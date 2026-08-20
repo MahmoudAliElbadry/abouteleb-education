@@ -11,6 +11,7 @@ import { requireAdmin, requireAuth, requireCsrf } from '../../middleware/auth.js
 import { AdminOrdersService } from './admin-orders.service.js';
 import { createEmailProvider } from '../auth/email.provider.js';
 import { createOrderNotifier } from '../orders/notifier.js';
+import { sensitiveRouteLimit } from '../../middleware/rate-limit.js';
 
 const adminOrdersService = new AdminOrdersService(prisma);
 const orderNotifier = createOrderNotifier(createEmailProvider());
@@ -48,7 +49,11 @@ adminOrdersRouter.get('/:orderId', async (request, response, next) => {
   }
 });
 
-adminOrdersRouter.patch('/:orderId/assignment', requireCsrf, async (request, response, next) => {
+adminOrdersRouter.patch(
+  '/:orderId/assignment',
+  sensitiveRouteLimit(60),
+  requireCsrf,
+  async (request, response, next) => {
   try {
     const result = await adminOrdersService.assign(
       orderIdFrom(request),
@@ -60,9 +65,14 @@ adminOrdersRouter.patch('/:orderId/assignment', requireCsrf, async (request, res
   } catch (error) {
     next(error);
   }
-});
+  },
+);
 
-adminOrdersRouter.post('/:orderId/status', requireCsrf, async (request, response, next) => {
+adminOrdersRouter.post(
+  '/:orderId/status',
+  sensitiveRouteLimit(60),
+  requireCsrf,
+  async (request, response, next) => {
   try {
     const result = await adminOrdersService.transition(
       orderIdFrom(request),
@@ -79,9 +89,14 @@ adminOrdersRouter.post('/:orderId/status', requireCsrf, async (request, response
   } catch (error) {
     next(error);
   }
-});
+  },
+);
 
-adminOrdersRouter.post('/:orderId/internal-notes', requireCsrf, async (request, response, next) => {
+adminOrdersRouter.post(
+  '/:orderId/internal-notes',
+  sensitiveRouteLimit(60),
+  requireCsrf,
+  async (request, response, next) => {
   try {
     const result = await adminOrdersService.addInternalNote(
       orderIdFrom(request),
@@ -93,4 +108,5 @@ adminOrdersRouter.post('/:orderId/internal-notes', requireCsrf, async (request, 
   } catch (error) {
     next(error);
   }
-});
+  },
+);

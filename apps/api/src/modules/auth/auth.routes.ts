@@ -1,5 +1,4 @@
-import { Router } from 'express';
-import rateLimit from 'express-rate-limit';
+import { Router, type Request } from 'express';
 import {
   forgotPasswordSchema,
   loginSchema,
@@ -12,22 +11,22 @@ import { env } from '../../config/env.js';
 import { requireAuth, requireCsrf } from '../../middleware/auth.js';
 import { presentPublicUser } from './auth.presenter.js';
 import { appErrors } from '../../core/app-error.js';
+import { sensitiveRouteLimit } from '../../middleware/rate-limit.js';
+import type { EmailLocale } from './email.provider.js';
 
 export const authRouter = Router();
 
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  limit: 30,
-  standardHeaders: 'draft-8',
-  legacyHeaders: false,
-});
+function requestLocale(request: Request): EmailLocale {
+  const language = request.header('accept-language')?.toLowerCase() ?? '';
+  if (language.startsWith('ar')) return 'ar';
+  if (language.startsWith('tr')) return 'tr';
+  return 'en';
+}
 
-authRouter.use(authLimiter);
-
-authRouter.post('/register', async (request, response, next) => {
+authRouter.post('/register', sensitiveRouteLimit(10), async (request, response, next) => {
   try {
     const input = registerSchema.parse(request.body);
-    const user = await authModule.account.register(input, request.ip);
+    const user = await authModule.account.register(input, request.ip, requestLocale(request));
     response
       .status(201)
       .json({ user, message: 'Account created. Check your email for the verification code.' });
@@ -36,7 +35,7 @@ authRouter.post('/register', async (request, response, next) => {
   }
 });
 
-authRouter.post('/verify-email', async (request, response, next) => {
+authRouter.post('/verify-email', sensitiveRouteLimit(10), async (request, response, next) => {
   try {
     const input = verifyEmailSchema.parse(request.body);
     const user = await authModule.account.verifyEmail(input.email, input.code, request.ip);
@@ -46,17 +45,21 @@ authRouter.post('/verify-email', async (request, response, next) => {
   }
 });
 
-authRouter.post('/resend-verification', async (request, response, next) => {
+authRouter.post('/resend-verification', sensitiveRouteLimit(5), async (request, response, next) => {
   try {
     const input = forgotPasswordSchema.parse(request.body);
-    await authModule.account.resendVerification(input.email);
+    await authModule.account.resendVerification(input.email, requestLocale(request));
     response.json({ message: 'If the account exists and is unverified, a new code was sent.' });
   } catch (error) {
     next(error);
   }
 });
 
-authRouter.post('/login', async (request, response, next) => {
+authRouter.get('/csrf', (_request, response) => {
+  response.json({ csrfToken: authModule.sessions.issueCsrf(response) });
+});
+
+authRouter.post('/login', sensitiveRouteLimit(5), requireCsrf, async (request, response, next) => {
   try {
     const input = loginSchema.parse(request.body);
     const user = await authModule.account.login(input.email, input.password, request.ip);
@@ -90,17 +93,17 @@ authRouter.get('/session', requireAuth, (_request, response) => {
   });
 });
 
-authRouter.post('/forgot-password', async (request, response, next) => {
+authRouter.post('/forgot-password', sensitiveRouteLimit(5), async (request, response, next) => {
   try {
     const input = forgotPasswordSchema.parse(request.body);
-    await authModule.account.requestPasswordReset(input.email);
+    await authModule.account.requestPasswordReset(input.email, requestLocale(request));
     response.json({ message: 'If the account exists, password reset instructions were sent.' });
   } catch (error) {
     next(error);
   }
 });
 
-authRouter.post('/reset-password', async (request, response, next) => {
+authRouter.post('/reset-password', sensitiveRouteLimit(5), async (request, response, next) => {
   try {
     const input = resetPasswordSchema.parse(request.body);
     await authModule.account.resetPassword(input.email, input.code, input.newPassword, request.ip);

@@ -25,4 +25,18 @@ describe('API foundation', () => {
     expect(response.body.error.code).toBe('VALIDATION_ERROR');
     expect(response.body.error.requestId).toEqual(expect.any(String));
   });
+
+  it('issues a pre-session CSRF token and rejects login without it', async () => {
+    const csrf = await request(app).get('/api/v1/auth/csrf').expect(200);
+    expect(csrf.body.csrfToken).toEqual(expect.any(String));
+    expect(csrf.headers['set-cookie']).toEqual(
+      expect.arrayContaining([expect.stringContaining('abou_csrf=')]),
+    );
+
+    const login = await request(app)
+      .post('/api/v1/auth/login')
+      .send({ email: 'client@example.com', password: 'StrongPassword123!' });
+    expect(login.status).toBe(403);
+    expect(login.body.error.code).toBe('INVALID_CSRF');
+  });
 });

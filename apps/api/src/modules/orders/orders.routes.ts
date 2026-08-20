@@ -6,6 +6,7 @@ import { OrdersService } from './orders.service.js';
 import { appErrors } from '../../core/app-error.js';
 import { createEmailProvider } from '../auth/email.provider.js';
 import { createOrderNotifier } from './notifier.js';
+import { sensitiveRouteLimit } from '../../middleware/rate-limit.js';
 
 const ordersService = new OrdersService(prisma);
 const orderNotifier = createOrderNotifier(createEmailProvider());
@@ -26,7 +27,7 @@ ordersRouter.get('/', async (request, response, next) => {
   }
 });
 
-ordersRouter.post('/', requireCsrf, async (request, response, next) => {
+ordersRouter.post('/', sensitiveRouteLimit(10), requireCsrf, async (request, response, next) => {
   try {
     const order = await ordersService.create(
       response.locals.user!,
