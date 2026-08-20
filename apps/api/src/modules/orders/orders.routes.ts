@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createOrderSchema, orderResponseSchema } from '@abou/contracts';
+import { clientOrderListQuerySchema, createOrderSchema, orderResponseSchema } from '@abou/contracts';
 import { prisma } from '../../lib/prisma.js';
 import { requireAuth, requireCsrf } from '../../middleware/auth.js';
 import { OrdersService } from './orders.service.js';
@@ -13,9 +13,14 @@ export const ordersRouter = Router();
 
 ordersRouter.use(requireAuth);
 
-ordersRouter.get('/', async (_request, response, next) => {
+ordersRouter.get('/', async (request, response, next) => {
   try {
-    response.json({ orders: await ordersService.listForClient(response.locals.user!.id) });
+    response.json(
+      await ordersService.listForClient(
+        response.locals.user!.id,
+        clientOrderListQuerySchema.parse(request.query),
+      ),
+    );
   } catch (error) {
     next(error);
   }

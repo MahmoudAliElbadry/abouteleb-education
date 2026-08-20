@@ -1,7 +1,7 @@
 import { randomBytes } from 'node:crypto';
 import { OrderStatus, Prisma, UserRole, type PrismaClient } from '@prisma/client';
 import { appErrors, AppError } from '../../core/app-error.js';
-import type { CreateOrderInput, Specialization } from '@abou/contracts';
+import type { ClientOrderListQuery, CreateOrderInput, Specialization } from '@abou/contracts';
 import { assertTransition, isTerminal } from './order-state.js';
 
 const specializationLabels: Record<Specialization, string> = {
@@ -124,13 +124,19 @@ export class OrdersService {
     return toPublicOrder(order);
   }
 
-  async listForClient(clientId: string) {
-    const orders = await this.prisma.order.findMany({
-      where: { clientId },
-      include: orderInclude,
-      orderBy: { createdAt: 'desc' },
-    });
-    return orders.map(toPublicOrder);
+  async listForClient(clientId: string, { page, pageSize }: ClientOrderListQuery) {
+    const where = { clientId };
+    const [orders, total] = await this.prisma.$transaction([
+      this.prisma.order.findMany({
+        where,
+        include: orderInclude,
+        orderBy: { createdAt: 'desc' },
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+      }),
+      this.prisma.order.count({ where }),
+    ]);
+    return { items: orders.map(toPublicOrder), total, page, pageSize };
   }
 
   async findOwned(orderId: string, clientId: string) {

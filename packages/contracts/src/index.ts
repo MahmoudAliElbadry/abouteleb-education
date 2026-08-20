@@ -31,6 +31,11 @@ export const createOrderSchema = z.object({
   specialization: specializationSchema,
 });
 
+export const clientOrderListQuerySchema = z.object({
+  page: z.coerce.number().int().min(1).default(1),
+  pageSize: z.coerce.number().int().min(1).max(50).default(10),
+});
+
 export const orderResponseSchema = z.object({
   body: z.string().trim().min(1).max(2000),
 });
@@ -81,6 +86,7 @@ export const resetPasswordSchema = z.object({
 });
 
 export type CreateOrderInput = z.infer<typeof createOrderSchema>;
+export type ClientOrderListQuery = z.infer<typeof clientOrderListQuerySchema>;
 export type Specialization = z.infer<typeof specializationSchema>;
 export type OrderStatusValue = z.infer<typeof orderStatusSchema>;
 export type AdminOrderListQuery = z.infer<typeof adminOrderListQuerySchema>;

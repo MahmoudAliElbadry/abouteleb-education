@@ -23,6 +23,7 @@ const copy = {
     verifyCta: 'الانتقال إلى التحقق',
     success: 'تم إرسال طلبك بنجاح. رقم الطلب:',
     error: 'تعذر إرسال الطلب.',
+    viewOrders: 'عرض طلباتي',
     options: {
       medicine: 'الطب',
       dentistry: 'طب الأسنان',
@@ -48,6 +49,7 @@ const copy = {
     verifyCta: 'Verify email',
     success: 'Your request was submitted successfully. Reference:',
     error: 'Unable to submit the request.',
+    viewOrders: 'View my requests',
     options: {
       medicine: 'Medicine',
       dentistry: 'Dentistry',
@@ -73,6 +75,7 @@ const copy = {
     verifyCta: 'E-postayı doğrula',
     success: 'Talebiniz başarıyla gönderildi. Referans:',
     error: 'Talep gönderilemedi.',
+    viewOrders: 'Taleplerimi görüntüle',
     options: {
       medicine: 'Tıp',
       dentistry: 'Diş hekimliği',
@@ -226,6 +229,7 @@ export function EnrollmentSection({ language }: { language: Language }) {
             {t.success} <strong>{submittedReference}</strong>
           </p>
         )}
+        {user && <Link to="/account/orders">{t.viewOrders}</Link>}
       </div>
     </section>
   );

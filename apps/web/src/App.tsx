@@ -10,8 +10,9 @@ import {
   ResetPasswordPage,
   VerifyEmailPage,
 } from './features/auth/AuthPages.js';
-import { RequireAdmin } from './features/auth/guards.js';
+import { RequireAdmin, RequireAuth } from './features/auth/guards.js';
 import { AdminOrderDetailPage, AdminOrdersPage } from './features/admin-orders/AdminOrdersPages.js';
+import { ClientOrdersPage } from './features/client-orders/ClientOrdersPage.js';
 
 type Language = 'ar' | 'en' | 'tr';
 
@@ -484,6 +485,14 @@ export function App() {
       <Route path="/verify-email" element={<VerifyEmailPage />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
+      <Route
+        path="/account/orders"
+        element={
+          <RequireAuth>
+            <ClientOrdersPage />
+          </RequireAuth>
+        }
+      />
       <Route
         path="/admin/orders"
         element={
