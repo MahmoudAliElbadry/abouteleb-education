@@ -1,0 +1,187 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  CLIENT
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  DISABLED
+}
+
+enum OrderStatus {
+  NEW
+  CONTACTED
+  WAITING_FOR_CLIENT
+  IN_PROGRESS
+  COMPLETED
+  REJECTED
+  CANCELLED
+}
+
+model User {
+  id              String     @id @default(cuid())
+  email           String     @unique
+  passwordHash    String
+  role            UserRole   @default(CLIENT)
+  status          UserStatus @default(ACTIVE)
+  emailVerifiedAt DateTime?
+  lastLoginAt     DateTime?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  profile              ClientProfile?
+  sessions             Session[]
+  verificationRecords  VerificationChallenge[]
+  auditLogs            AuditLog[]
+  orders               Order[] @relation("ClientOrders")
+  assignedOrders       Order[] @relation("AssignedOrders")
+  orderStatusChanges   OrderStatusHistory[] @relation("OrderStatusChangedBy")
+  orderResponses       OrderClientResponse[]
+  internalNotes        OrderInternalNote[] @relation("OrderInternalNoteAuthor")
+
+  @@index([role, status])
+}
+
+model Order {
+  id                  String      @id @default(cuid())
+  reference           String      @unique
+  clientId            String
+  fullName            String
+  email               String
+  phoneNumber         String
+  specialization      String
+  specializationLabel String
+  status              OrderStatus @default(NEW)
+  assignedAdminId     String?
+  submittedAt         DateTime    @default(now())
+  closedAt            DateTime?
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+
+  client         User                  @relation("ClientOrders", fields: [clientId], references: [id], onDelete: Restrict)
+  assignedAdmin  User?                 @relation("AssignedOrders", fields: [assignedAdminId], references: [id], onDelete: SetNull)
+  statusHistory  OrderStatusHistory[]
+  clientResponses OrderClientResponse[]
+  internalNotes  OrderInternalNote[]
+
+  @@index([clientId, createdAt])
+  @@index([status, createdAt])
+  @@index([assignedAdminId, status])
+}
+
+model OrderStatusHistory {
+  id              String       @id @default(cuid())
+  orderId         String
+  fromStatus      OrderStatus?
+  toStatus        OrderStatus
+  changedByUserId String?
+  clientVisibleMessage String?
+  createdAt       DateTime     @default(now())
+
+  order         Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  changedByUser User? @relation("OrderStatusChangedBy", fields: [changedByUserId], references: [id], onDelete: SetNull)
+
+  @@index([orderId, createdAt])
+}
+
+model OrderInternalNote {
+  id        String   @id @default(cuid())
+  orderId   String
+  adminId   String?
+  body      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  admin User? @relation("OrderInternalNoteAuthor", fields: [adminId], references: [id], onDelete: SetNull)
+
+  @@index([orderId, createdAt])
+}
+
+model OrderClientResponse {
+  id        String   @id @default(cuid())
+  orderId   String
+  clientId  String
+  body      String
+  createdAt DateTime @default(now())
+
+  order  Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  client User  @relation(fields: [clientId], references: [id], onDelete: Restrict)
+
+  @@index([orderId, createdAt])
+}
+
+model ClientProfile {
+  id                String   @id @default(cuid())
+  userId            String   @unique
+  fullName          String
+  phoneCountryCode  String?
+  phoneNumber       String?
+  preferredLanguage String   @default("en")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum VerificationPurpose {
+  EMAIL_VERIFY
+  PASSWORD_RESET
+}
+
+model VerificationChallenge {
+  id            String             @id @default(cuid())
+  userId        String
+  purpose       VerificationPurpose
+  codeHash      String
+  expiresAt     DateTime
+  attemptCount  Int                @default(0)
+  consumedAt    DateTime?
+  createdAt     DateTime           @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, purpose, consumedAt])
+  @@index([expiresAt])
+}
+
+model Session {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  lastSeenAt DateTime @default(now())
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, revokedAt])
+  @@index([expiresAt])
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorUserId String?
+  action     String
+  entityType String?
+  entityId   String?
+  metadata   Json?
+  ipAddress  String?
+  createdAt  DateTime @default(now())
+
+  actor User? @relation(fields: [actorUserId], references: [id], onDelete: SetNull)
+
+  @@index([actorUserId, createdAt])
+  @@index([action, createdAt])
+}

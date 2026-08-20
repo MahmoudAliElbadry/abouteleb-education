@@ -1,0 +1,17 @@
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+.DS_Store
+*.log
+playwright-report/
+test-results/
+
+# Local database/runtime files
+*.db
+*.db-journal
+testsprite_tests/tmp/
+testsprite_tests/tmp/config.json

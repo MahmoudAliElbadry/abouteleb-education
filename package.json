@@ -1,0 +1,42 @@
+{
+  "name": "abou-taleb-education",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Abou-Taleb Education full-stack web application",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -n api,web -c blue,green \"npm run dev -w @abou/api\" \"npm run dev -w @abou/web\"",
+    "build": "npm run build -w @abou/contracts && npm run build -w @abou/api && npm run build -w @abou/web",
+    "typecheck": "npm run typecheck -w @abou/contracts && npm run typecheck -w @abou/api && npm run typecheck -w @abou/web",
+    "test": "npm run test -w @abou/contracts && npm run test -w @abou/api && npm run test -w @abou/web",
+    "lint": "npm run lint -w @abou/contracts && npm run lint -w @abou/api && npm run lint -w @abou/web",
+    "format:check": "prettier --check .",
+    "format": "prettier --write .",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:seed": "tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.15.0",
+    "dotenv": "^17.2.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.35.0",
+    "@types/node": "^24.3.0",
+    "concurrently": "^9.2.1",
+    "eslint": "^9.35.0",
+    "prettier": "^3.6.2",
+    "prisma": "^6.15.0",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.42.0",
+    "vitest": "^3.2.4"
+  },
+  "engines": {
+    "node": ">=20.19.0"
+  }
+}

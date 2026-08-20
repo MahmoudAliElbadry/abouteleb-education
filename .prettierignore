@@ -1,0 +1,13 @@
+# Existing static site and approved planning artifacts
+index.html
+README.md
+PROJECT_BASELINE.md
+DEVELOPMENT_PLAN.md
+images/
+
+# Generated/dependency output
+node_modules/
+dist/
+coverage/
+package-lock.json
+
