@@ -55,7 +55,7 @@ ordersRouter.get('/:orderId', async (request, response, next) => {
   }
 });
 
-ordersRouter.post('/:orderId/cancel', requireCsrf, async (request, response, next) => {
+ordersRouter.post('/:orderId/cancel', sensitiveRouteLimit(20), requireCsrf, async (request, response, next) => {
   try {
     const orderId = request.params.orderId;
     if (typeof orderId !== 'string') throw appErrors.notFound();
@@ -66,7 +66,7 @@ ordersRouter.post('/:orderId/cancel', requireCsrf, async (request, response, nex
   }
 });
 
-ordersRouter.post('/:orderId/responses', requireCsrf, async (request, response, next) => {
+ordersRouter.post('/:orderId/responses', sensitiveRouteLimit(30), requireCsrf, async (request, response, next) => {
   try {
     const orderId = request.params.orderId;
     if (typeof orderId !== 'string') throw appErrors.notFound();

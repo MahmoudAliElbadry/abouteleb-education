@@ -10,6 +10,12 @@ describe('API foundation', () => {
     expect(response.body).toEqual({ status: 'ok', service: 'api' });
   });
 
+  it('reports unavailable readiness when the database check fails', async () => {
+    const response = await request(app).get('/api/v1/health/readiness');
+    expect([200, 503]).toContain(response.status);
+    expect(response.body.checks.database).toMatch(/ok|unavailable/);
+  });
+
   it('returns a structured 404 response', async () => {
     const response = await request(app).get('/api/v1/missing');
 

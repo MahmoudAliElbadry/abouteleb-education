@@ -4,8 +4,10 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { App } from './App.js';
 import './styles.css';
+import { initializeMonitoring } from './monitoring.js';
 
 const queryClient = new QueryClient();
+initializeMonitoring();
 
 if (import.meta.env.DEV) {
   void import('./developer-tools.js').then(({ enableDeveloperTools }) => enableDeveloperTools());
