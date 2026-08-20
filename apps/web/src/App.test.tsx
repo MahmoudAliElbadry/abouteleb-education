@@ -9,24 +9,27 @@ vi.mock('@tanstack/react-query', async () => {
     await vi.importActual<typeof import('@tanstack/react-query')>('@tanstack/react-query');
   return {
     ...actual,
-    useQuery: () => ({
+    useQuery: (options: { queryKey?: string[] }) => ({
       isPending: false,
       isError: false,
       error: null,
       refetch: vi.fn(),
-      data: {
-        items: Array.from({ length: 41 }, (_, index) => ({
-          id: `university-${index}`,
-          slug: `university-${index}`,
-          nameAr: `جامعة ${index}`,
-          nameEn: `University ${index}`,
-          nameTr: `Üniversite ${index}`,
-          city: index % 2 ? 'Ankara' : 'Istanbul',
-          imageUrl: 'https://example.com/logo.png',
-          featured: index < 3,
-          sortOrder: index,
-        })),
-      },
+      data:
+        options.queryKey?.[0] === 'public-universities'
+          ? {
+              items: Array.from({ length: 41 }, (_, index) => ({
+                id: `university-${index}`,
+                slug: `university-${index}`,
+                nameAr: `جامعة ${index}`,
+                nameEn: `University ${index}`,
+                nameTr: `Üniversite ${index}`,
+                city: index % 2 ? 'Ankara' : 'Istanbul',
+                imageUrl: 'https://example.com/logo.png',
+                featured: index < 3,
+                sortOrder: index,
+              })),
+            }
+          : { items: [] },
     }),
   };
 });

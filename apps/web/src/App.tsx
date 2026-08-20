@@ -16,6 +16,9 @@ import { ClientOrdersPage } from './features/client-orders/ClientOrdersPage.js';
 import { AdminUniversityPage } from './features/admin-content/AdminUniversityPage.js';
 import { AdminManagedContentPage } from './features/admin-content/AdminManagedContentPage.js';
 import {
+  getPublicContact,
+  getPublicSocialLinks,
+  getPublicTestimonials,
   getPublicUniversities,
   type PublicUniversity,
 } from './features/content/public-content-client.js';
@@ -264,6 +267,18 @@ function PublicPage() {
     queryKey: ['public-universities'],
     queryFn: getPublicUniversities,
   });
+  const testimonialsQuery = useQuery({
+    queryKey: ['public-testimonials'],
+    queryFn: getPublicTestimonials,
+  });
+  const socialQuery = useQuery({
+    queryKey: ['public-social-links'],
+    queryFn: getPublicSocialLinks,
+  });
+  const contactQuery = useQuery({ queryKey: ['public-contact'], queryFn: getPublicContact });
+  const whatsappValue = contactQuery.data?.items.find(
+    (item) => item.key === 'contact_whatsapp',
+  )?.value;
   const universities: PublicUniversity[] = universitiesQuery.data?.items ?? [];
   const steps: ReadonlyArray<readonly [string, string]> = t.steps;
   const stats: ReadonlyArray<readonly [string, string]> = [
@@ -477,19 +492,62 @@ function PublicPage() {
         <EnrollmentSection language={language} />
       </main>
 
+      {testimonialsQuery.data?.items.length ? (
+        <section className="content-section testimonials" aria-labelledby="testimonials-title">
+          <div className="section-heading">
+            <h2 id="testimonials-title">
+              {language === 'ar'
+                ? 'آراء طلابنا'
+                : language === 'tr'
+                  ? 'Öğrenci yorumları'
+                  : 'Student stories'}
+            </h2>
+          </div>
+          <div className="service-grid">
+            {testimonialsQuery.data.items.map((item) => (
+              <article className="service-card" key={item.id}>
+                <h3>
+                  {
+                    item[
+                      language === 'ar'
+                        ? 'clientNameAr'
+                        : language === 'tr'
+                          ? 'clientNameTr'
+                          : 'clientNameEn'
+                    ]
+                  }
+                </h3>
+                <p>
+                  {item[language === 'ar' ? 'quoteAr' : language === 'tr' ? 'quoteTr' : 'quoteEn']}
+                </p>
+              </article>
+            ))}
+          </div>
+        </section>
+      ) : null}
       <section className="contact" id="contact">
         <div>
           <p>{t.catalog}</p>
           <h2>{t.ready}</h2>
           <span>{t.readyDescription}</span>
         </div>
-        <a className="button" href="https://wa.me/905015959880" target="_blank" rel="noreferrer">
-          WhatsApp
-        </a>
+        <div className="contact-links">
+          {(socialQuery.data?.items ?? []).map((link) => (
+            <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer">
+              {link[language === 'ar' ? 'labelAr' : language === 'tr' ? 'labelTr' : 'labelEn'] ||
+                link.platform}
+            </a>
+          ))}
+          {(contactQuery.data?.items ?? [])
+            .filter((item) => item.value)
+            .map((item) => (
+              <span key={item.key}>{item.value}</span>
+            ))}
+        </div>
       </section>
       <a
         className="whatsapp"
-        href="https://wa.me/905015959880"
+        href={whatsappValue ? `https://wa.me/${whatsappValue.replace(/\D/g, '')}` : '#contact'}
         target="_blank"
         rel="noreferrer"
         aria-label="WhatsApp"
