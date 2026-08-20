@@ -39,6 +39,15 @@ npm test
 npm run build
 ```
 
+### Development component tools
+
+When the React app runs through `npm run dev`, two development-only tools are available:
+
+- **React Grab:** hover a UI element and press `Ctrl+C` (or `Cmd+C` on macOS) to copy its component/source context for a fix request.
+- **React Scan:** use its floating toolbar to inspect React re-renders and performance hotspots.
+
+These tools are excluded from the production build.
+
 موقع الشركة المتخصص في تقديم خدمات القبول الجامعي والتسجيل والسكن والتأشيرة للطلاب الراغبين في الدراسة بتركيا.
 
 ## لغات الدراسة

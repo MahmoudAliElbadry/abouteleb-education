@@ -7,6 +7,10 @@ import './styles.css';
 
 const queryClient = new QueryClient();
 
+if (import.meta.env.DEV) {
+  void import('./developer-tools.js').then(({ enableDeveloperTools }) => enableDeveloperTools());
+}
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
