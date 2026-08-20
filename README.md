@@ -4,6 +4,10 @@
 
 The project is being migrated from the original static GitHub Pages site to a TypeScript monorepo with React, Express, PostgreSQL, and Prisma.
 
+## Static-site routing on Render
+
+The web app uses browser-history routes. The committed `render.yaml` configures the Render Static Site to rewrite public paths to `/index.html`, so direct visits to routes such as `/login` load the React application. This rewrite belongs only to the static web service; the API must remain on its own service/domain, where `/api/v1/health` is handled by Express rather than the SPA.
+
 - Current implementation branch: `codex/phase-01-foundation`
 - Project baseline: [PROJECT_BASELINE.md](PROJECT_BASELINE.md)
 - Approved development plan: [DEVELOPMENT_PLAN.md](DEVELOPMENT_PLAN.md)

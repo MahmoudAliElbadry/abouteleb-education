@@ -14,19 +14,29 @@ vi.mock('@tanstack/react-query', async () => {
 });
 
 describe('App', () => {
-  it('renders the foundation landing page', () => {
+  function renderApp(initialEntry = '/') {
     render(
       <QueryClientProvider client={new QueryClient()}>
-        <MemoryRouter>
+        <MemoryRouter initialEntries={[initialEntry]}>
           <App />
         </MemoryRouter>
       </QueryClientProvider>,
     );
+  }
+
+  it('renders the foundation landing page from a direct URL', () => {
+    renderApp();
 
     expect(screen.getByRole('link', { name: 'Abou-Taleb Education' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: /مستقبلك الدراسي/i })).toBeInTheDocument();
     expect(screen.getAllByRole('article')).toHaveLength(12);
     fireEvent.click(screen.getByRole('button', { name: 'عرض المزيد من الجامعات' }));
     expect(screen.getAllByRole('article')).toHaveLength(45);
+  });
+
+  it('renders the login page from a direct URL', () => {
+    renderApp('/login');
+
+    expect(screen.getByRole('heading', { name: 'تسجيل الدخول' })).toBeInTheDocument();
   });
 });

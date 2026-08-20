@@ -78,7 +78,7 @@ export function LoginPage() {
   const [params] = useSearchParams();
   const [email, setEmail] = useState(params.get('email') ?? '');
   const [password, setPassword] = useState('');
-  const redirect = params.get('redirect') ?? '/#enroll';
+  const redirect = params.get('redirect') ?? '/applications';
   async function submit(event: FormEvent) {
     event.preventDefault();
     try {

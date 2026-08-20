@@ -130,7 +130,7 @@ export function EnrollmentSection({ language }: { language: Language }) {
         {signedOut && (
           <div className="enrollment-gate">
             <p>{t.locked}</p>
-            <Link className="button" to="/login?redirect=%2F%23enroll">
+            <Link className="button" to="/login?redirect=%2Fapplications">
               {t.signIn}
             </Link>
             <Link to="/register">{t.signUp}</Link>
