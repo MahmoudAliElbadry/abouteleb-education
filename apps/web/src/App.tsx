@@ -14,6 +14,7 @@ import { RequireAdmin, RequireAuth } from './features/auth/guards.js';
 import { AdminOrderDetailPage, AdminOrdersPage } from './features/admin-orders/AdminOrdersPages.js';
 import { ClientOrdersPage } from './features/client-orders/ClientOrdersPage.js';
 import { AdminUniversityPage } from './features/admin-content/AdminUniversityPage.js';
+import { AdminManagedContentPage } from './features/admin-content/AdminManagedContentPage.js';
 
 type Language = 'ar' | 'en' | 'tr';
 
@@ -499,6 +500,30 @@ export function App() {
         element={
           <RequireAdmin>
             <AdminUniversityPage />
+          </RequireAdmin>
+        }
+      />
+      <Route
+        path="/admin/testimonials"
+        element={
+          <RequireAdmin>
+            <AdminManagedContentPage section="testimonials" />
+          </RequireAdmin>
+        }
+      />
+      <Route
+        path="/admin/social-links"
+        element={
+          <RequireAdmin>
+            <AdminManagedContentPage section="social" />
+          </RequireAdmin>
+        }
+      />
+      <Route
+        path="/admin/contact"
+        element={
+          <RequireAdmin>
+            <AdminManagedContentPage section="contact" />
           </RequireAdmin>
         }
       />
