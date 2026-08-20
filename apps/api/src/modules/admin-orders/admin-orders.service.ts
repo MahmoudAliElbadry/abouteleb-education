@@ -107,11 +107,11 @@ export class AdminOrdersService {
           }
         : {}),
     };
-    const orderBy = { [query.sort]: query.order } as Prisma.OrderOrderByWithRelationInput;
+    const primaryOrder = { [query.sort]: query.order } as Prisma.OrderOrderByWithRelationInput;
     const [orders, total] = await this.prisma.$transaction([
       this.prisma.order.findMany({
         where,
-        orderBy,
+        orderBy: [primaryOrder, { id: 'asc' }],
         skip: (query.page - 1) * query.pageSize,
         take: query.pageSize,
         include: {
@@ -123,7 +123,7 @@ export class AdminOrdersService {
       this.prisma.order.count({ where }),
     ]);
     return {
-      orders: orders.map((order) => ({
+      items: orders.map((order) => ({
         id: order.id,
         reference: order.reference,
         fullName: order.fullName,
@@ -137,12 +137,9 @@ export class AdminOrdersService {
         updatedAt: order.updatedAt,
         closedAt: order.closedAt,
       })),
-      pagination: {
-        page: query.page,
-        pageSize: query.pageSize,
-        total,
-        totalPages: Math.ceil(total / query.pageSize),
-      },
+      total,
+      page: query.page,
+      pageSize: query.pageSize,
     };
   }
 
