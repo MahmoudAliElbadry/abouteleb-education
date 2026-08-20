@@ -22,6 +22,11 @@ type DevelopmentOrderMessage = {
   event: OrderNotificationEvent;
   newStatus?: string;
 };
+type ResendEmail = {
+  recipient: string;
+  subject: string;
+  text: string;
+};
 const developmentMailbox: DevelopmentMessage[] = [];
 const developmentOrderMailbox: DevelopmentOrderMessage[] = [];
 
@@ -44,7 +49,6 @@ export class DevelopmentEmailProvider implements EmailProvider {
     logger.info('email.development.sent', {
       recipient: input.recipient,
       purpose: input.purpose,
-      code: input.code,
     });
   }
 
@@ -68,33 +72,11 @@ export class ResendEmailProvider implements EmailProvider {
 
   async sendOtp(input: { recipient: string; code: string; purpose: EmailPurpose }) {
     const subject = input.purpose === 'EMAIL_VERIFY' ? 'Verify your email' : 'Reset your password';
-    try {
-      const response = await this.fetcher('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${this.apiKey}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          from: this.from,
-          to: [input.recipient],
-          subject,
-          text: `Your Abou-Taleb Education code is ${input.code}. It expires in 10 minutes.`,
-        }),
-      });
-      if (!response.ok) {
-        throw new AppError(
-          'EMAIL_DELIVERY_FAILED',
-          503,
-          'Unable to send email. Please try again shortly.',
-          { providerStatus: response.status },
-        );
-      }
-    } catch (error) {
-      if (error instanceof AppError) throw error;
-      throw new AppError(
-        'EMAIL_DELIVERY_FAILED',
-        503,
-        'Unable to send email. Please try again shortly.',
-      );
-    }
+    await this.send({
+      recipient: input.recipient,
+      subject,
+      text: `Your Abou-Taleb Education code is ${input.code}. It expires in 10 minutes.`,
+    });
   }
 
   async sendOrderNotification(input: DevelopmentOrderMessage) {
@@ -102,18 +84,26 @@ export class ResendEmailProvider implements EmailProvider {
       input.event === 'submitted'
         ? `Application request received: ${input.reference}`
         : `Application request update: ${input.reference}`;
+    await this.send({
+      recipient: input.recipient,
+      subject,
+      text:
+        input.event === 'submitted'
+          ? `We received your application request ${input.reference}.`
+          : `Your application request ${input.reference} is now ${input.newStatus ?? 'updated'}.`,
+    });
+  }
+
+  private async send(email: ResendEmail) {
     try {
       const response = await this.fetcher('https://api.resend.com/emails', {
         method: 'POST',
         headers: { Authorization: `Bearer ${this.apiKey}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({
           from: this.from,
-          to: [input.recipient],
-          subject,
-          text:
-            input.event === 'submitted'
-              ? `We received your application request ${input.reference}.`
-              : `Your application request ${input.reference} is now ${input.newStatus ?? 'updated'}.`,
+          to: [email.recipient],
+          subject: email.subject,
+          text: email.text,
         }),
       });
       if (!response.ok) {

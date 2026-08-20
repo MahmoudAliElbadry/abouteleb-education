@@ -1,0 +1,1061 @@
+[
+  {
+    "id": "TC001",
+    "title": "Complete a verified client enrollment request",
+    "description": "A verified client can submit an enrollment request with the required details and receive an order reference.",
+    "category": "Enrollment access gate",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the sign-in form"
+      },
+      {
+        "type": "action",
+        "description": "Open the enrollment section"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the full name field with a valid name"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the phone number field with a valid phone number"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the specialization field with a valid specialization"
+      },
+      {
+        "type": "action",
+        "description": "Submit the enrollment request"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify an order reference is displayed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the enrollment request is recorded as submitted"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC002",
+    "title": "Register a new client account",
+    "description": "A prospective client can submit registration details and receive a verification prompt.",
+    "category": "Client authentication",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /register"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the full name field with a valid name"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Provide the required consent"
+      },
+      {
+        "type": "action",
+        "description": "Submit the registration form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a verification prompt is visible"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC003",
+    "title": "Sign in and return to the requested destination",
+    "description": "A client who signs in after being redirected can return to the originally requested page.",
+    "category": "Client authentication",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /admin/orders"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the sign-in form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the requested destination or account area is shown after sign in"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC004",
+    "title": "Switch the homepage language and layout direction",
+    "description": "A public visitor can change the homepage language and see the content update with the correct text direction.",
+    "category": "Public landing page and navigation",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Change the display language to Arabic"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the page content is shown in Arabic"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the text direction changes to right-to-left"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC005",
+    "title": "Switch homepage language and text direction",
+    "description": "A visitor can switch the homepage language and the page updates to the selected reading direction.",
+    "category": "Client authentication",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Select Arabic as the language"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the homepage content updates to Arabic and uses right-to-left direction"
+      },
+      {
+        "type": "action",
+        "description": "Select English as the language"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the homepage content updates to English and uses left-to-right direction"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC006",
+    "title": "Verify a client email with a code",
+    "description": "A prospective client can submit a six-digit verification code and reach the verified access confirmation.",
+    "category": "Client authentication",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /verify-email"
+      },
+      {
+        "type": "action",
+        "description": "Enter a valid six-digit verification code"
+      },
+      {
+        "type": "action",
+        "description": "Submit the verification code"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a verified access confirmation is visible"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC007",
+    "title": "Use the mobile navigation to reach key sections",
+    "description": "A public visitor can open the mobile navigation, jump to page sections, and return to the main page content.",
+    "category": "Public landing page and navigation",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Open the mobile navigation menu"
+      },
+      {
+        "type": "action",
+        "description": "Jump to the universities section"
+      },
+      {
+        "type": "action",
+        "description": "Jump to the enrollment section"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the selected page sections are visible on the page"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the navigation menu is closed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC008",
+    "title": "Search and filter universities on the homepage",
+    "description": "A visitor can search the university catalog by name or city and see matching results only.",
+    "category": "Client authentication",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Enter a university name or city in the catalog search"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify matching universities are displayed"
+      },
+      {
+        "type": "action",
+        "description": "Clear the search"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the full catalog is displayed again"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC009",
+    "title": "Open registration from the locked enrollment section",
+    "description": "A signed-out visitor can reach the locked enrollment area and start the registration flow from there.",
+    "category": "Enrollment access gate",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Open the enrollment section"
+      },
+      {
+        "type": "action",
+        "description": "Start the registration flow from the locked enrollment area"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the registration page is displayed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the enrollment area is shown as locked before leaving the homepage"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC010",
+    "title": "Search universities and reveal more results",
+    "description": "A visitor can search the university catalog, filter by city, expand the list, and see additional matching cards.",
+    "category": "University catalog",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Search for a university by name"
+      },
+      {
+        "type": "action",
+        "description": "Filter the catalog by city"
+      },
+      {
+        "type": "action",
+        "description": "Expand the university catalog"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify matching university cards are displayed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify additional university cards are shown after expanding"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC011",
+    "title": "Access admin order management as an admin user",
+    "description": "An admin can sign in and open the protected orders dashboard to review order management tools.",
+    "category": "Admin order management",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the sign-in form"
+      },
+      {
+        "type": "action",
+        "description": "Open the admin orders dashboard"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the order metrics and order list are displayed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the admin dashboard is accessible"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC012",
+    "title": "Use the mobile navigation on the homepage",
+    "description": "A visitor on a narrow screen can open and use the homepage mobile navigation.",
+    "category": "Client authentication",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Resize the browser to a mobile viewport"
+      },
+      {
+        "type": "action",
+        "description": "Open the mobile navigation menu"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the homepage navigation links are visible in the mobile menu"
+      },
+      {
+        "type": "action",
+        "description": "Close the mobile navigation menu"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the mobile menu is hidden"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC013",
+    "title": "Log in and return to the requested page",
+    "description": "A prospective client can sign in and be redirected back to the page they originally tried to access.",
+    "category": "Prospective client authentication",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the sign-in form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the user returns to the originally requested destination"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the authenticated session is active"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC014",
+    "title": "Jump to homepage sections from the navigation",
+    "description": "A visitor can use homepage anchor links to jump to key sections and reach the expected content.",
+    "category": "Client authentication",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Open the homepage navigation"
+      },
+      {
+        "type": "action",
+        "description": "Click the link to the university catalog section"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the university catalog section is in view"
+      },
+      {
+        "type": "action",
+        "description": "Click the link to the enrollment section"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the enrollment section is in view"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC015",
+    "title": "Restore an existing session from login",
+    "description": "A returning client can restore an existing session and be taken to the previously requested destination.",
+    "category": "Client authentication",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Restore the existing session"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the previously requested destination is shown"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC016",
+    "title": "Register with required consent",
+    "description": "A prospective client can create an account when all required registration details and consent are provided.",
+    "category": "Prospective client authentication",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /register"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the required registration fields with valid details"
+      },
+      {
+        "type": "action",
+        "description": "Select the required consent option"
+      },
+      {
+        "type": "action",
+        "description": "Submit the registration form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the email verification page is displayed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the registration is accepted"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC017",
+    "title": "Open an order and assign it to the current admin",
+    "description": "An admin can open an order detail view and assign the order to themselves from the dashboard.",
+    "category": "Admin order management",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the sign-in form"
+      },
+      {
+        "type": "action",
+        "description": "Open the admin orders dashboard"
+      },
+      {
+        "type": "action",
+        "description": "Open an order from the list"
+      },
+      {
+        "type": "action",
+        "description": "Assign the order to the current admin"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the order detail view is displayed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the order shows an assigned admin"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC018",
+    "title": "Recover access through password reset",
+    "description": "A client can request a password reset, complete the reset flow, and see a reset confirmation.",
+    "category": "Client authentication",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /forgot-password"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Request a password reset"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to /reset-password"
+      },
+      {
+        "type": "action",
+        "description": "Enter a valid reset code"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the new password field with a valid new password"
+      },
+      {
+        "type": "action",
+        "description": "Submit the reset form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a password reset confirmation is visible"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC019",
+    "title": "Reset a forgotten password and sign in again",
+    "description": "A client can request a password reset, set a new password, and then sign in successfully with the new credentials.",
+    "category": "Client account recovery",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /forgot-password"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the password reset request"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to /reset-password"
+      },
+      {
+        "type": "action",
+        "description": "Enter a valid reset code"
+      },
+      {
+        "type": "action",
+        "description": "Fill in a new valid password"
+      },
+      {
+        "type": "action",
+        "description": "Submit the password reset form"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with the new password"
+      },
+      {
+        "type": "action",
+        "description": "Submit the sign-in form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the user is signed in successfully"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the password recovery flow completes"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC020",
+    "title": "Expand the university catalog list",
+    "description": "A visitor can expand the catalog to reveal additional universities beyond the initial set.",
+    "category": "Client authentication",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the university catalog section"
+      },
+      {
+        "type": "action",
+        "description": "Expand the catalog list"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify additional universities are displayed"
+      },
+      {
+        "type": "action",
+        "description": "Collapse the catalog list"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the catalog returns to the shorter list"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC021",
+    "title": "Advance an order to a valid next status with a client message",
+    "description": "An admin can move an order to a legal next status and optionally send a message visible to the client.",
+    "category": "Admin order management",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the sign-in form"
+      },
+      {
+        "type": "action",
+        "description": "Open the admin orders dashboard"
+      },
+      {
+        "type": "action",
+        "description": "Open an order from the list"
+      },
+      {
+        "type": "action",
+        "description": "Select a valid next order status"
+      },
+      {
+        "type": "action",
+        "description": "Fill in a client-visible status message"
+      },
+      {
+        "type": "action",
+        "description": "Submit the status update"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the order status changes in the timeline"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the client-visible message is recorded"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC022",
+    "title": "Block registration without consent",
+    "description": "A prospective client cannot complete registration until the required consent is provided.",
+    "category": "Client authentication",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /register"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the full name field with a valid name"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with a unique email address"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with a valid password"
+      },
+      {
+        "type": "action",
+        "description": "Submit the registration form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a consent validation error is visible"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC023",
+    "title": "Clear catalog filters and return to the shorter list",
+    "description": "A visitor can remove a university search, collapse the catalog, and return to the default shorter list of universities.",
+    "category": "University catalog",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Search for a university by name"
+      },
+      {
+        "type": "action",
+        "description": "Clear the search input"
+      },
+      {
+        "type": "action",
+        "description": "Collapse the university catalog"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the default university list is displayed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the catalog shows fewer universities after collapsing"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC024",
+    "title": "Request a new email verification code",
+    "description": "A prospective client can ask for a resend from the verification page and see confirmation that a new code was requested.",
+    "category": "Client authentication",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /verify-email"
+      },
+      {
+        "type": "action",
+        "description": "Request a resend of the verification code"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a resend confirmation is visible"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC025",
+    "title": "Add an internal note to an order",
+    "description": "An admin can add an internal note to an order and keep it available for staff review.",
+    "category": "Admin order management",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the sign-in form"
+      },
+      {
+        "type": "action",
+        "description": "Open the admin orders dashboard"
+      },
+      {
+        "type": "action",
+        "description": "Open an order from the list"
+      },
+      {
+        "type": "action",
+        "description": "Add an internal note"
+      },
+      {
+        "type": "action",
+        "description": "Submit the internal note"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the internal note appears in the order detail view"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the note is treated as internal only"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC026",
+    "title": "Open the WhatsApp contact destination from the homepage",
+    "description": "A public visitor can use the homepage contact link to open the messaging destination for support or inquiries.",
+    "category": "Public landing page and navigation",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Follow the WhatsApp contact link"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the messaging contact destination opens"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the contact action leads away from the homepage"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC027",
+    "title": "View the homepage counters while scrolling through sections",
+    "description": "A public visitor can scroll through the landing page and see the animated counters and major content sections become visible.",
+    "category": "Public landing page and navigation",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Scroll down the page"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the company counters are displayed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify additional landing page sections are visible"
+      }
+    ],
+    "priority": "Low"
+  },
+  {
+    "id": "TC028",
+    "title": "Block a non-admin user from the admin dashboard",
+    "description": "A signed-in non-admin user cannot access the protected admin orders area and is redirected or blocked.",
+    "category": "Admin order management",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the sign-in form"
+      },
+      {
+        "type": "action",
+        "description": "Open the admin orders dashboard"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify access to the admin dashboard is blocked"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the user is redirected away from the admin area"
+      }
+    ],
+    "priority": "Low"
+  },
+  {
+    "id": "TC029",
+    "title": "Block registration when consent is missing",
+    "description": "A prospective client cannot continue registration without accepting the required consent.",
+    "category": "Prospective client authentication",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /register"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the required registration fields with valid details"
+      },
+      {
+        "type": "action",
+        "description": "Submit the registration form without accepting consent"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a consent validation error is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify registration does not continue"
+      }
+    ],
+    "priority": "Low"
+  },
+  {
+    "id": "TC030",
+    "title": "Show an empty result when no universities match",
+    "description": "A visitor can enter a search that matches no universities and see a clear empty state instead of results.",
+    "category": "University catalog",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Search for a university name that does not match any result"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify an empty state message is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify no university cards are shown"
+      }
+    ],
+    "priority": "Low"
+  },
+  {
+    "id": "TC031",
+    "title": "Reject an invalid password reset code",
+    "description": "A client sees a validation error when entering an invalid reset code and cannot complete the password reset.",
+    "category": "Client account recovery",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /reset-password"
+      },
+      {
+        "type": "action",
+        "description": "Enter an invalid reset code"
+      },
+      {
+        "type": "action",
+        "description": "Fill in a new valid password"
+      },
+      {
+        "type": "action",
+        "description": "Submit the password reset form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a reset code validation error is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the password is not changed"
+      }
+    ],
+    "priority": "Low"
+  }
+]
