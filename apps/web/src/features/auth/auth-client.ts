@@ -82,7 +82,7 @@ export function register(input: {
   fullName: string;
   email: string;
   password: string;
-  consentAccepted: true;
+  consentAccepted: boolean;
 }) {
   return apiFetch<AuthResponse & { message: string }>('/auth/register', {
     method: 'POST',
