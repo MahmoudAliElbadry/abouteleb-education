@@ -16,6 +16,10 @@ import {
   adminUniversitiesRouter,
   publicUniversitiesRouter,
 } from './modules/content/universities.routes.js';
+import {
+  adminTestimonialsRouter,
+  publicTestimonialsRouter,
+} from './modules/content/testimonials.routes.js';
 
 export const app = express();
 
@@ -32,6 +36,8 @@ app.use('/api/v1/orders', ordersRouter);
 app.use('/api/v1/admin/orders', adminOrdersRouter);
 app.use('/api/v1/universities', publicUniversitiesRouter);
 app.use('/api/v1/admin/universities', adminUniversitiesRouter);
+app.use('/api/v1/testimonials', publicTestimonialsRouter);
+app.use('/api/v1/admin/testimonials', adminTestimonialsRouter);
 
 app.get('/api/v1/health', (_request, response) => {
   response.json(healthResponseSchema.parse({ status: 'ok', service: 'api' }));
