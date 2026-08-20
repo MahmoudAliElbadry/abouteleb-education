@@ -9,7 +9,25 @@ vi.mock('@tanstack/react-query', async () => {
     await vi.importActual<typeof import('@tanstack/react-query')>('@tanstack/react-query');
   return {
     ...actual,
-    useQuery: () => ({ isPending: false, isError: false, data: { service: 'api' } }),
+    useQuery: () => ({
+      isPending: false,
+      isError: false,
+      error: null,
+      refetch: vi.fn(),
+      data: {
+        items: Array.from({ length: 41 }, (_, index) => ({
+          id: `university-${index}`,
+          slug: `university-${index}`,
+          nameAr: `جامعة ${index}`,
+          nameEn: `University ${index}`,
+          nameTr: `Üniversite ${index}`,
+          city: index % 2 ? 'Ankara' : 'Istanbul',
+          imageUrl: 'https://example.com/logo.png',
+          featured: index < 3,
+          sortOrder: index,
+        })),
+      },
+    }),
   };
 });
 

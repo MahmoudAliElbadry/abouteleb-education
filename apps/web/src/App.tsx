@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Link, Route, Routes, useSearchParams } from 'react-router-dom';
-import { universities } from './data/universities.js';
 import { ApplicationPage } from './ApplicationPage.js';
 import { EnrollmentSection } from './features/enrollment/EnrollmentSection.js';
 import {
@@ -15,6 +15,10 @@ import { AdminOrderDetailPage, AdminOrdersPage } from './features/admin-orders/A
 import { ClientOrdersPage } from './features/client-orders/ClientOrdersPage.js';
 import { AdminUniversityPage } from './features/admin-content/AdminUniversityPage.js';
 import { AdminManagedContentPage } from './features/admin-content/AdminManagedContentPage.js';
+import {
+  getPublicUniversities,
+  type PublicUniversity,
+} from './features/content/public-content-client.js';
 
 type Language = 'ar' | 'en' | 'tr';
 
@@ -46,6 +50,9 @@ const copy = {
     search: 'ابحث باسم الجامعة',
     allCities: 'كل المدن',
     noResults: 'لم نجد جامعة مطابقة. جرّب بحثاً أو مدينة أخرى.',
+    loading: 'جار تحميل الجامعات…',
+    loadError: 'تعذر تحميل الجامعات.',
+    retry: 'إعادة المحاولة',
     showMore: 'عرض المزيد من الجامعات',
     showLess: 'عرض أقل',
     universitiesCount: 'جامعة متعاقدة',
@@ -98,6 +105,9 @@ const copy = {
     search: 'Search by university name',
     allCities: 'All cities',
     noResults: 'No universities match that search. Try another name or city.',
+    loading: 'Loading universities…',
+    loadError: 'Unable to load universities.',
+    retry: 'Retry',
     showMore: 'Show more universities',
     showLess: 'Show fewer',
     universitiesCount: 'Partner universities',
@@ -162,6 +172,9 @@ const copy = {
     search: 'Üniversite adına göre ara',
     allCities: 'Tüm şehirler',
     noResults: 'Eşleşen üniversite bulunamadı. Başka bir ad veya şehir deneyin.',
+    loading: 'Üniversiteler yükleniyor…',
+    loadError: 'Üniversiteler yüklenemedi.',
+    retry: 'Tekrar dene',
     showMore: 'Daha fazla üniversite göster',
     showLess: 'Daha az göster',
     universitiesCount: 'Anlaşmalı üniversite',
@@ -247,6 +260,11 @@ function PublicPage() {
   const [city, setCity] = useState('');
   const [showAllUniversities, setShowAllUniversities] = useState(false);
   const t = copy[language];
+  const universitiesQuery = useQuery({
+    queryKey: ['public-universities'],
+    queryFn: getPublicUniversities,
+  });
+  const universities: PublicUniversity[] = universitiesQuery.data?.items ?? [];
   const steps: ReadonlyArray<readonly [string, string]> = t.steps;
   const stats: ReadonlyArray<readonly [string, string]> = [
     ['+50', t.universitiesCount],
@@ -259,10 +277,12 @@ function PublicPage() {
     () =>
       universities.filter(
         (university) =>
-          normalizeCatalogSearch(university.name).includes(normalizeCatalogSearch(search)) &&
+          normalizeCatalogSearch(
+            university[language === 'ar' ? 'nameAr' : language === 'tr' ? 'nameTr' : 'nameEn'],
+          ).includes(normalizeCatalogSearch(search)) &&
           (!city || university.city === city),
       ),
-    [city, search],
+    [city, language, search, universities],
   );
   const shownUniversities = showAllUniversities
     ? filteredUniversities
@@ -374,15 +394,36 @@ function PublicPage() {
               </select>
             </label>
           </div>
-          {filteredUniversities.length ? (
+          {universitiesQuery.isPending ? (
+            <p role="status">{t.loading}</p>
+          ) : universitiesQuery.error ? (
+            <div role="alert">
+              <p>{t.loadError}</p>
+              <button type="button" onClick={() => void universitiesQuery.refetch()}>
+                {t.retry}
+              </button>
+            </div>
+          ) : filteredUniversities.length ? (
             <div className="university-grid">
               {shownUniversities.map((university) => (
                 <article className="university-card" key={university.id}>
                   <div className="university-logo">
-                    <img src={university.image} alt={`${university.name} logo`} />
+                    <img
+                      src={university.imageUrl}
+                      alt={`${university[language === 'ar' ? 'nameAr' : language === 'tr' ? 'nameTr' : 'nameEn']} logo`}
+                    />
                   </div>
-                  <h3>{university.name}</h3>
-                  <span>{cityLabels[language][university.city]}</span>
+                  <h3>
+                    {
+                      university[
+                        language === 'ar' ? 'nameAr' : language === 'tr' ? 'nameTr' : 'nameEn'
+                      ]
+                    }
+                  </h3>
+                  <span>
+                    {cityLabels[language][university.city as keyof typeof cityLabels.en] ??
+                      university.city}
+                  </span>
                 </article>
               ))}
             </div>
