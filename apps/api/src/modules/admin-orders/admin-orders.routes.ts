@@ -54,17 +54,17 @@ adminOrdersRouter.patch(
   sensitiveRouteLimit(60),
   requireCsrf,
   async (request, response, next) => {
-  try {
-    const result = await adminOrdersService.assign(
-      orderIdFrom(request),
-      orderAssignmentSchema.parse(request.body).assignedAdminId,
-      response.locals.user!.id,
-      request.ip,
-    );
-    response.json({ assignment: result });
-  } catch (error) {
-    next(error);
-  }
+    try {
+      const result = await adminOrdersService.assign(
+        orderIdFrom(request),
+        orderAssignmentSchema.parse(request.body).assignedAdminId,
+        response.locals.user!.id,
+        request.ip,
+      );
+      response.json({ assignment: result });
+    } catch (error) {
+      next(error);
+    }
   },
 );
 
@@ -73,22 +73,22 @@ adminOrdersRouter.post(
   sensitiveRouteLimit(60),
   requireCsrf,
   async (request, response, next) => {
-  try {
-    const result = await adminOrdersService.transition(
-      orderIdFrom(request),
-      orderStatusTransitionSchema.parse(request.body),
-      response.locals.user!.id,
-      request.ip,
-    );
-    await orderNotifier.notifyStatusChanged({
-      recipient: result.recipient,
-      reference: result.reference,
-      newStatus: result.toStatus,
-    });
-    response.json({ transition: result });
-  } catch (error) {
-    next(error);
-  }
+    try {
+      const result = await adminOrdersService.transition(
+        orderIdFrom(request),
+        orderStatusTransitionSchema.parse(request.body),
+        response.locals.user!.id,
+        request.ip,
+      );
+      await orderNotifier.notifyStatusChanged({
+        recipient: result.recipient,
+        reference: result.reference,
+        newStatus: result.toStatus,
+      });
+      response.json({ transition: result });
+    } catch (error) {
+      next(error);
+    }
   },
 );
 
@@ -97,16 +97,16 @@ adminOrdersRouter.post(
   sensitiveRouteLimit(60),
   requireCsrf,
   async (request, response, next) => {
-  try {
-    const result = await adminOrdersService.addInternalNote(
-      orderIdFrom(request),
-      orderInternalNoteSchema.parse(request.body).body,
-      response.locals.user!.id,
-      request.ip,
-    );
-    response.status(201).json({ note: result });
-  } catch (error) {
-    next(error);
-  }
+    try {
+      const result = await adminOrdersService.addInternalNote(
+        orderIdFrom(request),
+        orderInternalNoteSchema.parse(request.body).body,
+        response.locals.user!.id,
+        request.ip,
+      );
+      response.status(201).json({ note: result });
+    } catch (error) {
+      next(error);
+    }
   },
 );

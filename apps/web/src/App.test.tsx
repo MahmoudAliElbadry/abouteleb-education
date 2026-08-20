@@ -45,7 +45,8 @@ describe('App', () => {
   it('keeps every public navigation link pointed at an existing section', () => {
     renderApp();
 
-    screen.getByRole('navigation')
+    screen
+      .getByRole('navigation')
       .querySelectorAll('a[href^="#"]')
       .forEach((link) => {
         expect(document.getElementById(link.getAttribute('href')!.slice(1))).toBeInTheDocument();

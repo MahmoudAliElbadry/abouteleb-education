@@ -17,11 +17,7 @@ import { ClientOrdersPage } from './features/client-orders/ClientOrdersPage.js';
 type Language = 'ar' | 'en' | 'tr';
 
 export function normalizeCatalogSearch(value: string) {
-  return value
-    .normalize('NFD')
-    .replace(/\p{M}/gu, '')
-    .toLocaleLowerCase('tr')
-    .replaceAll('ı', 'i');
+  return value.normalize('NFD').replace(/\p{M}/gu, '').toLocaleLowerCase('tr').replaceAll('ı', 'i');
 }
 
 const copy = {
@@ -468,7 +464,11 @@ function NotFoundPage() {
   const language = searchParams.get('lang');
   const t = copy[language === 'en' || language === 'tr' ? language : 'ar'];
   return (
-    <main className="not-found" dir={language === 'ar' || !language ? 'rtl' : 'ltr'} lang={language ?? 'ar'}>
+    <main
+      className="not-found"
+      dir={language === 'ar' || !language ? 'rtl' : 'ltr'}
+      lang={language ?? 'ar'}
+    >
       <h1>{t.notFoundTitle}</h1>
       <Link to="/">{t.returnHome}</Link>
     </main>

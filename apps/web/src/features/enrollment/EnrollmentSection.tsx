@@ -207,9 +207,7 @@ export function EnrollmentSection({ language }: { language: Language }) {
               <input
                 type="checkbox"
                 checked={form.consentAccepted}
-                onChange={(event) =>
-                  setForm({ ...form, consentAccepted: event.target.checked })
-                }
+                onChange={(event) => setForm({ ...form, consentAccepted: event.target.checked })}
                 required
               />
               {t.consent}

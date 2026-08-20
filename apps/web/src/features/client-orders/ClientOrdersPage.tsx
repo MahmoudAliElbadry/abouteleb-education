@@ -41,7 +41,10 @@ const copy = {
 export function ClientOrdersPage({ language = 'en' }: { language?: keyof typeof copy }) {
   const [page, setPage] = useState(1);
   const t = copy[language];
-  const orders = useQuery({ queryKey: ['client', 'orders', page], queryFn: () => getClientOrders(page) });
+  const orders = useQuery({
+    queryKey: ['client', 'orders', page],
+    queryFn: () => getClientOrders(page),
+  });
 
   return (
     <main className="account-page" dir={language === 'ar' ? 'rtl' : 'ltr'} lang={language}>
@@ -81,7 +84,11 @@ export function ClientOrdersPage({ language = 'en' }: { language?: keyof typeof 
       ) : null}
       {orders.data && orders.data.total > orders.data.pageSize ? (
         <nav aria-label={t.title}>
-          <button type="button" disabled={page === 1} onClick={() => setPage((current) => current - 1)}>
+          <button
+            type="button"
+            disabled={page === 1}
+            onClick={() => setPage((current) => current - 1)}
+          >
             {t.previous}
           </button>
           <button

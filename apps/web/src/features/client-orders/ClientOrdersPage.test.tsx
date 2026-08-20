@@ -6,24 +6,26 @@ const mocks = vi.hoisted(() => ({
   query: {
     isPending: false,
     isError: false,
-    data: undefined as undefined | {
-      items: Array<{
-        id: string;
-        reference: string;
-        specializationLabel: string;
-        status: string;
-        submittedAt: string;
-        statusHistory: Array<{
-          fromStatus: string | null;
-          toStatus: string;
-          clientVisibleMessage: string | null;
-          createdAt: string;
-        }>;
-      }>;
-      total: number;
-      page: number;
-      pageSize: number;
-    },
+    data: undefined as
+      | undefined
+      | {
+          items: Array<{
+            id: string;
+            reference: string;
+            specializationLabel: string;
+            status: string;
+            submittedAt: string;
+            statusHistory: Array<{
+              fromStatus: string | null;
+              toStatus: string;
+              clientVisibleMessage: string | null;
+              createdAt: string;
+            }>;
+          }>;
+          total: number;
+          page: number;
+          pageSize: number;
+        },
     error: null as unknown,
     refetch: vi.fn(),
   },
@@ -34,7 +36,13 @@ vi.mock('@tanstack/react-query', () => ({ useQuery: () => mocks.query }));
 describe('ClientOrdersPage', () => {
   afterEach(() => {
     cleanup();
-    mocks.query = { isPending: false, isError: false, data: undefined, error: null, refetch: vi.fn() };
+    mocks.query = {
+      isPending: false,
+      isError: false,
+      data: undefined,
+      error: null,
+      refetch: vi.fn(),
+    };
   });
 
   it('renders an empty state', () => {
@@ -70,7 +78,9 @@ describe('ClientOrdersPage', () => {
     render(<ClientOrdersPage />);
 
     expect(screen.getByRole('heading', { name: 'ATE-2026-TEST' })).toBeInTheDocument();
-    expect(screen.getByText('We are reviewing your documents.', { exact: false })).toBeInTheDocument();
+    expect(
+      screen.getByText('We are reviewing your documents.', { exact: false }),
+    ).toBeInTheDocument();
   });
 
   it('shows a retryable error state', () => {

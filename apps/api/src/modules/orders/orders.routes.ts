@@ -1,5 +1,9 @@
 import { Router } from 'express';
-import { clientOrderListQuerySchema, createOrderSchema, orderResponseSchema } from '@abou/contracts';
+import {
+  clientOrderListQuerySchema,
+  createOrderSchema,
+  orderResponseSchema,
+} from '@abou/contracts';
 import { prisma } from '../../lib/prisma.js';
 import { requireAuth, requireCsrf } from '../../middleware/auth.js';
 import { OrdersService } from './orders.service.js';

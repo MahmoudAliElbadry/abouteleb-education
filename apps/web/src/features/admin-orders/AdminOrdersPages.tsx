@@ -190,8 +190,22 @@ export function AdminOrdersPage() {
   }
   const metrics = useQuery({ queryKey: ['admin', 'metrics'], queryFn: getAdminMetrics });
   const orders = useQuery({
-    queryKey: ['admin', 'orders', { status, specialization, assignedAdminId, search, sort, order, page }],
-    queryFn: () => getAdminOrders({ status, specialization, assignedAdminId, search, sort, order, page, pageSize: 20 }),
+    queryKey: [
+      'admin',
+      'orders',
+      { status, specialization, assignedAdminId, search, sort, order, page },
+    ],
+    queryFn: () =>
+      getAdminOrders({
+        status,
+        specialization,
+        assignedAdminId,
+        search,
+        sort,
+        order,
+        page,
+        pageSize: 20,
+      }),
     retry: false,
   });
   return (
@@ -231,10 +245,7 @@ export function AdminOrdersPage() {
           onChange={(event) => updateFilter('search', event.target.value)}
           placeholder={t.search}
         />
-        <select
-          value={status}
-          onChange={(event) => updateFilter('status', event.target.value)}
-        >
+        <select value={status} onChange={(event) => updateFilter('status', event.target.value)}>
           <option value="">{t.all}</option>
           {statusList.map((item) => (
             <option key={item} value={item}>
@@ -242,18 +253,39 @@ export function AdminOrdersPage() {
             </option>
           ))}
         </select>
-        <select aria-label={t.specialization} value={specialization} onChange={(event) => updateFilter('specialization', event.target.value)}>
+        <select
+          aria-label={t.specialization}
+          value={specialization}
+          onChange={(event) => updateFilter('specialization', event.target.value)}
+        >
           <option value="">{t.specialization}</option>
-          {(['medicine', 'dentistry', 'pharmacy', 'engineering', 'business'] as const).map((item) => (
-            <option key={item} value={item}>{item}</option>
-          ))}
+          {(['medicine', 'dentistry', 'pharmacy', 'engineering', 'business'] as const).map(
+            (item) => (
+              <option key={item} value={item}>
+                {item}
+              </option>
+            ),
+          )}
         </select>
-        <input aria-label={t.assignedAdmin} value={assignedAdminId} onChange={(event) => updateFilter('assignedAdminId', event.target.value)} placeholder={t.assignedAdmin} />
-        <select aria-label={t.sort} value={sort} onChange={(event) => updateFilter('sort', event.target.value)}>
+        <input
+          aria-label={t.assignedAdmin}
+          value={assignedAdminId}
+          onChange={(event) => updateFilter('assignedAdminId', event.target.value)}
+          placeholder={t.assignedAdmin}
+        />
+        <select
+          aria-label={t.sort}
+          value={sort}
+          onChange={(event) => updateFilter('sort', event.target.value)}
+        >
           <option value="createdAt">{t.createdAt}</option>
           <option value="updatedAt">{t.updatedAt}</option>
         </select>
-        <select aria-label={t.order} value={order} onChange={(event) => updateFilter('order', event.target.value)}>
+        <select
+          aria-label={t.order}
+          value={order}
+          onChange={(event) => updateFilter('order', event.target.value)}
+        >
           <option value="desc">{t.descending}</option>
           <option value="asc">{t.ascending}</option>
         </select>
@@ -261,8 +293,14 @@ export function AdminOrdersPage() {
       {orders.isPending ? <p role="status">{t.loading}</p> : null}
       {orders.error ? (
         <div className="form-error" role="alert">
-          <p>{orders.error instanceof ApiError && orders.error.status === 403 ? t.permissionError : message(orders.error, t.error)}</p>
-          <button type="button" onClick={() => void orders.refetch()}>{t.retry}</button>
+          <p>
+            {orders.error instanceof ApiError && orders.error.status === 403
+              ? t.permissionError
+              : message(orders.error, t.error)}
+          </p>
+          <button type="button" onClick={() => void orders.refetch()}>
+            {t.retry}
+          </button>
         </div>
       ) : orders.data?.items.length ? (
         <div className="admin-order-table">
@@ -298,7 +336,11 @@ export function AdminOrdersPage() {
       )}
       {orders.data && (
         <div className="pagination">
-          <button type="button" disabled={page <= 1} onClick={() => updateFilter('page', String(page - 1))}>
+          <button
+            type="button"
+            disabled={page <= 1}
+            onClick={() => updateFilter('page', String(page - 1))}
+          >
             ←
           </button>
           <span>

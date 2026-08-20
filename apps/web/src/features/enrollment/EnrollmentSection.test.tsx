@@ -5,7 +5,10 @@ import { EnrollmentSection } from './EnrollmentSection.js';
 
 const mocks = vi.hoisted(() => ({
   createOrder: vi.fn(),
-  session: { user: null as null | { email: string; emailVerified: boolean; fullName: string }, isPending: false },
+  session: {
+    user: null as null | { email: string; emailVerified: boolean; fullName: string },
+    isPending: false,
+  },
 }));
 
 vi.mock('../auth/useAuth.js', () => ({

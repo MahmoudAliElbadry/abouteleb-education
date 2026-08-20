@@ -62,7 +62,14 @@ export function getAdminOrders(query: {
     page: String(query.page),
     pageSize: String(query.pageSize),
   });
-  for (const key of ['status', 'specialization', 'assignedAdminId', 'search', 'sort', 'order'] as const)
+  for (const key of [
+    'status',
+    'specialization',
+    'assignedAdminId',
+    'search',
+    'sort',
+    'order',
+  ] as const)
     if (query[key]) params.set(key, query[key]!);
   return apiFetch<{
     items: AdminOrderSummary[];
