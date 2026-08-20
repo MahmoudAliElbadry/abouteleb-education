@@ -1,7 +1,7 @@
 # University asset migration mapping
 
-The seed migration preserves every static catalog image without rendering the static catalog at runtime. For each source record in `apps/web/src/data/universities.ts`, the old root-relative path is mapped by the deterministic rule:
+The 41 original filenames remain traceable in `apps/web/src/data/universities.ts`. Each source record is now vendored using its stable slug, with this complete deterministic mapping:
 
-`/<filename>` → `https://aboutalebeducation.com/<filename>`
+`/<original filename>` → `/images/<university slug>.png`
 
-The resulting URL is stored in `University.imageUrl`. This keeps malformed legacy filenames traceable while allowing the approved HTTPS asset host to normalize or replace them later without changing university slugs.
+The assets are stored in `apps/web/public/images/` and the seed writes `/images/${university.id}.png` in both create and update paths. This replaces the former broken root-hosted URL rule without changing slugs or sort order. All 41 source files were retrieved from `MahmoudAliElbadry/abouteleb-education`; `/images/logo.png` is also vendored as the catalog fallback.

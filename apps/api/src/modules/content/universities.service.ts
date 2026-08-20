@@ -5,6 +5,7 @@ import type {
   UniversityUpdateInput,
 } from '@abou/contracts';
 import { appErrors } from '../../core/app-error.js';
+import { audit, listAdminPage } from './shared.js';
 
 const publicFields = {
   id: true,
@@ -64,17 +65,15 @@ export class UniversitiesService {
           }
         : {}),
     };
-    const [items, total] = await this.prisma.$transaction([
-      this.prisma.university.findMany({
-        where,
-        orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }],
-        skip: (query.page - 1) * query.pageSize,
-        take: query.pageSize,
-        select: adminFields,
-      }),
-      this.prisma.university.count({ where }),
-    ]);
-    return { items, total, page: query.page, pageSize: query.pageSize };
+    return listAdminPage(
+      this.prisma,
+      this.prisma.university,
+      where,
+      [{ sortOrder: 'asc' }, { id: 'asc' }],
+      query.page,
+      query.pageSize,
+      adminFields,
+    );
   }
 
   async findAdmin(id: string) {
@@ -92,9 +91,18 @@ export class UniversitiesService {
         ...input,
         websiteUrl: input.websiteUrl ?? null,
       };
-      const university = await this.prisma.university.create({ data, select: adminFields });
-      await this.audit('content.university.created', university.id, actorId, ipAddress);
-      return university;
+      return await this.prisma.$transaction(async (tx) => {
+        const university = await tx.university.create({ data, select: adminFields });
+        await audit(
+          tx,
+          'content.university.created',
+          'University',
+          university.id,
+          actorId,
+          ipAddress,
+        );
+        return university;
+      });
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
         throw appErrors.contentConflict();
@@ -108,13 +116,11 @@ export class UniversitiesService {
       const data = Object.fromEntries(
         Object.entries(input).filter(([, value]) => value !== undefined),
       ) as Prisma.UniversityUpdateInput;
-      const university = await this.prisma.university.update({
-        where: { id },
-        data,
-        select: adminFields,
+      return await this.prisma.$transaction(async (tx) => {
+        const university = await tx.university.update({ where: { id }, data, select: adminFields });
+        await audit(tx, 'content.university.updated', 'University', id, actorId, ipAddress);
+        return university;
       });
-      await this.audit('content.university.updated', id, actorId, ipAddress);
-      return university;
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
         throw appErrors.contentConflict();
@@ -127,32 +133,24 @@ export class UniversitiesService {
   }
 
   async archive(id: string, actorId: string, ipAddress?: string) {
-    const university = await this.prisma.university.updateMany({
-      where: { id },
-      data: { archivedAt: new Date(), isPublished: false },
+    await this.prisma.$transaction(async (tx) => {
+      const university = await tx.university.updateMany({
+        where: { id },
+        data: { archivedAt: new Date() },
+      });
+      if (university.count !== 1) throw appErrors.notFound();
+      await audit(tx, 'content.university.archived', 'University', id, actorId, ipAddress);
     });
-    if (university.count !== 1) throw appErrors.notFound();
-    await this.audit('content.university.archived', id, actorId, ipAddress);
   }
 
   async restore(id: string, actorId: string, ipAddress?: string) {
-    const university = await this.prisma.university.updateMany({
-      where: { id },
-      data: { archivedAt: null },
-    });
-    if (university.count !== 1) throw appErrors.notFound();
-    await this.audit('content.university.restored', id, actorId, ipAddress);
-  }
-
-  private async audit(action: string, entityId: string, actorUserId: string, ipAddress?: string) {
-    await this.prisma.auditLog.create({
-      data: {
-        actorUserId,
-        action,
-        entityType: 'University',
-        entityId,
-        ipAddress: ipAddress ?? null,
-      },
+    await this.prisma.$transaction(async (tx) => {
+      const university = await tx.university.updateMany({
+        where: { id },
+        data: { archivedAt: null },
+      });
+      if (university.count !== 1) throw appErrors.notFound();
+      await audit(tx, 'content.university.restored', 'University', id, actorId, ipAddress);
     });
   }
 }

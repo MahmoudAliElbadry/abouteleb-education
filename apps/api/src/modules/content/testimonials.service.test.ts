@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
+import type { PrismaClient } from '@prisma/client';
 import { TestimonialsService } from './testimonials.service.js';
 
 const testimonial = {
@@ -21,9 +22,9 @@ const testimonial = {
 describe('TestimonialsService', () => {
   it('filters public results to published consented records', async () => {
     const prisma = { testimonial: { findMany: vi.fn().mockResolvedValue([testimonial]) } };
-    await expect(new TestimonialsService(prisma as never).listPublic()).resolves.toEqual([
-      testimonial,
-    ]);
+    await expect(
+      new TestimonialsService(prisma as unknown as PrismaClient).listPublic(),
+    ).resolves.toEqual([testimonial]);
     expect(prisma.testimonial.findMany).toHaveBeenCalledWith(
       expect.objectContaining({
         where: { isPublished: true, consentConfirmed: true, archivedAt: null },
@@ -34,7 +35,7 @@ describe('TestimonialsService', () => {
   it('rejects publication without consent on the server', async () => {
     const prisma = { testimonial: { create: vi.fn() } };
     await expect(
-      new TestimonialsService(prisma as never).create(
+      new TestimonialsService(prisma as unknown as PrismaClient).create(
         {
           clientNameAr: 'عميل',
           clientNameEn: 'Client',
@@ -57,8 +58,9 @@ describe('TestimonialsService', () => {
     const prisma = {
       testimonial: { create: vi.fn().mockResolvedValue(testimonial) },
       auditLog: { create: vi.fn() },
+      $transaction: vi.fn(async (callback) => callback(prisma)),
     };
-    await new TestimonialsService(prisma as never).create(
+    await new TestimonialsService(prisma as unknown as PrismaClient).create(
       {
         clientNameAr: 'عميل',
         clientNameEn: 'Client',

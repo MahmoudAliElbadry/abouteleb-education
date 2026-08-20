@@ -1,4 +1,5 @@
 import { apiFetch, csrfToken } from '../auth/auth-client.js';
+import type { ManagedContactKey, SocialIconKey } from '@abou/contracts';
 
 export type ManagedTestimonial = {
   id: string;
@@ -21,12 +22,12 @@ export type ManagedSocialLink = {
   labelEn: string;
   labelTr: string;
   url: string;
-  iconKey: string;
+  iconKey: SocialIconKey;
   isVisible: boolean;
   archivedAt: string | null;
   sortOrder: number;
 };
-export type ManagedContact = { key: string; value: string };
+export type ManagedContact = { key: ManagedContactKey; value: string };
 const write = { headers: { 'X-CSRF-Token': csrfToken() } };
 
 export const getAdminTestimonials = () =>
@@ -65,7 +66,7 @@ export const updateSocialLink = (id: string, input: Partial<ManagedSocialLink>) 
     body: JSON.stringify(input),
   });
 export const getAdminContact = () => apiFetch<{ items: ManagedContact[] }>('/admin/contact');
-export const updateContact = (key: string, value: string) =>
+export const updateContact = (key: ManagedContactKey, value: string) =>
   apiFetch<{ item: ManagedContact }>(`/admin/contact/${key}`, {
     method: 'PUT',
     ...write,

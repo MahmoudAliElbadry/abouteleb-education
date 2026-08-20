@@ -8,16 +8,11 @@ import { prisma } from '../../lib/prisma.js';
 import { requireAdmin, requireAuth, requireCsrf } from '../../middleware/auth.js';
 import { sensitiveRouteLimit } from '../../middleware/rate-limit.js';
 import { UniversitiesService } from './universities.service.js';
-import { appErrors } from '../../core/app-error.js';
+import { pathParam } from './shared.js';
 
 const service = new UniversitiesService(prisma);
 export const publicUniversitiesRouter = Router();
 export const adminUniversitiesRouter = Router();
-
-function pathParam(value: string | string[] | undefined) {
-  if (typeof value !== 'string') throw appErrors.notFound();
-  return value;
-}
 
 publicUniversitiesRouter.get('/', async (_request, response, next) => {
   try {
@@ -28,8 +23,7 @@ publicUniversitiesRouter.get('/', async (_request, response, next) => {
 });
 publicUniversitiesRouter.get('/:slug', async (request, response, next) => {
   try {
-    if (typeof request.params.slug !== 'string') throw appErrors.notFound();
-    response.json({ university: await service.findPublic(request.params.slug) });
+    response.json({ university: await service.findPublic(pathParam(request.params.slug)) });
   } catch (error) {
     next(error);
   }

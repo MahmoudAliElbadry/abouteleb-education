@@ -20,12 +20,8 @@ import {
   adminTestimonialsRouter,
   publicTestimonialsRouter,
 } from './modules/content/testimonials.routes.js';
-import {
-  adminContactRouter,
-  adminSocialRouter,
-  publicContactRouter,
-  publicSocialRouter,
-} from './modules/content/social-contact.routes.js';
+import { adminSocialRouter, publicSocialRouter } from './modules/content/social-link.routes.js';
+import { adminContactRouter, publicContactRouter } from './modules/content/contact.routes.js';
 
 export const app = express();
 

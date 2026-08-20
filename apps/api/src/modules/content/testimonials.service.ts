@@ -5,6 +5,7 @@ import type {
   TestimonialUpdateInput,
 } from '@abou/contracts';
 import { appErrors, AppError } from '../../core/app-error.js';
+import { audit, listAdminPage } from './shared.js';
 
 const publicFields = {
   id: true,
@@ -48,17 +49,15 @@ export class TestimonialsService {
           }
         : {}),
     };
-    const [items, total] = await this.prisma.$transaction([
-      this.prisma.testimonial.findMany({
-        where,
-        orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }],
-        skip: (query.page - 1) * query.pageSize,
-        take: query.pageSize,
-        select: adminFields,
-      }),
-      this.prisma.testimonial.count({ where }),
-    ]);
-    return { items, total, page: query.page, pageSize: query.pageSize };
+    return listAdminPage(
+      this.prisma,
+      this.prisma.testimonial,
+      where,
+      [{ sortOrder: 'asc' }, { id: 'asc' }],
+      query.page,
+      query.pageSize,
+      adminFields,
+    );
   }
   async findAdmin(id: string) {
     const testimonial = await this.prisma.testimonial.findUnique({
@@ -71,9 +70,18 @@ export class TestimonialsService {
   async create(input: TestimonialCreateInput, actorId: string, ipAddress?: string) {
     this.assertPublicationConsent(input.isPublished, input.consentConfirmed);
     const data: Prisma.TestimonialCreateInput = { ...input, imageUrl: input.imageUrl ?? null };
-    const testimonial = await this.prisma.testimonial.create({ data, select: adminFields });
-    await this.audit('content.testimonial.created', testimonial.id, actorId, ipAddress);
-    return testimonial;
+    return this.prisma.$transaction(async (tx) => {
+      const testimonial = await tx.testimonial.create({ data, select: adminFields });
+      await audit(
+        tx,
+        'content.testimonial.created',
+        'Testimonial',
+        testimonial.id,
+        actorId,
+        ipAddress,
+      );
+      return testimonial;
+    });
   }
   async update(id: string, input: TestimonialUpdateInput, actorId: string, ipAddress?: string) {
     const existing = await this.prisma.testimonial.findUnique({
@@ -88,28 +96,37 @@ export class TestimonialsService {
     const data = Object.fromEntries(
       Object.entries(input).filter(([, value]) => value !== undefined),
     ) as Prisma.TestimonialUpdateInput;
-    const testimonial = await this.prisma.testimonial.update({
-      where: { id },
-      data,
-      select: adminFields,
+    return this.prisma.$transaction(async (tx) => {
+      const testimonial = await tx.testimonial.update({ where: { id }, data, select: adminFields });
+      await audit(
+        tx,
+        input.isPublished === undefined
+          ? 'content.testimonial.updated'
+          : 'content.testimonial.publication_changed',
+        'Testimonial',
+        id,
+        actorId,
+        ipAddress,
+      );
+      return testimonial;
     });
-    await this.audit(
-      input.isPublished === undefined
-        ? 'content.testimonial.updated'
-        : 'content.testimonial.publication_changed',
-      id,
-      actorId,
-      ipAddress,
-    );
-    return testimonial;
   }
   async archive(id: string, actorId: string, ipAddress?: string) {
-    const result = await this.prisma.testimonial.updateMany({
-      where: { id },
-      data: { archivedAt: new Date(), isPublished: false },
+    await this.prisma.$transaction(async (tx) => {
+      const result = await tx.testimonial.updateMany({
+        where: { id },
+        data: { archivedAt: new Date() },
+      });
+      if (result.count !== 1) throw appErrors.notFound();
+      await audit(tx, 'content.testimonial.archived', 'Testimonial', id, actorId, ipAddress);
     });
-    if (result.count !== 1) throw appErrors.notFound();
-    await this.audit('content.testimonial.archived', id, actorId, ipAddress);
+  }
+  async restore(id: string, actorId: string, ipAddress?: string) {
+    await this.prisma.$transaction(async (tx) => {
+      const result = await tx.testimonial.updateMany({ where: { id }, data: { archivedAt: null } });
+      if (result.count !== 1) throw appErrors.notFound();
+      await audit(tx, 'content.testimonial.restored', 'Testimonial', id, actorId, ipAddress);
+    });
   }
   private assertPublicationConsent(isPublished: boolean, consentConfirmed: boolean) {
     if (isPublished && !consentConfirmed)
@@ -118,16 +135,5 @@ export class TestimonialsService {
         422,
         'Testimonial publication requires confirmed consent',
       );
-  }
-  private async audit(action: string, entityId: string, actorUserId: string, ipAddress?: string) {
-    await this.prisma.auditLog.create({
-      data: {
-        actorUserId,
-        action,
-        entityType: 'Testimonial',
-        entityId,
-        ipAddress: ipAddress ?? null,
-      },
-    });
   }
 }

@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
+import type { PrismaClient } from '@prisma/client';
 import { UniversitiesService } from './universities.service.js';
 
 const university = {
@@ -26,7 +27,7 @@ describe('UniversitiesService', () => {
     const prisma = {
       university: { findMany: vi.fn().mockResolvedValue([university]) },
     };
-    const result = await new UniversitiesService(prisma as never).listPublic();
+    const result = await new UniversitiesService(prisma as unknown as PrismaClient).listPublic();
 
     expect(result).toEqual([university]);
     expect(prisma.university.findMany).toHaveBeenCalledWith(
@@ -41,7 +42,7 @@ describe('UniversitiesService', () => {
     const prisma = { university: { findFirst: vi.fn().mockResolvedValue(null) } };
 
     await expect(
-      new UniversitiesService(prisma as never).findPublic('hidden'),
+      new UniversitiesService(prisma as unknown as PrismaClient).findPublic('hidden'),
     ).rejects.toMatchObject({
       code: 'NOT_FOUND',
     });
@@ -51,8 +52,9 @@ describe('UniversitiesService', () => {
     const prisma = {
       university: { create: vi.fn().mockResolvedValue(university) },
       auditLog: { create: vi.fn() },
+      $transaction: vi.fn(async (callback) => callback(prisma)),
     };
-    const service = new UniversitiesService(prisma as never);
+    const service = new UniversitiesService(prisma as unknown as PrismaClient);
 
     await service.create(
       {

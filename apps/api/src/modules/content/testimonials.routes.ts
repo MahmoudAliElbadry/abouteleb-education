@@ -5,18 +5,14 @@ import {
   testimonialUpdateSchema,
 } from '@abou/contracts';
 import { prisma } from '../../lib/prisma.js';
-import { appErrors } from '../../core/app-error.js';
 import { requireAdmin, requireAuth, requireCsrf } from '../../middleware/auth.js';
 import { sensitiveRouteLimit } from '../../middleware/rate-limit.js';
 import { TestimonialsService } from './testimonials.service.js';
+import { pathParam } from './shared.js';
 
 const service = new TestimonialsService(prisma);
 export const publicTestimonialsRouter = Router();
 export const adminTestimonialsRouter = Router();
-function pathParam(value: string | string[] | undefined) {
-  if (typeof value !== 'string') throw appErrors.notFound();
-  return value;
-}
 publicTestimonialsRouter.get('/', async (_request, response, next) => {
   try {
     response.json({ items: await service.listPublic() });
@@ -85,6 +81,23 @@ adminTestimonialsRouter.post(
   async (request, response, next) => {
     try {
       await service.archive(
+        pathParam(request.params.testimonialId),
+        response.locals.user!.id,
+        request.ip,
+      );
+      response.status(204).send();
+    } catch (error) {
+      next(error);
+    }
+  },
+);
+adminTestimonialsRouter.post(
+  '/:testimonialId/restore',
+  sensitiveRouteLimit(60),
+  requireCsrf,
+  async (request, response, next) => {
+    try {
+      await service.restore(
         pathParam(request.params.testimonialId),
         response.locals.user!.id,
         request.ip,

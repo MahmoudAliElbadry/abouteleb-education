@@ -575,7 +575,7 @@ Replace the current generated list with a responsive catalog:
 - Keyboard-accessible cards and controls.
 - Shareable query parameters for filters where useful.
 
-Migrate the existing 41 university records through a reviewed seed script after renaming and optimizing the malformed asset filenames.
+Migrate the existing 41 university records through a reviewed seed script after renaming and optimizing the malformed asset filenames. *(Status: seed migrated all 41 records; filename renaming/optimization was deferred — the seeded imageUrl values 404; now a Phase 6.1 blocking defect.)*
 
 ## 12. Responsive and accessibility requirements
 
@@ -866,6 +866,43 @@ Deliverables:
 
 Exit criteria: an admin can update approved content without a deployment and cannot inject executable markup or break required localized fields.
 
+### Phase 6.1 — Deep review findings and remediation (blocking)
+
+A five-lane review found the Phase 6 toolchain green but identified content correctness findings that block the Phase 7 exit gate until fixed and re-verified.
+
+Deliverables:
+
+- Repair content contracts, archive/restore semantics, atomic audit records, catalog assets, and managed-content UI states.
+- Preserve route and response compatibility while splitting the content contracts, services, and UI sections.
+
+Exit criteria: P0/P1 items are resolved with regression coverage and the full quality gate passes.
+
+#### P0
+
+- **Resolved:** vendored university logos replace broken root-hosted seed URLs.
+- **Resolved:** testimonial publish PATCH may rely on stored consent, while create-level consent remains enforced.
+- **Resolved:** literal `true`/`false` list filters prevent draft-filter inversion.
+
+#### P1
+
+- **Resolved:** contact draft edits are controlled and mutation failures/pending states are visible.
+- **Resolved:** archive/restore preserves publication/visibility state; testimonials have an admin restore route.
+- **Resolved:** content mutations and audit records execute in one transaction.
+
+#### P2
+
+- **Resolved:** contracts, social/contact services/routes, and managed-content UI are separated by aggregate; shared content helpers centralize audit, pagination, and route params.
+- **Resolved:** contact keys and content client types are single-sourced from contracts.
+
+#### Non-blocking (owner-input / follow-up)
+
+- Real Arabic/English/Turkish university names and summaries remain owner-provided; X/LinkedIn confirmation remains owner-provided.
+- URL length and contact-format validation remain follow-up hardening items.
+
+#### External blockers (not code defects)
+
+- University-logo source retrieval depends on the original repository remaining accessible; the owner supplies source assets if it is unavailable.
+
 ### Phase 7 — Hardening, staging acceptance, and launch (4–7 days)
 
 Deliverables:
@@ -1046,6 +1083,8 @@ These items are intentionally flagged and do not prevent local foundation work:
 5. **`[BLOCKER: EMAIL/DNS]`** Resend is configured in the API and its key is valid, but `aboutalebeducation.com` is `not_started` in Resend. The GoDaddy account owner must either grant DNS access or add the Resend-provided DKIM, SPF, and return-path records. This blocks real OTP/order email delivery and production email testing.
 6. **`[BLOCKER: FRONTEND HOSTING]`** The repository is private, so it cannot be published through free GitHub Pages. Before staging, the owner must either approve making the repository public or select and configure another static-hosting provider that supports private repositories.
 7. **`[FLAG: TESTSPRITE/STAGING]`** Defer full TestSprite execution until a stable staging API/site is available with Render + Neon, database migrations applied, seeded test accounts, and a deterministic OTP test path. TestSprite plan generation is complete; local execution evidence is currently inconclusive because of tunnel/network and missing stateful dependencies.
+8. **`[FLAG: CONTENT/ASSETS]`** University logo source assets must be retrieved from the original repository before vendoring; the owner supplies the set if unavailable.
+9. **`[FLAG: CONTENT]`** Real Arabic/English/Turkish name and summary translations and X/LinkedIn confirmation are owner-provided.
 
 ### Provisional privacy and retention baseline
 
@@ -1065,7 +1104,7 @@ Until the business owner confirms a formal policy:
 - Email OTP deliverability can fail even when application code is correct; provider setup and domain records must happen early.
 - Authentication and admin content management make this a security-sensitive production system, not a simple static-site conversion.
 - A single giant rewrite creates cutover risk; preserve the current site until React parity and staging acceptance.
-- The current malformed asset filenames will create migration and portability problems unless normalized with a mapping.
+- The malformed asset-filename migration risk is remediated in Phase 6.1 with a vendored slug-to-asset mapping.
 - SPA-only public rendering can weaken SEO if metadata and crawlability are neglected. If organic search becomes a major acquisition channel, evaluate server rendering or prerendering before finalizing the frontend architecture.
 - Admins changing records concurrently can overwrite each other. Add optimistic concurrency (`updatedAt`/version checks) for orders and managed content.
 - Unbounded admin lists will become slow; implement server-side pagination and indexes from the start.

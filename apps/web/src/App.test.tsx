@@ -89,4 +89,11 @@ describe('App', () => {
     expect(normalizeCatalogSearch('istanbul')).toBe('istanbul');
     expect(normalizeCatalogSearch('Istanbul')).toBe('istanbul');
   });
+
+  it('uses the local image fallback after a catalog image error', () => {
+    renderApp();
+    const image = screen.getAllByRole('img')[1] as HTMLImageElement;
+    fireEvent.error(image);
+    expect(image.src).toContain('/images/logo.png');
+  });
 });

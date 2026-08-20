@@ -426,6 +426,13 @@ function PublicPage() {
                     <img
                       src={university.imageUrl}
                       alt={`${university[language === 'ar' ? 'nameAr' : language === 'tr' ? 'nameTr' : 'nameEn']} logo`}
+                      loading="lazy"
+                      width="180"
+                      height="100"
+                      onError={(event) => {
+                        event.currentTarget.onerror = null;
+                        event.currentTarget.src = '/images/logo.png';
+                      }}
                     />
                   </div>
                   <h3>

@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import { PrismaClient } from '@prisma/client';
 import { UserRole } from '@prisma/client';
+import { CONTACT_KEYS } from '@abou/contracts';
 import { universities } from '../apps/web/src/data/universities.ts';
 
 const prisma = new PrismaClient();
@@ -39,7 +40,7 @@ async function main() {
           nameAr: university.name,
           nameEn: university.name,
           nameTr: university.name,
-          imageUrl: `https://aboutalebeducation.com${university.image}`,
+          imageUrl: `/images/${university.id}.png`,
           city: university.city,
           featured: sortOrder < 8,
           isPublished: true,
@@ -55,7 +56,7 @@ async function main() {
           summaryEn: 'An approved academic partner for international students.',
           summaryTr: 'Uluslararası öğrenciler için onaylı akademik ortağımız.',
           city: university.city,
-          imageUrl: `https://aboutalebeducation.com${university.image}`,
+          imageUrl: `/images/${university.id}.png`,
           featured: sortOrder < 8,
           isPublished: true,
           sortOrder,
@@ -83,6 +84,51 @@ async function main() {
         url: 'https://wa.me/905015959880',
         iconKey: 'whatsapp',
         sortOrder: 0,
+      },
+    }),
+    prisma.socialLink.upsert({
+      where: { platform_url: { platform: 'x', url: 'https://x.com/ABOUTALEBEDU' } },
+      update: {
+        labelAr: 'إكس',
+        labelEn: 'X',
+        labelTr: 'X',
+        isVisible: true,
+        archivedAt: null,
+        sortOrder: 3,
+      },
+      create: {
+        platform: 'x',
+        labelAr: 'إكس',
+        labelEn: 'X',
+        labelTr: 'X',
+        url: 'https://x.com/ABOUTALEBEDU',
+        iconKey: 'x',
+        sortOrder: 3,
+      },
+    }),
+    prisma.socialLink.upsert({
+      where: {
+        platform_url: {
+          platform: 'linkedin',
+          url: 'https://www.linkedin.com/in/abou-taleb-education-108b413a7',
+        },
+      },
+      update: {
+        labelAr: 'لينكدإن',
+        labelEn: 'LinkedIn',
+        labelTr: 'LinkedIn',
+        isVisible: true,
+        archivedAt: null,
+        sortOrder: 4,
+      },
+      create: {
+        platform: 'linkedin',
+        labelAr: 'لينكدإن',
+        labelEn: 'LinkedIn',
+        labelTr: 'LinkedIn',
+        url: 'https://www.linkedin.com/in/abou-taleb-education-108b413a7',
+        iconKey: 'linkedin',
+        sortOrder: 4,
       },
     }),
     prisma.socialLink.upsert({
@@ -137,9 +183,11 @@ async function main() {
       ['contact_email_primary', 'info@aboutalebeducation.com'],
       ['contact_email_secondary', 'AboutalebEducation@gmail.com'],
       ['contact_whatsapp', 'https://wa.me/905015959880'],
-    ].map(([key, value]) =>
-      prisma.managedContent.upsert({ where: { key }, update: { value }, create: { key, value } }),
-    ),
+    ]
+      .filter(([key]) => CONTACT_KEYS.includes(key as (typeof CONTACT_KEYS)[number]))
+      .map(([key, value]) =>
+        prisma.managedContent.upsert({ where: { key }, update: { value }, create: { key, value } }),
+      ),
   ]);
   process.stdout.write(JSON.stringify({ event: 'auth.admin.bootstrap', userId: user.id }) + '\n');
 }

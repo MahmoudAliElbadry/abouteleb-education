@@ -3,7 +3,9 @@ import {
   healthResponseSchema,
   managedContactUpsertSchema,
   socialLinkCreateSchema,
+  managedContentListQuerySchema,
   testimonialCreateSchema,
+  testimonialUpdateSchema,
   universityCreateSchema,
 } from './index.js';
 
@@ -58,6 +60,22 @@ describe('managed content contracts', () => {
         isPublished: true,
       }),
     ).toThrow();
+  });
+
+  it('allows a consent-ful publish PATCH for service-level consent verification', () => {
+    expect(testimonialUpdateSchema.parse({ isPublished: true })).toMatchObject({
+      isPublished: true,
+    });
+    expect(
+      testimonialUpdateSchema.parse({ isPublished: true, consentConfirmed: false }),
+    ).toMatchObject({ isPublished: true, consentConfirmed: false });
+  });
+
+  it('parses only literal boolean list filters', () => {
+    expect(managedContentListQuerySchema.parse({ isPublished: 'false' }).isPublished).toBe(false);
+    expect(managedContentListQuerySchema.parse({ isPublished: 'true' }).isPublished).toBe(true);
+    expect(() => managedContentListQuerySchema.parse({ isPublished: '1' })).toThrow();
+    expect(() => managedContentListQuerySchema.parse({ isPublished: 'yes' })).toThrow();
   });
 
   it('allows only approved social icons and fixed contact keys', () => {

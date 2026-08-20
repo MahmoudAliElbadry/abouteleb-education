@@ -1,4 +1,5 @@
 import { apiFetch, csrfToken } from '../auth/auth-client.js';
+import type { UniversityCreateInput } from '@abou/contracts';
 
 export type ManagedUniversity = {
   id: string;
@@ -19,10 +20,7 @@ export type ManagedUniversity = {
   createdAt: string;
   updatedAt: string;
 };
-export type UniversityInput = Omit<
-  ManagedUniversity,
-  'id' | 'createdAt' | 'updatedAt' | 'archivedAt'
-> & { websiteUrl?: string | null };
+export type UniversityInput = UniversityCreateInput;
 export type UniversityListResponse = {
   items: ManagedUniversity[];
   total: number;
