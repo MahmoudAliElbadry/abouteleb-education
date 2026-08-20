@@ -1,8 +1,8 @@
-import { describe, expect, it, vi } from 'vitest';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { App } from './App.js';
+import { App, normalizeCatalogSearch } from './App.js';
 
 vi.mock('@tanstack/react-query', async () => {
   const actual =
@@ -14,6 +14,8 @@ vi.mock('@tanstack/react-query', async () => {
 });
 
 describe('App', () => {
+  afterEach(cleanup);
+
   function renderApp(initialEntry = '/') {
     render(
       <QueryClientProvider client={new QueryClient()}>
@@ -37,6 +39,32 @@ describe('App', () => {
   it('renders the login page from a direct URL', () => {
     renderApp('/login');
 
-    expect(screen.getByRole('heading', { name: 'تسجيل الدخول' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Welcome back' })).toBeInTheDocument();
+  });
+
+  it('keeps every public navigation link pointed at an existing section', () => {
+    renderApp();
+
+    screen.getByRole('navigation')
+      .querySelectorAll('a[href^="#"]')
+      .forEach((link) => {
+        expect(document.getElementById(link.getAttribute('href')!.slice(1))).toBeInTheDocument();
+      });
+  });
+
+  it.each([
+    ['/missing?lang=ar', 'الصفحة غير موجودة'],
+    ['/missing?lang=en', 'Page not found'],
+    ['/missing?lang=tr', 'Sayfa bulunamadı'],
+  ])('renders a localized not-found state for %s', (path, heading) => {
+    renderApp(path);
+
+    expect(screen.getByRole('heading', { name: heading })).toBeInTheDocument();
+  });
+
+  it('normalizes Turkish dotted and dotless I search input', () => {
+    expect(normalizeCatalogSearch('İstanbul')).toBe('istanbul');
+    expect(normalizeCatalogSearch('istanbul')).toBe('istanbul');
+    expect(normalizeCatalogSearch('Istanbul')).toBe('istanbul');
   });
 });

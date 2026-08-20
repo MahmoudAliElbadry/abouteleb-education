@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link, Route, Routes } from 'react-router-dom';
+import { Link, Route, Routes, useSearchParams } from 'react-router-dom';
 import { universities } from './data/universities.js';
 import { ApplicationPage } from './ApplicationPage.js';
 import { EnrollmentSection } from './features/enrollment/EnrollmentSection.js';
@@ -15,9 +15,18 @@ import { AdminOrderDetailPage, AdminOrdersPage } from './features/admin-orders/A
 
 type Language = 'ar' | 'en' | 'tr';
 
+export function normalizeCatalogSearch(value: string) {
+  return value
+    .normalize('NFD')
+    .replace(/\p{M}/gu, '')
+    .toLocaleLowerCase('tr')
+    .replaceAll('ı', 'i');
+}
+
 const copy = {
   ar: {
     language: 'العربية',
+    languagePicker: 'اللغة',
     home: 'الرئيسية',
     services: 'خدماتنا',
     universities: 'الجامعات',
@@ -63,9 +72,12 @@ const copy = {
     ready: 'هل أنت جاهز لبدء مستقبلك؟',
     readyDescription: 'تواصل معنا الآن، وسيتابع معك أحد مستشارينا التعليميين.',
     catalog: 'كتالوج الجامعات',
+    notFoundTitle: 'الصفحة غير موجودة',
+    returnHome: 'العودة إلى الرئيسية',
   },
   en: {
     language: 'English',
+    languagePicker: 'Language',
     home: 'Home',
     services: 'Services',
     universities: 'Universities',
@@ -124,9 +136,12 @@ const copy = {
     ready: 'Ready to start your future?',
     readyDescription: 'Contact us now and one of our educational consultants will guide you.',
     catalog: 'University catalog',
+    notFoundTitle: 'Page not found',
+    returnHome: 'Return home',
   },
   tr: {
     language: 'Türkçe',
+    languagePicker: 'Dil',
     home: 'Ana sayfa',
     services: 'Hizmetlerimiz',
     universities: 'Üniversiteler',
@@ -182,6 +197,8 @@ const copy = {
     ready: 'Geleceğinize başlamaya hazır mısınız?',
     readyDescription: 'Şimdi iletişime geçin, eğitim danışmanlarımızdan biri size yardımcı olsun.',
     catalog: 'Üniversite kataloğu',
+    notFoundTitle: 'Sayfa bulunamadı',
+    returnHome: 'Ana sayfaya dön',
   },
 } as const;
 
@@ -243,7 +260,7 @@ function PublicPage() {
     () =>
       universities.filter(
         (university) =>
-          university.name.toLocaleLowerCase().includes(search.toLocaleLowerCase()) &&
+          normalizeCatalogSearch(university.name).includes(normalizeCatalogSearch(search)) &&
           (!city || university.city === city),
       ),
     [city, search],
@@ -276,7 +293,7 @@ function PublicPage() {
         </nav>
         <div className="header-actions">
           <label className="language-picker">
-            <span className="sr-only">Language</span>
+            <span className="sr-only">{t.languagePicker}</span>
             <select
               value={language}
               onChange={(event) => setLanguage(event.target.value as Language)}
@@ -446,10 +463,13 @@ function PublicPage() {
 }
 
 function NotFoundPage() {
+  const [searchParams] = useSearchParams();
+  const language = searchParams.get('lang');
+  const t = copy[language === 'en' || language === 'tr' ? language : 'ar'];
   return (
-    <main className="not-found">
-      <h1>Page not found</h1>
-      <Link to="/">Return home</Link>
+    <main className="not-found" dir={language === 'ar' || !language ? 'rtl' : 'ltr'} lang={language ?? 'ar'}>
+      <h1>{t.notFoundTitle}</h1>
+      <Link to="/">{t.returnHome}</Link>
     </main>
   );
 }
