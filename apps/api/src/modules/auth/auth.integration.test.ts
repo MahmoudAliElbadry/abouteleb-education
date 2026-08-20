@@ -46,7 +46,7 @@ integrationDescribe('authentication PostgreSQL integration', () => {
 
     await agent
       .post('/api/v1/auth/register')
-      .send({ fullName: 'Integration Client', email, password })
+      .send({ fullName: 'Integration Client', email, password, consentAccepted: true })
       .expect(201);
     const verification = getDevelopmentMailbox().at(-1);
     expect(verification).toMatchObject({ recipient: email, purpose: 'EMAIL_VERIFY' });
@@ -74,11 +74,11 @@ integrationDescribe('authentication PostgreSQL integration', () => {
 
     await request(app)
       .post('/api/v1/auth/register')
-      .send({ fullName: 'Integration Client', email, password })
+      .send({ fullName: 'Integration Client', email, password, consentAccepted: true })
       .expect(201);
     await request(app)
       .post('/api/v1/auth/register')
-      .send({ fullName: 'Integration Client', email, password })
+      .send({ fullName: 'Integration Client', email, password, consentAccepted: true })
       .expect(409)
       .expect(({ body }) => expect(body.error.code).toBe('ACCOUNT_EXISTS'));
     await request(app).post('/api/v1/auth/login').send({ email, password }).expect(403);
@@ -106,7 +106,7 @@ integrationDescribe('authentication PostgreSQL integration', () => {
 
     await agent
       .post('/api/v1/auth/register')
-      .send({ fullName: 'Integration Client', email, password })
+      .send({ fullName: 'Integration Client', email, password, consentAccepted: true })
       .expect(201);
     const verification = getDevelopmentMailbox().at(-1);
     await agent
