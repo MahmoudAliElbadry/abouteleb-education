@@ -10,6 +10,15 @@ describe('API foundation', () => {
     expect(response.body).toEqual({ status: 'ok', service: 'api' });
   });
 
+  it('allows requests from the configured web origin', async () => {
+    const response = await request(app)
+      .get('/api/v1/health')
+      .set('Origin', 'http://localhost:5173');
+
+    expect(response.headers['access-control-allow-origin']).toBe('http://localhost:5173');
+    expect(response.headers['access-control-allow-credentials']).toBe('true');
+  });
+
   it('reports unavailable readiness when the database check fails', async () => {
     const response = await request(app).get('/api/v1/health/readiness');
     expect([200, 503]).toContain(response.status);

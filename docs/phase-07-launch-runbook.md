@@ -3,7 +3,7 @@
 ## Provisioning
 
 1. Create separate Neon staging and production projects. Store each `DATABASE_URL` only in its matching Render environment.
-2. Create the Render API Web Service and Static Site from `render.yaml`. Set the API `WEB_ORIGIN` to the static-site URL and `COOKIE_DOMAIN` to the shared production parent domain.
+2. Create the Render API Web Service and Static Site from `render.yaml`. Set the API `WEB_ORIGIN` to the primary static-site URL, or set `WEB_ORIGINS` to a comma-separated allowlist when more than one frontend origin is active. For the temporary Pages deployment, use `https://mahmoudalielbadry.github.io,https://aboutalebeducation.com`. Set `COOKIE_DOMAIN` only once the web app and API share a production parent domain.
 3. Set `VITE_API_BASE_URL` during the static-site build, and configure `SENTRY_DSN` / `VITE_SENTRY_DSN` only after their projects enforce PII scrubbing.
 4. Add Resend DKIM, SPF, and return-path DNS records before production email is enabled.
 
