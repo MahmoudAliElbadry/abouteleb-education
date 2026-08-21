@@ -57,7 +57,9 @@ app.get('/api/v1/health/readiness', async (_request, response) => {
     await prisma.$queryRaw`SELECT 1`;
     response.json({ status: 'ok', service: 'api', checks: { database: 'ok' } });
   } catch {
-    response.status(503).json({ status: 'error', service: 'api', checks: { database: 'unavailable' } });
+    response
+      .status(503)
+      .json({ status: 'error', service: 'api', checks: { database: 'unavailable' } });
   }
 });
 

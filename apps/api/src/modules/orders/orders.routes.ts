@@ -55,29 +55,39 @@ ordersRouter.get('/:orderId', async (request, response, next) => {
   }
 });
 
-ordersRouter.post('/:orderId/cancel', sensitiveRouteLimit(20), requireCsrf, async (request, response, next) => {
-  try {
-    const orderId = request.params.orderId;
-    if (typeof orderId !== 'string') throw appErrors.notFound();
-    await ordersService.cancel(orderId, response.locals.user!.id, request.ip);
-    response.status(204).send();
-  } catch (error) {
-    next(error);
-  }
-});
+ordersRouter.post(
+  '/:orderId/cancel',
+  sensitiveRouteLimit(20),
+  requireCsrf,
+  async (request, response, next) => {
+    try {
+      const orderId = request.params.orderId;
+      if (typeof orderId !== 'string') throw appErrors.notFound();
+      await ordersService.cancel(orderId, response.locals.user!.id, request.ip);
+      response.status(204).send();
+    } catch (error) {
+      next(error);
+    }
+  },
+);
 
-ordersRouter.post('/:orderId/responses', sensitiveRouteLimit(30), requireCsrf, async (request, response, next) => {
-  try {
-    const orderId = request.params.orderId;
-    if (typeof orderId !== 'string') throw appErrors.notFound();
-    const createdResponse = await ordersService.addResponse(
-      orderId,
-      response.locals.user!.id,
-      orderResponseSchema.parse(request.body).body,
-      request.ip,
-    );
-    response.status(201).json({ response: createdResponse });
-  } catch (error) {
-    next(error);
-  }
-});
+ordersRouter.post(
+  '/:orderId/responses',
+  sensitiveRouteLimit(30),
+  requireCsrf,
+  async (request, response, next) => {
+    try {
+      const orderId = request.params.orderId;
+      if (typeof orderId !== 'string') throw appErrors.notFound();
+      const createdResponse = await ordersService.addResponse(
+        orderId,
+        response.locals.user!.id,
+        orderResponseSchema.parse(request.body).body,
+        request.ip,
+      );
+      response.status(201).json({ response: createdResponse });
+    } catch (error) {
+      next(error);
+    }
+  },
+);
