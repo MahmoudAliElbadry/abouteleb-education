@@ -21,6 +21,11 @@ function csrfToken(setCookie: string[] | string | undefined) {
   return nameValue?.slice('abou_csrf='.length);
 }
 
+async function issueCsrf(agent: ReturnType<typeof request.agent>) {
+  const response = await agent.get('/api/v1/auth/csrf').expect(200);
+  return response.body.csrfToken as string;
+}
+
 async function cleanupDatabase() {
   await prisma.auditLog.deleteMany();
   await prisma.session.deleteMany();
@@ -56,7 +61,12 @@ integrationDescribe('authentication PostgreSQL integration', () => {
       .send({ email, code: verification?.code })
       .expect(200);
 
-    const login = await agent.post('/api/v1/auth/login').send({ email, password }).expect(200);
+    const csrfBeforeLogin = await issueCsrf(agent);
+    const login = await agent
+      .post('/api/v1/auth/login')
+      .set('X-CSRF-Token', csrfBeforeLogin)
+      .send({ email, password })
+      .expect(200);
     const csrf = csrfToken(login.headers['set-cookie']);
     expect(csrf).toEqual(expect.any(String));
 
@@ -81,7 +91,13 @@ integrationDescribe('authentication PostgreSQL integration', () => {
       .send({ fullName: 'Integration Client', email, password, consentAccepted: true })
       .expect(409)
       .expect(({ body }) => expect(body.error.code).toBe('ACCOUNT_EXISTS'));
-    await request(app).post('/api/v1/auth/login').send({ email, password }).expect(403);
+    const loginAgent = request.agent(app);
+    const csrfBeforeLogin = await issueCsrf(loginAgent);
+    await loginAgent
+      .post('/api/v1/auth/login')
+      .set('X-CSRF-Token', csrfBeforeLogin)
+      .send({ email, password })
+      .expect(403);
 
     const verification = getDevelopmentMailbox().at(-1);
     await request(app)
@@ -89,7 +105,11 @@ integrationDescribe('authentication PostgreSQL integration', () => {
       .send({ email, code: verification?.code })
       .expect(200);
     await prisma.user.update({ where: { email }, data: { status: UserStatus.DISABLED } });
-    await request(app).post('/api/v1/auth/login').send({ email, password }).expect(401);
+    await loginAgent
+      .post('/api/v1/auth/login')
+      .set('X-CSRF-Token', csrfBeforeLogin)
+      .send({ email, password })
+      .expect(401);
 
     const logs = await prisma.auditLog.findMany();
     expect(logs.some((log) => log.action === 'auth.registration.completed')).toBe(true);
@@ -113,7 +133,12 @@ integrationDescribe('authentication PostgreSQL integration', () => {
       .post('/api/v1/auth/verify-email')
       .send({ email, code: verification?.code })
       .expect(200);
-    await agent.post('/api/v1/auth/login').send({ email, password }).expect(200);
+    const csrfBeforeLogin = await issueCsrf(agent);
+    await agent
+      .post('/api/v1/auth/login')
+      .set('X-CSRF-Token', csrfBeforeLogin)
+      .send({ email, password })
+      .expect(200);
     await agent.post('/api/v1/auth/forgot-password').send({ email }).expect(200);
     const reset = getDevelopmentMailbox().at(-1);
     await agent
@@ -122,8 +147,11 @@ integrationDescribe('authentication PostgreSQL integration', () => {
       .expect(200);
 
     await agent.get('/api/v1/auth/session').expect(401);
-    await request(app)
+    const replacementAgent = request.agent(app);
+    const replacementCsrf = await issueCsrf(replacementAgent);
+    await replacementAgent
       .post('/api/v1/auth/login')
+      .set('X-CSRF-Token', replacementCsrf)
       .send({ email, password: replacementPassword })
       .expect(200);
   });

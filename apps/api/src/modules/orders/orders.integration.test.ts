@@ -54,8 +54,11 @@ integrationDescribe('client order integration', () => {
 
   async function signedInAgent() {
     const agent = request.agent(app);
+    const csrfResponse = await agent.get('/api/v1/auth/csrf').expect(200);
+    const csrfBeforeLogin = csrfResponse.body.csrfToken as string;
     const login = await agent
       .post('/api/v1/auth/login')
+      .set('X-CSRF-Token', csrfBeforeLogin)
       .send({ email: userEmail, password })
       .expect(200);
     return { agent, csrf: csrfCookie(login.headers['set-cookie']) ?? '' };
