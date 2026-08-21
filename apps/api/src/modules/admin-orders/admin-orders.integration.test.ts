@@ -95,7 +95,7 @@ integrationDescribe('admin order PostgreSQL integration', () => {
       .get('/api/v1/admin/orders')
       .query({ search: reference, page: 1, pageSize: 10 })
       .expect(200);
-    expect(list.body.orders).toHaveLength(1);
+    expect(list.body.items).toHaveLength(1);
 
     await client.agent.get('/api/v1/admin/orders').expect(403);
     await admin.agent
