@@ -11,3 +11,7 @@ dist/
 coverage/
 package-lock.json
 
+# Agent and generated test artifacts
+.omo/
+testsprite_tests/
+apps/web/dist/

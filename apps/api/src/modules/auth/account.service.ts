@@ -7,6 +7,7 @@ import type { AuthRepository } from './auth.repository.js';
 import { isUniqueEmailError } from './auth.repository.js';
 import type { ChallengeService } from './challenge.service.js';
 import { presentPublicUser } from './auth.presenter.js';
+import type { EmailLocale } from './email.provider.js';
 
 export class AccountService {
   constructor(
@@ -15,7 +16,7 @@ export class AccountService {
     private readonly audit: AuditService,
   ) {}
 
-  async register(input: RegisterInput, ipAddress?: string) {
+  async register(input: RegisterInput, ipAddress?: string, locale?: EmailLocale) {
     const passwordHash = await hashPassword(input.password);
     try {
       const user = await this.repository.createAccountWithChallenge({
@@ -23,7 +24,7 @@ export class AccountService {
         passwordHash,
         fullName: input.fullName,
       });
-      await this.challenges.issue(user.id, user.email, VerificationPurpose.EMAIL_VERIFY);
+      await this.challenges.issue(user.id, user.email, VerificationPurpose.EMAIL_VERIFY, locale);
       await this.audit.record({
         actorUserId: user.id,
         action: 'auth.registration.completed',
@@ -54,10 +55,10 @@ export class AccountService {
     return presentPublicUser({ ...user, emailVerifiedAt: verifiedAt });
   }
 
-  async resendVerification(email: string) {
+  async resendVerification(email: string, locale?: EmailLocale) {
     const user = await this.repository.findUserByEmail(email);
     if (!user || user.emailVerifiedAt) return;
-    await this.challenges.issue(user.id, user.email, VerificationPurpose.EMAIL_VERIFY);
+    await this.challenges.issue(user.id, user.email, VerificationPurpose.EMAIL_VERIFY, locale);
   }
 
   async login(email: string, password: string, ipAddress?: string) {
@@ -76,10 +77,10 @@ export class AccountService {
     return presentPublicUser(user);
   }
 
-  async requestPasswordReset(email: string) {
+  async requestPasswordReset(email: string, locale?: EmailLocale) {
     const user = await this.repository.findUserByEmail(email);
     if (!user || user.status !== 'ACTIVE') return;
-    await this.challenges.issue(user.id, user.email, VerificationPurpose.PASSWORD_RESET);
+    await this.challenges.issue(user.id, user.email, VerificationPurpose.PASSWORD_RESET, locale);
   }
 
   async resetPassword(email: string, code: string, newPassword: string, ipAddress?: string) {

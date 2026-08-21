@@ -2,7 +2,7 @@ import { VerificationPurpose } from '@prisma/client';
 import { appErrors } from '../../core/app-error.js';
 import { generateOtp, hashOtp } from '../../lib/otp.js';
 import type { AuthRepository } from './auth.repository.js';
-import type { EmailProvider } from './email.provider.js';
+import type { EmailLocale, EmailProvider } from './email.provider.js';
 
 const OTP_TTL_MS = 10 * 60 * 1000;
 export const MAX_OTP_ATTEMPTS = 5;
@@ -14,7 +14,7 @@ export class ChallengeService {
     private readonly now: () => Date = () => new Date(),
   ) {}
 
-  async issue(userId: string, email: string, purpose: VerificationPurpose) {
+  async issue(userId: string, email: string, purpose: VerificationPurpose, locale?: EmailLocale) {
     const code = generateOtp();
     await this.repository.createChallenge({
       userId,
@@ -22,7 +22,12 @@ export class ChallengeService {
       codeHash: hashOtp(code),
       expiresAt: new Date(this.now().getTime() + OTP_TTL_MS),
     });
-    await this.emailProvider.sendOtp({ recipient: email, code, purpose });
+    await this.emailProvider.sendOtp({
+      recipient: email,
+      code,
+      purpose,
+      ...(locale ? { locale } : {}),
+    });
   }
 
   async verify(userId: string, code: string, purpose: VerificationPurpose) {

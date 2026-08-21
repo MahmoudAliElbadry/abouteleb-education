@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link, Route, Routes } from 'react-router-dom';
-import { universities } from './data/universities.js';
+import { useQuery } from '@tanstack/react-query';
+import { Link, Route, Routes, useSearchParams } from 'react-router-dom';
 import { ApplicationPage } from './ApplicationPage.js';
 import { EnrollmentSection } from './features/enrollment/EnrollmentSection.js';
 import {
@@ -10,14 +10,29 @@ import {
   ResetPasswordPage,
   VerifyEmailPage,
 } from './features/auth/AuthPages.js';
-import { RequireAdmin } from './features/auth/guards.js';
+import { RequireAdmin, RequireAuth } from './features/auth/guards.js';
 import { AdminOrderDetailPage, AdminOrdersPage } from './features/admin-orders/AdminOrdersPages.js';
+import { ClientOrdersPage } from './features/client-orders/ClientOrdersPage.js';
+import { AdminUniversityPage } from './features/admin-content/AdminUniversityPage.js';
+import { AdminManagedContentPage } from './features/admin-content/AdminManagedContentPage.js';
+import {
+  getPublicContact,
+  getPublicSocialLinks,
+  getPublicTestimonials,
+  getPublicUniversities,
+  type PublicUniversity,
+} from './features/content/public-content-client.js';
 
 type Language = 'ar' | 'en' | 'tr';
+
+export function normalizeCatalogSearch(value: string) {
+  return value.normalize('NFD').replace(/\p{M}/gu, '').toLocaleLowerCase('tr').replaceAll('ı', 'i');
+}
 
 const copy = {
   ar: {
     language: 'العربية',
+    languagePicker: 'اللغة',
     home: 'الرئيسية',
     services: 'خدماتنا',
     universities: 'الجامعات',
@@ -38,6 +53,9 @@ const copy = {
     search: 'ابحث باسم الجامعة',
     allCities: 'كل المدن',
     noResults: 'لم نجد جامعة مطابقة. جرّب بحثاً أو مدينة أخرى.',
+    loading: 'جار تحميل الجامعات…',
+    loadError: 'تعذر تحميل الجامعات.',
+    retry: 'إعادة المحاولة',
     showMore: 'عرض المزيد من الجامعات',
     showLess: 'عرض أقل',
     universitiesCount: 'جامعة متعاقدة',
@@ -63,9 +81,12 @@ const copy = {
     ready: 'هل أنت جاهز لبدء مستقبلك؟',
     readyDescription: 'تواصل معنا الآن، وسيتابع معك أحد مستشارينا التعليميين.',
     catalog: 'كتالوج الجامعات',
+    notFoundTitle: 'الصفحة غير موجودة',
+    returnHome: 'العودة إلى الرئيسية',
   },
   en: {
     language: 'English',
+    languagePicker: 'Language',
     home: 'Home',
     services: 'Services',
     universities: 'Universities',
@@ -87,6 +108,9 @@ const copy = {
     search: 'Search by university name',
     allCities: 'All cities',
     noResults: 'No universities match that search. Try another name or city.',
+    loading: 'Loading universities…',
+    loadError: 'Unable to load universities.',
+    retry: 'Retry',
     showMore: 'Show more universities',
     showLess: 'Show fewer',
     universitiesCount: 'Partner universities',
@@ -124,9 +148,12 @@ const copy = {
     ready: 'Ready to start your future?',
     readyDescription: 'Contact us now and one of our educational consultants will guide you.',
     catalog: 'University catalog',
+    notFoundTitle: 'Page not found',
+    returnHome: 'Return home',
   },
   tr: {
     language: 'Türkçe',
+    languagePicker: 'Dil',
     home: 'Ana sayfa',
     services: 'Hizmetlerimiz',
     universities: 'Üniversiteler',
@@ -148,6 +175,9 @@ const copy = {
     search: 'Üniversite adına göre ara',
     allCities: 'Tüm şehirler',
     noResults: 'Eşleşen üniversite bulunamadı. Başka bir ad veya şehir deneyin.',
+    loading: 'Üniversiteler yükleniyor…',
+    loadError: 'Üniversiteler yüklenemedi.',
+    retry: 'Tekrar dene',
     showMore: 'Daha fazla üniversite göster',
     showLess: 'Daha az göster',
     universitiesCount: 'Anlaşmalı üniversite',
@@ -182,6 +212,8 @@ const copy = {
     ready: 'Geleceğinize başlamaya hazır mısınız?',
     readyDescription: 'Şimdi iletişime geçin, eğitim danışmanlarımızdan biri size yardımcı olsun.',
     catalog: 'Üniversite kataloğu',
+    notFoundTitle: 'Sayfa bulunamadı',
+    returnHome: 'Ana sayfaya dön',
   },
 } as const;
 
@@ -231,6 +263,23 @@ function PublicPage() {
   const [city, setCity] = useState('');
   const [showAllUniversities, setShowAllUniversities] = useState(false);
   const t = copy[language];
+  const universitiesQuery = useQuery({
+    queryKey: ['public-universities'],
+    queryFn: getPublicUniversities,
+  });
+  const testimonialsQuery = useQuery({
+    queryKey: ['public-testimonials'],
+    queryFn: getPublicTestimonials,
+  });
+  const socialQuery = useQuery({
+    queryKey: ['public-social-links'],
+    queryFn: getPublicSocialLinks,
+  });
+  const contactQuery = useQuery({ queryKey: ['public-contact'], queryFn: getPublicContact });
+  const whatsappValue = contactQuery.data?.items.find(
+    (item) => item.key === 'contact_whatsapp',
+  )?.value;
+  const universities: PublicUniversity[] = universitiesQuery.data?.items ?? [];
   const steps: ReadonlyArray<readonly [string, string]> = t.steps;
   const stats: ReadonlyArray<readonly [string, string]> = [
     ['+50', t.universitiesCount],
@@ -243,10 +292,12 @@ function PublicPage() {
     () =>
       universities.filter(
         (university) =>
-          university.name.toLocaleLowerCase().includes(search.toLocaleLowerCase()) &&
+          normalizeCatalogSearch(
+            university[language === 'ar' ? 'nameAr' : language === 'tr' ? 'nameTr' : 'nameEn'],
+          ).includes(normalizeCatalogSearch(search)) &&
           (!city || university.city === city),
       ),
-    [city, search],
+    [city, language, search, universities],
   );
   const shownUniversities = showAllUniversities
     ? filteredUniversities
@@ -276,7 +327,7 @@ function PublicPage() {
         </nav>
         <div className="header-actions">
           <label className="language-picker">
-            <span className="sr-only">Language</span>
+            <span className="sr-only">{t.languagePicker}</span>
             <select
               value={language}
               onChange={(event) => setLanguage(event.target.value as Language)}
@@ -358,15 +409,43 @@ function PublicPage() {
               </select>
             </label>
           </div>
-          {filteredUniversities.length ? (
+          {universitiesQuery.isPending ? (
+            <p role="status">{t.loading}</p>
+          ) : universitiesQuery.error ? (
+            <div role="alert">
+              <p>{t.loadError}</p>
+              <button type="button" onClick={() => void universitiesQuery.refetch()}>
+                {t.retry}
+              </button>
+            </div>
+          ) : filteredUniversities.length ? (
             <div className="university-grid">
               {shownUniversities.map((university) => (
                 <article className="university-card" key={university.id}>
                   <div className="university-logo">
-                    <img src={university.image} alt={`${university.name} logo`} />
+                    <img
+                      src={university.imageUrl}
+                      alt={`${university[language === 'ar' ? 'nameAr' : language === 'tr' ? 'nameTr' : 'nameEn']} logo`}
+                      loading="lazy"
+                      width="180"
+                      height="100"
+                      onError={(event) => {
+                        event.currentTarget.onerror = null;
+                        event.currentTarget.src = '/images/logo.png';
+                      }}
+                    />
                   </div>
-                  <h3>{university.name}</h3>
-                  <span>{cityLabels[language][university.city]}</span>
+                  <h3>
+                    {
+                      university[
+                        language === 'ar' ? 'nameAr' : language === 'tr' ? 'nameTr' : 'nameEn'
+                      ]
+                    }
+                  </h3>
+                  <span>
+                    {cityLabels[language][university.city as keyof typeof cityLabels.en] ??
+                      university.city}
+                  </span>
                 </article>
               ))}
             </div>
@@ -420,19 +499,62 @@ function PublicPage() {
         <EnrollmentSection language={language} />
       </main>
 
+      {testimonialsQuery.data?.items.length ? (
+        <section className="content-section testimonials" aria-labelledby="testimonials-title">
+          <div className="section-heading">
+            <h2 id="testimonials-title">
+              {language === 'ar'
+                ? 'آراء طلابنا'
+                : language === 'tr'
+                  ? 'Öğrenci yorumları'
+                  : 'Student stories'}
+            </h2>
+          </div>
+          <div className="service-grid">
+            {testimonialsQuery.data.items.map((item) => (
+              <article className="service-card" key={item.id}>
+                <h3>
+                  {
+                    item[
+                      language === 'ar'
+                        ? 'clientNameAr'
+                        : language === 'tr'
+                          ? 'clientNameTr'
+                          : 'clientNameEn'
+                    ]
+                  }
+                </h3>
+                <p>
+                  {item[language === 'ar' ? 'quoteAr' : language === 'tr' ? 'quoteTr' : 'quoteEn']}
+                </p>
+              </article>
+            ))}
+          </div>
+        </section>
+      ) : null}
       <section className="contact" id="contact">
         <div>
           <p>{t.catalog}</p>
           <h2>{t.ready}</h2>
           <span>{t.readyDescription}</span>
         </div>
-        <a className="button" href="https://wa.me/905015959880" target="_blank" rel="noreferrer">
-          WhatsApp
-        </a>
+        <div className="contact-links">
+          {(socialQuery.data?.items ?? []).map((link) => (
+            <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer">
+              {link[language === 'ar' ? 'labelAr' : language === 'tr' ? 'labelTr' : 'labelEn'] ||
+                link.platform}
+            </a>
+          ))}
+          {(contactQuery.data?.items ?? [])
+            .filter((item) => item.value)
+            .map((item) => (
+              <span key={item.key}>{item.value}</span>
+            ))}
+        </div>
       </section>
       <a
         className="whatsapp"
-        href="https://wa.me/905015959880"
+        href={whatsappValue ? `https://wa.me/${whatsappValue.replace(/\D/g, '')}` : '#contact'}
         target="_blank"
         rel="noreferrer"
         aria-label="WhatsApp"
@@ -446,10 +568,17 @@ function PublicPage() {
 }
 
 function NotFoundPage() {
+  const [searchParams] = useSearchParams();
+  const language = searchParams.get('lang');
+  const t = copy[language === 'en' || language === 'tr' ? language : 'ar'];
   return (
-    <main className="not-found">
-      <h1>Page not found</h1>
-      <Link to="/">Return home</Link>
+    <main
+      className="not-found"
+      dir={language === 'ar' || !language ? 'rtl' : 'ltr'}
+      lang={language ?? 'ar'}
+    >
+      <h1>{t.notFoundTitle}</h1>
+      <Link to="/">{t.returnHome}</Link>
     </main>
   );
 }
@@ -464,6 +593,46 @@ export function App() {
       <Route path="/verify-email" element={<VerifyEmailPage />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
+      <Route
+        path="/account/orders"
+        element={
+          <RequireAuth>
+            <ClientOrdersPage />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/admin/universities"
+        element={
+          <RequireAdmin>
+            <AdminUniversityPage />
+          </RequireAdmin>
+        }
+      />
+      <Route
+        path="/admin/testimonials"
+        element={
+          <RequireAdmin>
+            <AdminManagedContentPage section="testimonials" />
+          </RequireAdmin>
+        }
+      />
+      <Route
+        path="/admin/social-links"
+        element={
+          <RequireAdmin>
+            <AdminManagedContentPage section="social" />
+          </RequireAdmin>
+        }
+      />
+      <Route
+        path="/admin/contact"
+        element={
+          <RequireAdmin>
+            <AdminManagedContentPage section="contact" />
+          </RequireAdmin>
+        }
+      />
       <Route
         path="/admin/orders"
         element={

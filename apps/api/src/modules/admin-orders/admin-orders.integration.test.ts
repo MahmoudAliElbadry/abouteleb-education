@@ -51,7 +51,12 @@ integrationDescribe('admin order PostgreSQL integration', () => {
   });
 
   afterEach(async () => {
-    await prisma.order.deleteMany({ where: { clientId } });
+    const orders = await prisma.order.findMany({ where: { clientId }, select: { id: true } });
+    const orderIds = orders.map((order) => order.id);
+    await prisma.orderClientResponse.deleteMany({ where: { orderId: { in: orderIds } } });
+    await prisma.orderInternalNote.deleteMany({ where: { orderId: { in: orderIds } } });
+    await prisma.orderStatusHistory.deleteMany({ where: { orderId: { in: orderIds } } });
+    await prisma.order.deleteMany({ where: { id: { in: orderIds } } });
     await prisma.auditLog.deleteMany({ where: { actorUserId: { in: [adminId, clientId] } } });
     await prisma.session.deleteMany({ where: { userId: { in: [adminId, clientId] } } });
     await prisma.clientProfile.deleteMany({ where: { userId: { in: [adminId, clientId] } } });
@@ -60,7 +65,13 @@ integrationDescribe('admin order PostgreSQL integration', () => {
 
   async function signedIn(email: string) {
     const agent = request.agent(app);
-    const login = await agent.post('/api/v1/auth/login').send({ email, password }).expect(200);
+    const csrfResponse = await agent.get('/api/v1/auth/csrf').expect(200);
+    const csrfBeforeLogin = csrfResponse.body.csrfToken as string;
+    const login = await agent
+      .post('/api/v1/auth/login')
+      .set('X-CSRF-Token', csrfBeforeLogin)
+      .send({ email, password })
+      .expect(200);
     return { agent, csrf: csrfCookie(login.headers['set-cookie']) ?? '' };
   }
 
@@ -84,7 +95,7 @@ integrationDescribe('admin order PostgreSQL integration', () => {
       .get('/api/v1/admin/orders')
       .query({ search: reference, page: 1, pageSize: 10 })
       .expect(200);
-    expect(list.body.orders).toHaveLength(1);
+    expect(list.body.items).toHaveLength(1);
 
     await client.agent.get('/api/v1/admin/orders').expect(403);
     await admin.agent

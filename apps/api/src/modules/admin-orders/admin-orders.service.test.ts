@@ -53,8 +53,16 @@ describe('AdminOrdersService', () => {
       pageSize: 10,
     });
 
-    expect(result.orders).toHaveLength(1);
-    expect(result.pagination).toMatchObject({ page: 2, pageSize: 10, total: 21, totalPages: 3 });
+    expect(result.items).toHaveLength(1);
+    expect(result).toMatchObject({ page: 2, pageSize: 10, total: 21 });
+    expect(prisma.order.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({ status: 'NEW' }),
+        orderBy: [{ createdAt: 'desc' }, { id: 'asc' }],
+        skip: 10,
+        take: 10,
+      }),
+    );
     expect(prisma.$transaction).toHaveBeenCalledOnce();
   });
 

@@ -12,6 +12,8 @@ const copy = {
     description: 'أخبرنا عن خطتك الدراسية وسيتواصل معك مستشارنا.',
     fullName: 'الاسم الكامل',
     phone: 'رقم الهاتف',
+    consent: 'أوافق على التواصل معي بخصوص طلب القبول.',
+    consentRequired: 'يرجى الموافقة على التواصل قبل إرسال الطلب.',
     specialization: 'التخصص المفضل',
     submit: 'إرسال الطلب',
     signIn: 'سجل الدخول لفتح النموذج',
@@ -21,6 +23,7 @@ const copy = {
     verifyCta: 'الانتقال إلى التحقق',
     success: 'تم إرسال طلبك بنجاح. رقم الطلب:',
     error: 'تعذر إرسال الطلب.',
+    viewOrders: 'عرض طلباتي',
     options: {
       medicine: 'الطب',
       dentistry: 'طب الأسنان',
@@ -35,6 +38,8 @@ const copy = {
     description: 'Tell us about your study plan and one of our advisors will contact you.',
     fullName: 'Full name',
     phone: 'Phone number',
+    consent: 'I agree to be contacted about my admission request.',
+    consentRequired: 'Please agree to be contacted before submitting your request.',
     specialization: 'Preferred specialization',
     submit: 'Submit request',
     signIn: 'Sign in to unlock the form',
@@ -44,6 +49,7 @@ const copy = {
     verifyCta: 'Verify email',
     success: 'Your request was submitted successfully. Reference:',
     error: 'Unable to submit the request.',
+    viewOrders: 'View my requests',
     options: {
       medicine: 'Medicine',
       dentistry: 'Dentistry',
@@ -58,6 +64,8 @@ const copy = {
     description: 'Eğitim planınızı paylaşın, danışmanımız sizinle iletişime geçsin.',
     fullName: 'Ad soyad',
     phone: 'Telefon numarası',
+    consent: 'Başvurum hakkında benimle iletişime geçilmesini kabul ediyorum.',
+    consentRequired: 'Talebinizi göndermeden önce iletişim iznini kabul edin.',
     specialization: 'Tercih edilen bölüm',
     submit: 'Talebi gönder',
     signIn: 'Formu açmak için giriş yapın',
@@ -67,6 +75,7 @@ const copy = {
     verifyCta: 'E-postayı doğrula',
     success: 'Talebiniz başarıyla gönderildi. Referans:',
     error: 'Talep gönderilemedi.',
+    viewOrders: 'Taleplerimi görüntüle',
     options: {
       medicine: 'Tıp',
       dentistry: 'Diş hekimliği',
@@ -86,6 +95,7 @@ export function EnrollmentSection({ language }: { language: Language }) {
     fullName: user?.fullName ?? '',
     phoneNumber: '',
     specialization: 'medicine' as Specialization,
+    consentAccepted: false,
   });
   const order = createOrder;
   const [submittedReference, setSubmittedReference] = useState('');
@@ -99,11 +109,24 @@ export function EnrollmentSection({ language }: { language: Language }) {
   async function submit(event: FormEvent) {
     event.preventDefault();
     setError('');
+    if (!form.consentAccepted) {
+      setError(t.consentRequired);
+      return;
+    }
     setSubmitting(true);
     try {
-      const result = await order(form);
+      const result = await order({
+        fullName: form.fullName,
+        phoneNumber: form.phoneNumber,
+        specialization: form.specialization,
+      });
       setSubmittedReference(result.order.reference);
-      setForm({ fullName: user?.fullName ?? '', phoneNumber: '', specialization: 'medicine' });
+      setForm({
+        fullName: user?.fullName ?? '',
+        phoneNumber: '',
+        specialization: 'medicine',
+        consentAccepted: false,
+      });
     } catch {
       setError(t.error);
     } finally {
@@ -130,7 +153,7 @@ export function EnrollmentSection({ language }: { language: Language }) {
         {signedOut && (
           <div className="enrollment-gate">
             <p>{t.locked}</p>
-            <Link className="button" to="/login?redirect=%2F%23enroll">
+            <Link className="button" to="/login?redirect=%2Fapplications">
               {t.signIn}
             </Link>
             <Link to="/register">{t.signUp}</Link>
@@ -180,12 +203,21 @@ export function EnrollmentSection({ language }: { language: Language }) {
                 ))}
               </select>
             </label>
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                checked={form.consentAccepted}
+                onChange={(event) => setForm({ ...form, consentAccepted: event.target.checked })}
+                required
+              />
+              {t.consent}
+            </label>
             {error && (
               <p className="form-error" role="alert">
                 {error}
               </p>
             )}
-            <button className="button" type="submit">
+            <button className="button" type="submit" disabled={!form.consentAccepted}>
               {t.submit}
             </button>
           </fieldset>
@@ -195,6 +227,7 @@ export function EnrollmentSection({ language }: { language: Language }) {
             {t.success} <strong>{submittedReference}</strong>
           </p>
         )}
+        {user && <Link to="/account/orders">{t.viewOrders}</Link>}
       </div>
     </section>
   );

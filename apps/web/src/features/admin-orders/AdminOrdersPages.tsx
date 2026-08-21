@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { OrderStatusValue } from '@abou/contracts';
 import { ApiError } from '../auth/auth-client.js';
@@ -19,6 +19,20 @@ const labels = {
     title: 'لوحة الطلبات',
     total: 'كل الطلبات',
     search: 'بحث',
+    specialization: 'التخصص',
+    assignedAdmin: 'معرف المسؤول',
+    sort: 'ترتيب حسب',
+    createdAt: 'تاريخ الإنشاء',
+    updatedAt: 'آخر تحديث',
+    ascending: 'تصاعدي',
+    descending: 'تنازلي',
+    order: 'اتجاه الترتيب',
+    loading: 'جارٍ التحميل…',
+    reference: 'المرجع',
+    client: 'العميل',
+    updated: 'محدث',
+    retry: 'إعادة المحاولة',
+    permissionError: 'ليس لديك صلاحية لعرض هذه البيانات.',
     all: 'كل الحالات',
     open: 'فتح',
     detail: 'تفاصيل الطلب',
@@ -49,6 +63,20 @@ const labels = {
     title: 'Order dashboard',
     total: 'All orders',
     search: 'Search',
+    specialization: 'Specialization',
+    assignedAdmin: 'Admin ID',
+    sort: 'Sort by',
+    createdAt: 'Created',
+    updatedAt: 'Updated',
+    ascending: 'Ascending',
+    descending: 'Descending',
+    order: 'Order direction',
+    loading: 'Loading…',
+    reference: 'Reference',
+    client: 'Client',
+    updated: 'Updated',
+    retry: 'Try again',
+    permissionError: 'You do not have permission to view this data.',
     all: 'All statuses',
     open: 'Open',
     detail: 'Order detail',
@@ -79,6 +107,20 @@ const labels = {
     title: 'Başvuru paneli',
     total: 'Tüm başvurular',
     search: 'Ara',
+    specialization: 'Bölüm',
+    assignedAdmin: 'Yönetici kimliği',
+    sort: 'Sıralama',
+    createdAt: 'Oluşturulma',
+    updatedAt: 'Güncelleme',
+    ascending: 'Artan',
+    descending: 'Azalan',
+    order: 'Yön',
+    loading: 'Yükleniyor…',
+    reference: 'Referans',
+    client: 'Müşteri',
+    updated: 'Güncellendi',
+    retry: 'Tekrar dene',
+    permissionError: 'Bu verileri görüntüleme izniniz yok.',
     all: 'Tüm durumlar',
     open: 'Aç',
     detail: 'Başvuru detayı',
@@ -131,13 +173,40 @@ function message(error: unknown, fallback: string) {
 export function AdminOrdersPage() {
   const [language, setLanguage] = useState<Language>('en');
   const t = labels[language];
-  const [status, setStatus] = useState('');
-  const [search, setSearch] = useState('');
-  const [page, setPage] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const status = searchParams.get('status') ?? '';
+  const specialization = searchParams.get('specialization') ?? '';
+  const assignedAdminId = searchParams.get('assignedAdminId') ?? '';
+  const search = searchParams.get('search') ?? '';
+  const sort = searchParams.get('sort') ?? 'createdAt';
+  const order = searchParams.get('order') ?? 'desc';
+  const page = Math.max(1, Number(searchParams.get('page') ?? '1') || 1);
+  function updateFilter(key: string, value: string) {
+    const next = new URLSearchParams(searchParams);
+    if (value) next.set(key, value);
+    else next.delete(key);
+    next.set('page', '1');
+    setSearchParams(next);
+  }
   const metrics = useQuery({ queryKey: ['admin', 'metrics'], queryFn: getAdminMetrics });
   const orders = useQuery({
-    queryKey: ['admin', 'orders', { status, search, page }],
-    queryFn: () => getAdminOrders({ status, search, page, pageSize: 20 }),
+    queryKey: [
+      'admin',
+      'orders',
+      { status, specialization, assignedAdminId, search, sort, order, page },
+    ],
+    queryFn: () =>
+      getAdminOrders({
+        status,
+        specialization,
+        assignedAdminId,
+        search,
+        sort,
+        order,
+        page,
+        pageSize: 20,
+      }),
+    retry: false,
   });
   return (
     <main className="admin-page" dir={language === 'ar' ? 'rtl' : 'ltr'}>
@@ -173,19 +242,10 @@ export function AdminOrdersPage() {
       <section className="admin-toolbar">
         <input
           value={search}
-          onChange={(event) => {
-            setSearch(event.target.value);
-            setPage(1);
-          }}
+          onChange={(event) => updateFilter('search', event.target.value)}
           placeholder={t.search}
         />
-        <select
-          value={status}
-          onChange={(event) => {
-            setStatus(event.target.value);
-            setPage(1);
-          }}
-        >
+        <select value={status} onChange={(event) => updateFilter('status', event.target.value)}>
           <option value="">{t.all}</option>
           {statusList.map((item) => (
             <option key={item} value={item}>
@@ -193,21 +253,65 @@ export function AdminOrdersPage() {
             </option>
           ))}
         </select>
+        <select
+          aria-label={t.specialization}
+          value={specialization}
+          onChange={(event) => updateFilter('specialization', event.target.value)}
+        >
+          <option value="">{t.specialization}</option>
+          {(['medicine', 'dentistry', 'pharmacy', 'engineering', 'business'] as const).map(
+            (item) => (
+              <option key={item} value={item}>
+                {item}
+              </option>
+            ),
+          )}
+        </select>
+        <input
+          aria-label={t.assignedAdmin}
+          value={assignedAdminId}
+          onChange={(event) => updateFilter('assignedAdminId', event.target.value)}
+          placeholder={t.assignedAdmin}
+        />
+        <select
+          aria-label={t.sort}
+          value={sort}
+          onChange={(event) => updateFilter('sort', event.target.value)}
+        >
+          <option value="createdAt">{t.createdAt}</option>
+          <option value="updatedAt">{t.updatedAt}</option>
+        </select>
+        <select
+          aria-label={t.order}
+          value={order}
+          onChange={(event) => updateFilter('order', event.target.value)}
+        >
+          <option value="desc">{t.descending}</option>
+          <option value="asc">{t.ascending}</option>
+        </select>
       </section>
+      {orders.isPending ? <p role="status">{t.loading}</p> : null}
       {orders.error ? (
-        <p className="form-error" role="alert">
-          {message(orders.error, t.error)}
-        </p>
-      ) : orders.data?.orders.length ? (
+        <div className="form-error" role="alert">
+          <p>
+            {orders.error instanceof ApiError && orders.error.status === 403
+              ? t.permissionError
+              : message(orders.error, t.error)}
+          </p>
+          <button type="button" onClick={() => void orders.refetch()}>
+            {t.retry}
+          </button>
+        </div>
+      ) : orders.data?.items.length ? (
         <div className="admin-order-table">
           <div className="admin-order-row admin-order-heading">
-            <span>Reference</span>
-            <span>Client</span>
-            <span>Status</span>
-            <span>Updated</span>
+            <span>{t.reference}</span>
+            <span>{t.client}</span>
+            <span>{t.status}</span>
+            <span>{t.updated}</span>
             <span />
           </div>
-          {orders.data.orders.map((order) => (
+          {orders.data.items.map((order) => (
             <div className="admin-order-row" key={order.id}>
               <span>
                 <strong>{order.reference}</strong>
@@ -228,20 +332,24 @@ export function AdminOrdersPage() {
           ))}
         </div>
       ) : (
-        <p className="empty-state">{t.noData}</p>
+        <p className="empty-state">{orders.data ? t.noData : null}</p>
       )}
       {orders.data && (
         <div className="pagination">
-          <button type="button" disabled={page <= 1} onClick={() => setPage((value) => value - 1)}>
+          <button
+            type="button"
+            disabled={page <= 1}
+            onClick={() => updateFilter('page', String(page - 1))}
+          >
             ←
           </button>
           <span>
-            {page} / {orders.data.pagination.totalPages || 1}
+            {page} / {Math.max(1, Math.ceil(orders.data.total / orders.data.pageSize))}
           </span>
           <button
             type="button"
-            disabled={page >= orders.data.pagination.totalPages}
-            onClick={() => setPage((value) => value + 1)}
+            disabled={page >= Math.ceil(orders.data.total / orders.data.pageSize)}
+            onClick={() => updateFilter('page', String(page + 1))}
           >
             →
           </button>

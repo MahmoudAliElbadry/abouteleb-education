@@ -119,12 +119,12 @@ The current GitHub Pages deployment cannot run Express. The target deployment ne
 - Automated database backups.
 - A staging environment separate from production.
 
-Approved initial deployment layout:
+Provisional deployment layout (blocked pending external access):
 
-- `aboutalebeducation.com` — static React app on GitHub Pages.
+- `aboutalebeducation.com` — static React app hosting remains unresolved. Free GitHub Pages cannot publish this private repository; select an approved alternative or make the repository public before staging.
 - `api.aboutalebeducation.com` — Express API on Render's free tier.
 - Managed PostgreSQL — Neon, connected through `DATABASE_URL`.
-- OTP delivery — Resend, after domain DNS verification.
+- OTP delivery — Resend, after domain DNS verification. The Resend domain currently reports `not_started`; GoDaddy DNS access is required to add its DKIM, SPF, and return-path records.
 
 Start with Render's free tier to control costs. Its inactivity spin-down/cold-start delay is acceptable during the early validation period. Upgrade the API to an always-on paid Render plan when real users, OTP delivery speed, uptime expectations, or project income justify it; no application rewrite should be required.
 
@@ -575,7 +575,7 @@ Replace the current generated list with a responsive catalog:
 - Keyboard-accessible cards and controls.
 - Shareable query parameters for filters where useful.
 
-Migrate the existing 41 university records through a reviewed seed script after renaming and optimizing the malformed asset filenames.
+Migrate the existing 41 university records through a reviewed seed script after renaming and optimizing the malformed asset filenames. *(Status: seed migrated all 41 records; filename renaming/optimization was deferred — the seeded imageUrl values 404; now a Phase 6.1 blocking defect.)*
 
 ## 12. Responsive and accessibility requirements
 
@@ -810,6 +810,50 @@ Do not spend additional TestSprite execution credits on the full stateful suite 
 5. Execute the frontend plan against the deployed React site/API combination, record failures, and fix only confirmed defects.
 6. Re-run the application test suite, builds, and TestSprite evidence before starting Phase 6.
 
+### Phase 5.2 — Deep review findings and remediation (blocking)
+
+A full five-lane review (goal/constraint verification, hands-on QA, code quality, security, context mining) of all components and services was run against the phase-05 staging state. The toolchain is fully green (typecheck, lint, test, and build all pass; 38 tests), but runtime and spec review surfaced the defects below. These are **blocking** for the Phase 6 exit gate and must be resolved and re-verified before content management begins.
+
+Deliverables:
+
+- Fix the P0 public-navigation defect and add a regression test.
+- Remove live credentials and harden the affected endpoints.
+- Complete the client order tracking workflow in the primary UI.
+- Close the remaining security and i18n gaps.
+
+Exit criteria: all P0/P1 findings below are fixed, covered by a regression test where applicable, and the full toolchain re-passes.
+
+#### P0 — must fix first
+
+- **Primary navigation is broken.** `apps/web/src/main.tsx` uses `HashRouter`, but the public nav uses bare anchors (`href="#home"`, `#services`, `#universities`, `#steps`, `#contact`). Every nav click navigates the router to a non-existent route and renders "Page not found" on desktop and mobile. Fix: switch to `BrowserRouter` (with a Vite SPA fallback) or convert the anchors to `#/…` routes with explicit scroll handling. Add a component test that clicks a nav link and asserts the target section renders.
+- **Live credentials in `.env`.** The Neon PostgreSQL credential and Resend API key present in `apps/api/.env` must be rotated immediately and never committed, archived, or bundled. Ship placeholders in `.env.example` only.
+
+#### P1 — high priority
+
+- **Client order tracking is half-built.** The API fully supports `GET /orders/:id`, `POST /orders/:id/cancel`, and `POST /orders/:id/responses`, but the frontend only lets a client submit and list orders. Add order detail/timeline, cancel, and respond-to-requested-information UI, and remove the drifted duplicate workflow on `/applications` (second API client, duplicated CSRF handling, and an order form shown to unverified users that the backend rejects).
+- **Login is not CSRF-protected.** The `/auth/login` handler changes the session without CSRF validation, enabling login-CSRF/account confusion. Require a pre-session CSRF token for login or verify `Origin`/`Referer`.
+- **Rate limiting is auth-only.** Order creation and admin/expensive-search endpoints are unlimited. Apply bounded rate limits to order creation and other abuse-prone routes.
+- **Localization is incomplete.** Hardcoded English strings remain in `ApplicationPage.tsx`, the primary-navigation accessible label, admin fallbacks, and all Resend email bodies in `email.provider.ts`. Localize every user-facing string across ar/en/tr.
+- **Registration consent is unconditional.** `AuthPages.tsx` submits `consentAccepted: true` regardless of the checkbox; submit the actual value and reject unchecked consent.
+
+#### P2 — medium priority
+
+- **Catalog search is locale-fragile.** Typing plain `istanbul` returns no results because university names use Turkish dotted `İ` (U+0130) and `toLocaleLowerCase()` mismatches. Normalize with NFD + diacritic stripping or apply a consistent locale on both sides.
+- **Admin order-list filters incomplete.** Only status + search + pagination exist; add service, university, date-range, and assigned-admin filters plus date sorting per §10.
+- **Missing endpoints/routes.** `POST /auth/logout-all`, `GET /me`, and `PATCH /me` (§8) are unimplemented, blocking any `/account/profile`. Client `/account/*` routes and public `/universities`/`/contact` (§9) are collapsed or absent.
+- **`getSession()` masks outages.** Network/server failures are converted to `null`, so an unreachable API reads as "logged out" and redirects to login. Distinguish `401` from transport/server errors.
+- **Admin mutation error handling.** `saveStatus`/`saveNote` await `mutateAsync` without catching, leaking unhandled rejections; the resend-verification error is silent.
+
+#### Deferred to Phase 6 (not blocking here)
+
+- Admin content management: `/admin/universities`, `/admin/content`, `/admin/testimonials`, and the University/Testimonial/SocialLink models remain Phase 6 scope per §16.
+
+#### External blockers (not code defects)
+
+- Resend DNS `not_started` (GoDaddy DKIM/SPF) blocks real OTP/order email delivery.
+- Production hosting unresolved (private repo cannot use free GitHub Pages).
+- TestSprite execution deferred until Render + Neon staging is available.
+
 ### Phase 6 — Content management (4–7 days)
 
 Deliverables:
@@ -821,6 +865,43 @@ Deliverables:
 - Testimonial/client-story create, edit, ordering, publishing, archiving, and consent tracking.
 
 Exit criteria: an admin can update approved content without a deployment and cannot inject executable markup or break required localized fields.
+
+### Phase 6.1 — Deep review findings and remediation (blocking)
+
+A five-lane review found the Phase 6 toolchain green but identified content correctness findings that block the Phase 7 exit gate until fixed and re-verified.
+
+Deliverables:
+
+- Repair content contracts, archive/restore semantics, atomic audit records, catalog assets, and managed-content UI states.
+- Preserve route and response compatibility while splitting the content contracts, services, and UI sections.
+
+Exit criteria: P0/P1 items are resolved with regression coverage and the full quality gate passes.
+
+#### P0
+
+- **Resolved:** vendored university logos replace broken root-hosted seed URLs.
+- **Resolved:** testimonial publish PATCH may rely on stored consent, while create-level consent remains enforced.
+- **Resolved:** literal `true`/`false` list filters prevent draft-filter inversion.
+
+#### P1
+
+- **Resolved:** contact draft edits are controlled and mutation failures/pending states are visible.
+- **Resolved:** archive/restore preserves publication/visibility state; testimonials have an admin restore route.
+- **Resolved:** content mutations and audit records execute in one transaction.
+
+#### P2
+
+- **Resolved:** contracts, social/contact services/routes, and managed-content UI are separated by aggregate; shared content helpers centralize audit, pagination, and route params.
+- **Resolved:** contact keys and content client types are single-sourced from contracts.
+
+#### Non-blocking (owner-input / follow-up)
+
+- Real Arabic/English/Turkish university names and summaries remain owner-provided; X/LinkedIn confirmation remains owner-provided.
+- URL length and contact-format validation remain follow-up hardening items.
+
+#### External blockers (not code defects)
+
+- University-logo source retrieval depends on the original repository remaining accessible; the owner supplies source assets if it is unavailable.
 
 ### Phase 7 — Hardening, staging acceptance, and launch (4–7 days)
 
@@ -999,8 +1080,11 @@ These items are intentionally flagged and do not prevent local foundation work:
 2. **`[FLAG: BUSINESS OWNER]`** Approve or revise the provisional order statuses, cancellation rules, and whether terminal orders may be reopened.
 3. **`[FLAG: BUSINESS/LEGAL]`** Confirm the provisional retention periods and final privacy-policy wording before production launch.
 4. **`[FLAG: CONTENT]`** Collect approved Arabic, English, and Turkish testimonial content and consent evidence before publishing the “Our Clients” section with real people.
-5. **`[FLAG: EMAIL/DNS]`** Approve the Resend account and add SPF, DKIM, and DMARC DNS records before production OTP testing.
-6. **`[FLAG: TESTSPRITE/STAGING]`** Defer full TestSprite execution until a stable staging API/site is available with Render + Neon, database migrations applied, seeded test accounts, and a deterministic OTP test path. TestSprite plan generation is complete; local execution evidence is currently inconclusive because of tunnel/network and missing stateful dependencies.
+5. **`[BLOCKER: EMAIL/DNS]`** Resend is configured in the API and its key is valid, but `aboutalebeducation.com` is `not_started` in Resend. The GoDaddy account owner must either grant DNS access or add the Resend-provided DKIM, SPF, and return-path records. This blocks real OTP/order email delivery and production email testing.
+6. **`[BLOCKER: FRONTEND HOSTING]`** The repository is private, so it cannot be published through free GitHub Pages. Before staging, the owner must either approve making the repository public or select and configure another static-hosting provider that supports private repositories.
+7. **`[FLAG: TESTSPRITE/STAGING]`** Defer full TestSprite execution until a stable staging API/site is available with Render + Neon, database migrations applied, seeded test accounts, and a deterministic OTP test path. TestSprite plan generation is complete; local execution evidence is currently inconclusive because of tunnel/network and missing stateful dependencies.
+8. **`[FLAG: CONTENT/ASSETS]`** University logo source assets must be retrieved from the original repository before vendoring; the owner supplies the set if unavailable.
+9. **`[FLAG: CONTENT]`** Real Arabic/English/Turkish name and summary translations and X/LinkedIn confirmation are owner-provided.
 
 ### Provisional privacy and retention baseline
 
@@ -1020,7 +1104,7 @@ Until the business owner confirms a formal policy:
 - Email OTP deliverability can fail even when application code is correct; provider setup and domain records must happen early.
 - Authentication and admin content management make this a security-sensitive production system, not a simple static-site conversion.
 - A single giant rewrite creates cutover risk; preserve the current site until React parity and staging acceptance.
-- The current malformed asset filenames will create migration and portability problems unless normalized with a mapping.
+- The malformed asset-filename migration risk is remediated in Phase 6.1 with a vendored slug-to-asset mapping.
 - SPA-only public rendering can weaken SEO if metadata and crawlability are neglected. If organic search becomes a major acquisition channel, evaluate server rendering or prerendering before finalizing the frontend architecture.
 - Admins changing records concurrently can overwrite each other. Add optimistic concurrency (`updatedAt`/version checks) for orders and managed content.
 - Unbounded admin lists will become slow; implement server-side pagination and indexes from the start.
@@ -1058,4 +1142,4 @@ Recommended later enhancement:
 
 ## 23. Approval checkpoint
 
-The plan is complete. Implementation may begin with **Phase 1 — Foundation and CI** while hosting remains flagged, because local development uses PostgreSQL through Docker Compose. Hosting must be resolved before staging deployment; business-owner status approval, privacy/retention confirmation, testimonial consent, and email DNS setup must be resolved before production launch. Authentication and database feature work should not be mixed into the initial scaffold PR.
+The plan is complete. Implementation may begin with **Phase 1 — Foundation and CI** while the external blockers remain visible. The GoDaddy owner must resolve Resend DNS verification before real email testing, and the frontend hosting decision must be resolved before staging deployment. Business-owner status approval, privacy/retention confirmation, testimonial consent, and email DNS setup must be resolved before production launch. Authentication and database feature work should not be mixed into the initial scaffold PR.

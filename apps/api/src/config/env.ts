@@ -14,6 +14,7 @@ const baseEnvSchema = z.object({
   SESSION_TTL_DAYS: z.coerce.number().int().min(1).max(30).default(7),
   SESSION_COOKIE_NAME: z.string().min(1).default('abou_session'),
   CSRF_COOKIE_NAME: z.string().min(1).default('abou_csrf'),
+  SENTRY_DSN: z.string().url().optional(),
 });
 
 function parseEnv() {
@@ -30,6 +31,7 @@ function parseEnv() {
     SESSION_TTL_DAYS: process.env.SESSION_TTL_DAYS,
     SESSION_COOKIE_NAME: process.env.SESSION_COOKIE_NAME,
     CSRF_COOKIE_NAME: process.env.CSRF_COOKIE_NAME,
+    SENTRY_DSN: process.env.SENTRY_DSN || undefined,
   });
 
   const emailProvider =
@@ -44,6 +46,9 @@ function parseEnv() {
     }
     if (!parsed.WEB_ORIGIN.startsWith('https://')) {
       throw new Error('WEB_ORIGIN must use HTTPS in production');
+    }
+    if (!parsed.COOKIE_DOMAIN) {
+      throw new Error('COOKIE_DOMAIN is required in production');
     }
   }
 

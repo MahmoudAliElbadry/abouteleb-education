@@ -71,9 +71,16 @@ export async function getSession(): Promise<AuthResponse | null> {
   }
 }
 
-export function login(input: { email: string; password: string }) {
+async function issueCsrfToken() {
+  const response = await apiFetch<{ csrfToken: string }>('/auth/csrf');
+  return response.csrfToken;
+}
+
+export async function login(input: { email: string; password: string }) {
+  const csrf = await issueCsrfToken();
   return apiFetch<AuthResponse>('/auth/login', {
     method: 'POST',
+    headers: { 'X-CSRF-Token': csrf },
     body: JSON.stringify(loginSchema.parse(input)),
   });
 }
@@ -82,7 +89,7 @@ export function register(input: {
   fullName: string;
   email: string;
   password: string;
-  consentAccepted: true;
+  consentAccepted: boolean;
 }) {
   return apiFetch<AuthResponse & { message: string }>('/auth/register', {
     method: 'POST',

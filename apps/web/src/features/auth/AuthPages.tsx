@@ -78,7 +78,7 @@ export function LoginPage() {
   const [params] = useSearchParams();
   const [email, setEmail] = useState(params.get('email') ?? '');
   const [password, setPassword] = useState('');
-  const redirect = params.get('redirect') ?? '/#enroll';
+  const redirect = params.get('redirect') ?? '/applications';
   async function submit(event: FormEvent) {
     event.preventDefault();
     try {
@@ -137,8 +137,9 @@ export function RegisterPage() {
   });
   async function submit(event: FormEvent) {
     event.preventDefault();
+    if (!form.consentAccepted) return;
     try {
-      await auth.register.mutateAsync({ ...form, consentAccepted: true });
+      await auth.register.mutateAsync(form);
       navigate(`/verify-email?email=${encodeURIComponent(form.email)}`);
     } catch {
       /* rendered below */
@@ -186,8 +187,13 @@ export function RegisterPage() {
           />
           {t.consent}
         </label>
+        {!form.consentAccepted && <p className="form-error">{t.consentRequired}</p>}
         <AuthError error={auth.register.error} fallback={t.error} />
-        <button className="button" type="submit" disabled={auth.register.isPending}>
+        <button
+          className="button"
+          type="submit"
+          disabled={auth.register.isPending || !form.consentAccepted}
+        >
           {t.signUp}
         </button>
       </form>
