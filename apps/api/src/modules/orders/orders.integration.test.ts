@@ -48,7 +48,11 @@ integrationDescribe('client order integration', () => {
     await prisma.orderStatusHistory.deleteMany({
       where: { orderId: { in: orders.map((order) => order.id) } },
     });
+    await prisma.orderInternalNote.deleteMany({
+      where: { orderId: { in: orders.map((order) => order.id) } },
+    });
     await prisma.order.deleteMany({ where: { clientId: userId } });
+    await prisma.auditLog.deleteMany({ where: { actorUserId: userId } });
     await prisma.user.delete({ where: { id: userId } });
   });
 
