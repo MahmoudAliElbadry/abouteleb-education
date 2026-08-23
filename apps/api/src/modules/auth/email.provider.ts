@@ -1,6 +1,7 @@
 import { env } from '../../config/env.js';
 import { AppError } from '../../core/app-error.js';
 import { logger } from '../../core/logger.js';
+import { createOrderTemplate, createOtpTemplate } from './email.templates.js';
 
 export type EmailPurpose = 'EMAIL_VERIFY' | 'PASSWORD_RESET';
 export type EmailLocale = 'ar' | 'en' | 'tr';
@@ -37,6 +38,7 @@ type ResendEmail = {
   recipient: string;
   subject: string;
   text: string;
+  html: string;
 };
 const developmentMailbox: DevelopmentMessage[] = [];
 const developmentOrderMailbox: DevelopmentOrderMessage[] = [];
@@ -79,39 +81,26 @@ export class ResendEmailProvider implements EmailProvider {
     private readonly apiKey: string,
     private readonly from: string,
     private readonly fetcher: typeof fetch = fetch,
+    private readonly brand = {
+      name: 'Abou-Taleb Education',
+      logoUrl: 'https://aboutalebeducation.com/images/email-logo.png',
+      brandUrl: 'https://aboutalebeducation.com',
+    },
   ) {}
 
   async sendOtp(input: DevelopmentMessage) {
-    const locale = input.locale ?? 'en';
-    const subject = {
-      ar: input.purpose === 'EMAIL_VERIFY' ? 'تحقق من بريدك الإلكتروني' : 'إعادة تعيين كلمة المرور',
-      en: input.purpose === 'EMAIL_VERIFY' ? 'Verify your email' : 'Reset your password',
-      tr: input.purpose === 'EMAIL_VERIFY' ? 'E-postanızı doğrulayın' : 'Şifrenizi sıfırlayın',
-    }[locale];
-    const text = {
-      ar: `رمزك من Abou-Taleb Education هو ${input.code}. تنتهي صلاحيته خلال 10 دقائق.`,
-      en: `Your Abou-Taleb Education code is ${input.code}. It expires in 10 minutes.`,
-      tr: `Abou-Taleb Education kodunuz: ${input.code}. Kod 10 dakika içinde geçerliliğini yitirir.`,
-    }[locale];
+    const template = createOtpTemplate(input, this.brand);
     await this.send({
       recipient: input.recipient,
-      subject,
-      text,
+      ...template,
     });
   }
 
   async sendOrderNotification(input: DevelopmentOrderMessage) {
-    const subject =
-      input.event === 'submitted'
-        ? `Application request received: ${input.reference}`
-        : `Application request update: ${input.reference}`;
+    const template = createOrderTemplate(input, this.brand);
     await this.send({
       recipient: input.recipient,
-      subject,
-      text:
-        input.event === 'submitted'
-          ? `We received your application request ${input.reference}.`
-          : `Your application request ${input.reference} is now ${input.newStatus ?? 'updated'}.`,
+      ...template,
     });
   }
 
@@ -125,6 +114,7 @@ export class ResendEmailProvider implements EmailProvider {
           to: [email.recipient],
           subject: email.subject,
           text: email.text,
+          html: email.html,
         }),
       });
       if (!response.ok) {
@@ -151,5 +141,10 @@ export function createEmailProvider(): EmailProvider {
   if (!env.RESEND_API_KEY) {
     throw new Error('RESEND_API_KEY is required when AUTH_EMAIL_PROVIDER=resend');
   }
-  return new ResendEmailProvider(env.RESEND_API_KEY, env.EMAIL_FROM);
+  return new ResendEmailProvider(
+    env.RESEND_API_KEY,
+    `${env.EMAIL_FROM_NAME} <${env.EMAIL_FROM}>`,
+    fetch,
+    { name: env.EMAIL_FROM_NAME, logoUrl: env.EMAIL_LOGO_URL, brandUrl: env.EMAIL_BRAND_URL },
+  );
 }

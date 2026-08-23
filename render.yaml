@@ -21,5 +21,11 @@ services:
         sync: false
       - key: EMAIL_FROM
         sync: false
+      - key: EMAIL_FROM_NAME
+        value: Abou-Taleb Education
+      - key: EMAIL_LOGO_URL
+        value: https://aboutalebeducation.com/images/email-logo.png
+      - key: EMAIL_BRAND_URL
+        value: https://aboutalebeducation.com
       - key: SENTRY_DSN
         sync: false

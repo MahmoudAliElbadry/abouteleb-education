@@ -12,16 +12,17 @@ describe('ResendEmailProvider', () => {
       purpose: 'EMAIL_VERIFY',
     });
 
-    expect(fetcher).toHaveBeenCalledWith('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: { Authorization: 'Bearer test-key', 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        from: 'test@example.com',
-        to: ['client@example.com'],
-        subject: 'Verify your email',
-        text: 'Your Abou-Taleb Education code is 123456. It expires in 10 minutes.',
-      }),
+    const request = fetcher.mock.calls[0]?.[1] as RequestInit;
+    expect(JSON.parse(String(request.body))).toMatchObject({
+      from: 'test@example.com',
+      to: ['client@example.com'],
+      subject: 'Verify your email',
+      text: 'Your Abou-Taleb Education code is 123456. It expires in 10 minutes.',
     });
+    expect(JSON.parse(String(request.body)).html).toContain(
+      'https://aboutalebeducation.com/images/email-logo.png',
+    );
+    expect(JSON.parse(String(request.body)).html).toContain('#e30613');
   });
 
   it('sends an order status notification', async () => {
@@ -42,6 +43,8 @@ describe('ResendEmailProvider', () => {
       subject: 'Application request update: ATE-2026-ABCD',
       text: 'Your application request ATE-2026-ABCD is now CONTACTED.',
     });
+    expect(JSON.parse(String(request.body)).html).toContain('ATE-2026-ABCD');
+    expect(JSON.parse(String(request.body)).html).toContain('CONTACTED');
   });
 
   it('localizes OTP subject and body for the request locale', async () => {
@@ -60,6 +63,25 @@ describe('ResendEmailProvider', () => {
       subject: 'Şifrenizi sıfırlayın',
       text: 'Abou-Taleb Education kodunuz: 123456. Kod 10 dakika içinde geçerliliğini yitirir.',
     });
+    expect(JSON.parse(String(request.body)).html).toContain('Şifrenizi sıfırlayın');
+  });
+
+  it('escapes dynamic values in the HTML while preserving the text fallback', async () => {
+    const fetcher = vi.fn().mockResolvedValue(new Response(null, { status: 200 }));
+    const provider = new ResendEmailProvider('test-key', 'test@example.com', fetcher);
+
+    await provider.sendOrderNotification({
+      recipient: 'client@example.com',
+      reference: '<ATE&2026>',
+      event: 'status_changed',
+      newStatus: 'WAITING <CLIENT>',
+    });
+
+    const payload = JSON.parse(String((fetcher.mock.calls[0]?.[1] as RequestInit).body));
+    expect(payload.text).toContain('<ATE&2026>');
+    expect(payload.html).toContain('&lt;ATE&amp;2026&gt;');
+    expect(payload.html).toContain('WAITING &lt;CLIENT&gt;');
+    expect(payload.html).not.toContain('<ATE&2026>');
   });
 
   it('maps provider failures to a safe application error', async () => {

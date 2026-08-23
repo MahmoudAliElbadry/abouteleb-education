@@ -9,6 +9,13 @@
 5. Do not use `https://mahmoudalielbadry.github.io/abouteleb-education/` for authenticated production traffic: it is cross-site with the API and the `SameSite=Lax` session/CSRF cookies will not be sent. Configure `SENTRY_DSN` only after its project enforces PII scrubbing.
 6. Add Resend DKIM, SPF, and return-path DNS records before production email is enabled.
 
+### Transactional email verification
+
+- Set `EMAIL_FROM` to the verified `no-reply@aboutalebeducation.com` sender and `EMAIL_FROM_NAME` to `Abou-Taleb Education`.
+- Set `EMAIL_LOGO_URL` to `https://aboutalebeducation.com/images/email-logo.png` and verify it returns `200` over HTTPS with `image/png` content type.
+- Set `EMAIL_BRAND_URL` to `https://aboutalebeducation.com`.
+- Send representative verification, password-reset, order-submitted, and order-status emails to Gmail and Outlook and inspect desktop and mobile rendering.
+
 ## Migration and rollback
 
 1. Take and retain a Neon backup before deployment. Restore that backup into an isolated Neon database and run a health/read-only validation.
