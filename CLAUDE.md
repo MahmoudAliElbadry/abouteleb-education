@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Abou-Taleb Education — a Turkey study-abroad consultancy site, being migrated from a static GitHub Pages HTML page into a TypeScript monorepo: React (web) + Express (API) + PostgreSQL/Prisma. Content is trilingual (Arabic, English, Turkish) with Arabic RTL as the primary layout.
 
-`PROJECT_BASELINE.md` describes the *old* static site and is historical — the repo has since moved to the monorepo structure below. `DEVELOPMENT_PLAN.md` is the authoritative design doc (data model, API outline, phased delivery plan, roles/permissions).
+`PROJECT_BASELINE.md` describes the _old_ static site and is historical — the repo has since moved to the monorepo structure below. `DEVELOPMENT_PLAN.md` is the authoritative design doc (data model, API outline, phased delivery plan, roles/permissions).
 
 ## Commands
 
@@ -62,6 +62,7 @@ Prisma schema lives at the repo root: `prisma/schema.prisma`, `prisma/seed.ts`, 
 `app.ts` is the composition root: security middleware (helmet, cors from `env.WEB_ORIGINS`, compression, cookie-parser, `requestContext`), then one router mount per domain under `/api/v1/*`, then a 404 handler and a single centralized `errorHandler`. Read `app.ts` to see the full route map before adding new endpoints.
 
 Each domain under `src/modules/<name>/` follows the same layering:
+
 - `*.routes.ts` — Express router, wires HTTP to services, request validation via zod schemas from `@abou/contracts` or local `*.schemas.ts`.
 - `*.service.ts` — business logic.
 - `*.repository.ts` — Prisma data access (only in `auth/`; other modules call `prisma` directly from services).

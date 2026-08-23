@@ -735,7 +735,9 @@ function PublicPage() {
       </section>
       <a
         className="whatsapp"
-        href={whatsappValue ? `https://wa.me/${whatsappValue.replace(/\D/g, '')}` : staticWhatsappUrl}
+        href={
+          whatsappValue ? `https://wa.me/${whatsappValue.replace(/\D/g, '')}` : staticWhatsappUrl
+        }
         target="_blank"
         rel="noreferrer"
         aria-label="WhatsApp"

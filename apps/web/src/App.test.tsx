@@ -74,7 +74,7 @@ vi.mock('@tanstack/react-query', async () => {
                       { key: 'contact_whatsapp', value: '+90 501 595 98 80' },
                     ],
                   }
-            : { items: [] },
+                : { items: [] },
       };
     },
   };
