@@ -1,7 +1,7 @@
 # Abou-Taleb Education — Express + React Development Plan
 
 **Prepared:** 2026-08-17  
-**Status:** Complete and ready for phased implementation; flagged external confirmations are listed in Section 20  
+**Status:** Complete and ready for phased implementation; flagged external confirmations are listed in Section 20. Authentication acceptance is currently paused until client-email OTP delivery is available.  
 **Starting point:** Static single-page site documented in `PROJECT_BASELINE.md`
 
 ## 1. Goal
@@ -1082,10 +1082,11 @@ These items are intentionally flagged and do not prevent local foundation work:
 3. **`[FLAG: BUSINESS/LEGAL]`** Confirm the provisional retention periods and final privacy-policy wording before production launch.
 4. **`[FLAG: CONTENT]`** Collect approved Arabic, English, and Turkish testimonial content and consent evidence before publishing the “Our Clients” section with real people.
 5. **`[BLOCKER: EMAIL/DNS]`** Resend is configured in the API and its key is valid, but `aboutalebeducation.com` is `not_started` in Resend. The GoDaddy account owner must either grant DNS access or add the Resend-provided DKIM, SPF, and return-path records. This blocks real OTP/order email delivery and production email testing.
-6. **`[BLOCKER: FRONTEND HOSTING]`** The repository is private, so it cannot be published through free GitHub Pages. Before staging, the owner must either approve making the repository public or select and configure another static-hosting provider that supports private repositories.
-7. **`[FLAG: TESTSPRITE/STAGING]`** Defer full TestSprite execution until a stable staging API/site is available with Render + Neon, database migrations applied, seeded test accounts, and a deterministic OTP test path. TestSprite plan generation is complete; local execution evidence is currently inconclusive because of tunnel/network and missing stateful dependencies.
-8. **`[FLAG: CONTENT/ASSETS]`** University logo source assets must be retrieved from the original repository before vendoring; the owner supplies the set if unavailable.
-9. **`[FLAG: CONTENT]`** Real Arabic/English/Turkish name and summary translations and X/LinkedIn confirmation are owner-provided.
+6. **`[BLOCKER: CLIENT OTP TESTING]`** Authentication work cannot be accepted as complete until a client can register/request a password reset and receive the OTP in the client email inbox. Resume this work later by verifying the full path: API delivery configuration, domain/DNS verification, real client-mailbox receipt, OTP entry, and successful verification/reset. Do not treat fallback UI rendering or a successful API response without inbox delivery as completion.
+7. **`[BLOCKER: FRONTEND HOSTING]`** The repository is private, so it cannot be published through free GitHub Pages. Before staging, the owner must either approve making the repository public or select and configure another static-hosting provider that supports private repositories.
+8. **`[FLAG: TESTSPRITE/STAGING]`** Defer full TestSprite execution until a stable staging API/site is available with Render + Neon, database migrations applied, seeded test accounts, and a deterministic OTP test path. TestSprite plan generation is complete; local execution evidence is currently inconclusive because of tunnel/network and missing stateful dependencies.
+9. **`[FLAG: CONTENT/ASSETS]`** University logo source assets must be retrieved from the original repository before vendoring; the owner supplies the set if unavailable.
+10. **`[FLAG: CONTENT]`** Real Arabic/English/Turkish name and summary translations and X/LinkedIn confirmation are owner-provided.
 
 ### Provisional privacy and retention baseline
 
