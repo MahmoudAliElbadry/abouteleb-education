@@ -29,6 +29,8 @@ import {
 import { useAuth } from './features/auth/useAuth.js';
 import { useLanguage, type Language } from './features/i18n/LanguageContext.js';
 
+const publicAsset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
+
 const fallbackUniversities: PublicUniversity[] = bundledUniversities.map(
   (university, sortOrder) => ({
     id: university.id,
@@ -37,7 +39,7 @@ const fallbackUniversities: PublicUniversity[] = bundledUniversities.map(
     nameEn: university.name,
     nameTr: university.name,
     city: university.city,
-    imageUrl: `/images/${university.id}.png`,
+    imageUrl: publicAsset(`images/${university.id}.png`),
     featured: sortOrder < 8,
     sortOrder,
   }),
@@ -444,7 +446,7 @@ function PublicPage() {
     <div className="public-site" dir={direction} lang={language}>
       <header className="topbar">
         <Link className="brand" to="/" aria-label="Abou-Taleb Education">
-          <img src="/images/logo.png" alt="" />
+          <img src={publicAsset('images/logo.png')} alt="" />
           <span>
             Abou-Taleb <strong>Education</strong>
           </span>
@@ -599,7 +601,7 @@ function PublicPage() {
                         onError={(event) => {
                           if (event.currentTarget.dataset.fallbackApplied === 'true') return;
                           event.currentTarget.dataset.fallbackApplied = 'true';
-                          event.currentTarget.src = '/images/logo.png';
+                          event.currentTarget.src = publicAsset('images/logo.png');
                         }}
                       />
                     </div>
@@ -742,7 +744,7 @@ function PublicPage() {
         rel="noreferrer"
         aria-label="WhatsApp"
       >
-        <img src="/images/whatsapp-svgrepo-com.svg" alt="" />
+        <img src={publicAsset('images/whatsapp-svgrepo-com.svg')} alt="" />
       </a>
       {showBackToTop && (
         <button
