@@ -19,6 +19,14 @@ describe('API foundation', () => {
     expect(response.headers['access-control-allow-credentials']).toBe('true');
   });
 
+  it('does not allow the GitHub Pages project origin', async () => {
+    const response = await request(app)
+      .get('/api/v1/health')
+      .set('Origin', 'https://mahmoudalielbadry.github.io');
+
+    expect(response.headers['access-control-allow-origin']).toBeUndefined();
+  });
+
   it('reports unavailable readiness when the database check fails', async () => {
     const response = await request(app).get('/api/v1/health/readiness');
     expect([200, 503]).toContain(response.status);

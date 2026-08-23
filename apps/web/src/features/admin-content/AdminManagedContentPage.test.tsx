@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { AdminManagedContentPage } from './AdminManagedContentPage.js';
+import { LanguageProvider } from '../i18n/LanguageContext.js';
 
 const query = { isPending: false, error: null, data: { items: [], total: 0 }, refetch: vi.fn() };
 const mutation = { mutate: vi.fn(), isPending: false };
@@ -13,13 +14,21 @@ vi.mock('@tanstack/react-query', () => ({
 describe('AdminManagedContentPage', () => {
   afterEach(() => cleanup());
   it('keeps testimonial publication disabled until consent is checked', () => {
-    render(<AdminManagedContentPage />);
+    render(
+      <LanguageProvider>
+        <AdminManagedContentPage />
+      </LanguageProvider>,
+    );
     const consent = screen.getByRole('checkbox', { name: 'Client consent confirmed' });
     const publish = consent.parentElement?.nextElementSibling?.querySelector('input');
     expect(publish).toBeDisabled();
   });
   it('renders localized social controls', () => {
-    render(<AdminManagedContentPage section="social" />);
+    render(
+      <LanguageProvider>
+        <AdminManagedContentPage section="social" />
+      </LanguageProvider>,
+    );
     fireEvent.change(screen.getByRole('combobox', { name: 'Language' }), {
       target: { value: 'tr' },
     });

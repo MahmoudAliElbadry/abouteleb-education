@@ -1,6 +1,15 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { AdminUniversityPage } from './AdminUniversityPage.js';
+import { LanguageProvider } from '../i18n/LanguageContext.js';
+
+function renderPage() {
+  return render(
+    <LanguageProvider>
+      <AdminUniversityPage />
+    </LanguageProvider>,
+  );
+}
 
 const mocks = vi.hoisted(() => ({
   query: {
@@ -45,13 +54,13 @@ vi.mock('@tanstack/react-query', () => ({
 describe('AdminUniversityPage', () => {
   afterEach(() => cleanup());
   it('renders university records and allows editing', () => {
-    render(<AdminUniversityPage />);
+    renderPage();
     expect(screen.getByText('Example University')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Edit' }));
     expect(screen.getByRole('heading', { name: 'Edit' })).toBeInTheDocument();
   });
   it('rejects a non-HTTPS image URL before mutation', () => {
-    render(<AdminUniversityPage />);
+    renderPage();
     fireEvent.click(screen.getByRole('button', { name: 'Add university' }));
     for (const [label, value] of [
       ['Slug', 'example'],

@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Link, Route, Routes, useSearchParams } from 'react-router-dom';
+import { Link, Navigate, Route, Routes, useSearchParams } from 'react-router-dom';
 import { ApplicationPage } from './ApplicationPage.js';
 import { EnrollmentSection } from './features/enrollment/EnrollmentSection.js';
 import {
@@ -11,22 +11,119 @@ import {
   VerifyEmailPage,
 } from './features/auth/AuthPages.js';
 import { RequireAdmin, RequireAuth } from './features/auth/guards.js';
+import { AdminLayout } from './features/admin/AdminLayout.js';
 import { AdminOrderDetailPage, AdminOrdersPage } from './features/admin-orders/AdminOrdersPages.js';
 import { ClientOrdersPage } from './features/client-orders/ClientOrdersPage.js';
 import { AdminUniversityPage } from './features/admin-content/AdminUniversityPage.js';
 import { AdminManagedContentPage } from './features/admin-content/AdminManagedContentPage.js';
+import { universities as bundledUniversities } from './data/universities.js';
 import {
   getPublicContact,
   getPublicSocialLinks,
   getPublicTestimonials,
   getPublicUniversities,
+  type PublicContact,
+  type PublicSocialLink,
   type PublicUniversity,
 } from './features/content/public-content-client.js';
+import { useAuth } from './features/auth/useAuth.js';
+import { useLanguage, type Language } from './features/i18n/LanguageContext.js';
 
-type Language = 'ar' | 'en' | 'tr';
+const fallbackUniversities: PublicUniversity[] = bundledUniversities.map(
+  (university, sortOrder) => ({
+    id: university.id,
+    slug: university.id,
+    nameAr: university.name,
+    nameEn: university.name,
+    nameTr: university.name,
+    city: university.city,
+    imageUrl: `/images/${university.id}.png`,
+    featured: sortOrder < 8,
+    sortOrder,
+  }),
+);
+
+const staticFooterLinks = [
+  {
+    url: 'https://wa.me/905015959880',
+    ar: 'واتساب',
+    en: 'WhatsApp',
+    tr: 'WhatsApp',
+  },
+  {
+    url: 'https://www.instagram.com/abou.taleb.education',
+    ar: 'إنستجرام',
+    en: 'Instagram',
+    tr: 'Instagram',
+  },
+  {
+    url: 'https://www.facebook.com/AbouTalebEducation',
+    ar: 'فيسبوك',
+    en: 'Facebook',
+    tr: 'Facebook',
+  },
+  { url: 'https://x.com/ABOUTALEBEDU', ar: 'إكس', en: 'X', tr: 'X' },
+  {
+    url: 'https://www.linkedin.com/in/abou-taleb-education-108b413a7',
+    ar: 'لينكدإن',
+    en: 'LinkedIn',
+    tr: 'LinkedIn',
+  },
+] as const;
+
+const staticWhatsappUrl = 'https://wa.me/905015959880';
+const staticContactDetails = [
+  { value: 'info@aboutalebeducation.com', href: 'mailto:info@aboutalebeducation.com' },
+  { value: 'AboutalebEducation@gmail.com', href: 'mailto:AboutalebEducation@gmail.com' },
+] as const;
+
+const fallbackSocialLinks: PublicSocialLink[] = staticFooterLinks.map((link) => ({
+  id: link.url,
+  platform: link.en,
+  labelAr: link.ar,
+  labelEn: link.en,
+  labelTr: link.tr,
+  url: link.url,
+  iconKey: link.en.toLowerCase(),
+}));
+
+const fallbackContactDetails: PublicContact[] = staticContactDetails.map((detail) => ({
+  key: detail.value,
+  value: detail.value,
+}));
 
 export function normalizeCatalogSearch(value: string) {
   return value.normalize('NFD').replace(/\p{M}/gu, '').toLocaleLowerCase('tr').replaceAll('ı', 'i');
+}
+
+function useSectionReveal<T extends HTMLElement>() {
+  const ref = useRef<T | null>(null);
+  const [isRevealed, setIsRevealed] = useState(false);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+    if (
+      window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ||
+      !window.IntersectionObserver
+    ) {
+      setIsRevealed(true);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setIsRevealed(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.18 },
+    );
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
+  return { ref, isRevealed };
 }
 
 const copy = {
@@ -39,6 +136,9 @@ const copy = {
     registrationSteps: 'خطوات التسجيل',
     contact: 'تواصل معنا',
     apply: 'سجل الآن',
+    signIn: 'تسجيل الدخول',
+    signOut: 'تسجيل الخروج',
+    dashboard: 'لوحة التحكم',
     badge: 'وكيل معتمد لأقوى الجامعات التركية',
     titleBefore: 'مستقبلك الدراسي في',
     titleAccent: 'تركيا',
@@ -83,6 +183,7 @@ const copy = {
     catalog: 'كتالوج الجامعات',
     notFoundTitle: 'الصفحة غير موجودة',
     returnHome: 'العودة إلى الرئيسية',
+    backToTop: 'العودة إلى أعلى الصفحة',
   },
   en: {
     language: 'English',
@@ -93,6 +194,9 @@ const copy = {
     registrationSteps: 'Registration steps',
     contact: 'Contact',
     apply: 'Apply now',
+    signIn: 'Sign in',
+    signOut: 'Sign out',
+    dashboard: 'Dashboard',
     badge: 'Authorized agent for leading Turkish universities',
     titleBefore: 'Your academic future in',
     titleAccent: 'Türkiye',
@@ -150,6 +254,7 @@ const copy = {
     catalog: 'University catalog',
     notFoundTitle: 'Page not found',
     returnHome: 'Return home',
+    backToTop: 'Back to top',
   },
   tr: {
     language: 'Türkçe',
@@ -160,6 +265,9 @@ const copy = {
     registrationSteps: 'Kayıt adımları',
     contact: 'İletişim',
     apply: 'Şimdi başvur',
+    signIn: 'Giriş yap',
+    signOut: 'Çıkış yap',
+    dashboard: 'Yönetim paneli',
     badge: 'Önde gelen Türk üniversitelerinin yetkili temsilcisi',
     titleBefore: 'Akademik geleceğiniz',
     titleAccent: "Türkiye'de",
@@ -214,6 +322,7 @@ const copy = {
     catalog: 'Üniversite kataloğu',
     notFoundTitle: 'Sayfa bulunamadı',
     returnHome: 'Ana sayfaya dön',
+    backToTop: 'Sayfanın başına dön',
   },
 } as const;
 
@@ -244,7 +353,7 @@ function AnimatedStat({ value, label }: { value: string; label: string }) {
 
   return (
     <div>
-      <strong>{displayValue}</strong>
+      <strong className="stat-value">{displayValue}</strong>
       <span>{label}</span>
     </div>
   );
@@ -257,11 +366,16 @@ const cityLabels = {
 } as const;
 
 function PublicPage() {
-  const [language, setLanguage] = useState<Language>('ar');
+  const auth = useAuth();
+  const { language, setLanguage } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
   const [search, setSearch] = useState('');
   const [city, setCity] = useState('');
   const [showAllUniversities, setShowAllUniversities] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
+  const servicesReveal = useSectionReveal<HTMLDivElement>();
+  const stepsReveal = useSectionReveal<HTMLOListElement>();
+  const statsReveal = useSectionReveal<HTMLElement>();
   const t = copy[language];
   const universitiesQuery = useQuery({
     queryKey: ['public-universities'],
@@ -276,10 +390,13 @@ function PublicPage() {
     queryFn: getPublicSocialLinks,
   });
   const contactQuery = useQuery({ queryKey: ['public-contact'], queryFn: getPublicContact });
+  const usingUniversityFallback = Boolean(universitiesQuery.error && !universitiesQuery.data);
+  const universities: PublicUniversity[] = universitiesQuery.data?.items ?? fallbackUniversities;
+  const socialLinks = socialQuery.data?.items ?? fallbackSocialLinks;
+  const contactDetails = contactQuery.data?.items ?? fallbackContactDetails;
   const whatsappValue = contactQuery.data?.items.find(
     (item) => item.key === 'contact_whatsapp',
   )?.value;
-  const universities: PublicUniversity[] = universitiesQuery.data?.items ?? [];
   const steps: ReadonlyArray<readonly [string, string]> = t.steps;
   const stats: ReadonlyArray<readonly [string, string]> = [
     ['+50', t.universitiesCount],
@@ -288,6 +405,26 @@ function PublicPage() {
     ['+8', t.experience],
   ];
   const direction = language === 'ar' ? 'rtl' : 'ltr';
+  const showEnrollCta = auth.isPending || auth.user?.role !== 'ADMIN';
+
+  useEffect(() => {
+    const updateBackToTopVisibility = () => setShowBackToTop(window.scrollY > 400);
+    updateBackToTopVisibility();
+    window.addEventListener('scroll', updateBackToTopVisibility, { passive: true });
+    return () => window.removeEventListener('scroll', updateBackToTopVisibility);
+  }, []);
+
+  function scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+    });
+  }
+
+  async function handleSignOut() {
+    await auth.logout.mutateAsync();
+    setMenuOpen(false);
+  }
   const filteredUniversities = useMemo(
     () =>
       universities.filter(
@@ -307,7 +444,7 @@ function PublicPage() {
     <div className="public-site" dir={direction} lang={language}>
       <header className="topbar">
         <Link className="brand" to="/" aria-label="Abou-Taleb Education">
-          <img src="/logo.png" alt="" />
+          <img src="/images/logo.png" alt="" />
           <span>
             Abou-Taleb <strong>Education</strong>
           </span>
@@ -315,8 +452,8 @@ function PublicPage() {
         <nav className={menuOpen ? 'open' : undefined} aria-label="Primary navigation">
           {[
             ['#home', t.home],
-            ['#services', t.services],
             ['#universities', t.universities],
+            ['#services', t.services],
             ['#steps', t.registrationSteps],
             ['#contact', t.contact],
           ].map(([href, label]) => (
@@ -339,9 +476,33 @@ function PublicPage() {
               ))}
             </select>
           </label>
-          <a className="button button-small" href="#enroll">
-            {t.apply}
-          </a>
+          {showEnrollCta && (
+            <a className="button button-small" href="#enroll">
+              {t.apply}
+            </a>
+          )}
+          {!auth.isPending &&
+            (auth.user ? (
+              <>
+                {auth.user.role === 'ADMIN' && (
+                  <Link className="button header-account-action" to="/admin/orders">
+                    {t.dashboard}
+                  </Link>
+                )}
+                <button
+                  className="button header-account-action"
+                  type="button"
+                  onClick={() => void handleSignOut()}
+                  disabled={auth.logout.isPending}
+                >
+                  {t.signOut}
+                </button>
+              </>
+            ) : (
+              <Link className="button header-account-action" to="/login">
+                {t.signIn}
+              </Link>
+            ))}
           <button
             className="menu-button"
             type="button"
@@ -358,6 +519,12 @@ function PublicPage() {
 
       <main>
         <section className="hero" id="home">
+          <div className="hero-art" aria-hidden="true">
+            <span className="hero-art-orbit hero-art-orbit-large" />
+            <span className="hero-art-orbit hero-art-orbit-small" />
+            <span className="hero-art-arc" />
+            <span className="hero-art-spark" />
+          </div>
           <div className="hero-content">
             <p className="hero-badge">{t.badge}</p>
             <h1>
@@ -365,9 +532,11 @@ function PublicPage() {
             </h1>
             <p>{t.description}</p>
             <div className="hero-actions">
-              <a className="button" href="#contact">
-                {t.consult}
-              </a>
+              {showEnrollCta && (
+                <a className="button" href="#enroll">
+                  {t.consult}
+                </a>
+              )}
               <a className="button button-outline" href="#services">
                 {t.discover}
               </a>
@@ -375,10 +544,9 @@ function PublicPage() {
           </div>
         </section>
 
-        <section className="stats" aria-label="Company statistics">
-          {stats.map(([value, label]) => (
-            <AnimatedStat key={label} value={value} label={label} />
-          ))}
+        <section ref={statsReveal.ref} className="stats" aria-label="Company statistics">
+          {statsReveal.isRevealed &&
+            stats.map(([value, label]) => <AnimatedStat key={label} value={value} label={label} />)}
         </section>
 
         <section className="content-section catalog-section" id="universities">
@@ -411,44 +579,45 @@ function PublicPage() {
           </div>
           {universitiesQuery.isPending ? (
             <p role="status">{t.loading}</p>
-          ) : universitiesQuery.error ? (
-            <div role="alert">
-              <p>{t.loadError}</p>
-              <button type="button" onClick={() => void universitiesQuery.refetch()}>
-                {t.retry}
-              </button>
-            </div>
           ) : filteredUniversities.length ? (
-            <div className="university-grid">
-              {shownUniversities.map((university) => (
-                <article className="university-card" key={university.id}>
-                  <div className="university-logo">
-                    <img
-                      src={university.imageUrl}
-                      alt={`${university[language === 'ar' ? 'nameAr' : language === 'tr' ? 'nameTr' : 'nameEn']} logo`}
-                      loading="lazy"
-                      width="180"
-                      height="100"
-                      onError={(event) => {
-                        event.currentTarget.onerror = null;
-                        event.currentTarget.src = '/images/logo.png';
-                      }}
-                    />
-                  </div>
-                  <h3>
-                    {
-                      university[
-                        language === 'ar' ? 'nameAr' : language === 'tr' ? 'nameTr' : 'nameEn'
-                      ]
-                    }
-                  </h3>
-                  <span>
-                    {cityLabels[language][university.city as keyof typeof cityLabels.en] ??
-                      university.city}
-                  </span>
-                </article>
-              ))}
-            </div>
+            <>
+              {usingUniversityFallback && (
+                <p className="catalog-fallback" role="status">
+                  {t.loadError}
+                </p>
+              )}
+              <div className="university-grid">
+                {shownUniversities.map((university) => (
+                  <article className="university-card" key={university.id}>
+                    <div className="university-logo">
+                      <img
+                        src={university.imageUrl}
+                        alt={`${university[language === 'ar' ? 'nameAr' : language === 'tr' ? 'nameTr' : 'nameEn']} logo`}
+                        loading="lazy"
+                        width="180"
+                        height="100"
+                        onError={(event) => {
+                          if (event.currentTarget.dataset.fallbackApplied === 'true') return;
+                          event.currentTarget.dataset.fallbackApplied = 'true';
+                          event.currentTarget.src = '/images/logo.png';
+                        }}
+                      />
+                    </div>
+                    <h3>
+                      {
+                        university[
+                          language === 'ar' ? 'nameAr' : language === 'tr' ? 'nameTr' : 'nameEn'
+                        ]
+                      }
+                    </h3>
+                    <span>
+                      {cityLabels[language][university.city as keyof typeof cityLabels.en] ??
+                        university.city}
+                    </span>
+                  </article>
+                ))}
+              </div>
+            </>
           ) : (
             <p className="empty-state" role="status">
               {t.noResults}
@@ -470,7 +639,10 @@ function PublicPage() {
             <p>{t.serviceTag}</p>
             <h2>{t.serviceTitle}</h2>
           </div>
-          <div className="service-grid">
+          <div
+            ref={servicesReveal.ref}
+            className={`service-grid reveal-group${servicesReveal.isRevealed ? ' is-revealed' : ''}`}
+          >
             {t.serviceCards.map(([title, description], index) => (
               <article className="service-card" key={title}>
                 <span aria-hidden="true">0{index + 1}</span>
@@ -486,7 +658,10 @@ function PublicPage() {
             <p>{t.stepsTag}</p>
             <h2>{t.stepsTitle}</h2>
           </div>
-          <ol className="steps-list">
+          <ol
+            ref={stepsReveal.ref}
+            className={`steps-list reveal-group${stepsReveal.isRevealed ? ' is-revealed' : ''}`}
+          >
             {steps.map(([title, description], index) => (
               <li key={title}>
                 <span>{index + 1}</span>
@@ -539,44 +714,62 @@ function PublicPage() {
           <span>{t.readyDescription}</span>
         </div>
         <div className="contact-links">
-          {(socialQuery.data?.items ?? []).map((link) => (
+          {socialLinks.map((link) => (
             <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer">
               {link[language === 'ar' ? 'labelAr' : language === 'tr' ? 'labelTr' : 'labelEn'] ||
                 link.platform}
             </a>
           ))}
-          {(contactQuery.data?.items ?? [])
-            .filter((item) => item.value)
+          {contactDetails
+            .filter((item) => item.value && item.key !== 'contact_whatsapp')
             .map((item) => (
-              <span key={item.key}>{item.value}</span>
+              <a
+                className="contact-detail"
+                key={item.key}
+                href={item.value.includes('@') ? `mailto:${item.value}` : undefined}
+              >
+                {item.value}
+              </a>
             ))}
         </div>
       </section>
       <a
         className="whatsapp"
-        href={whatsappValue ? `https://wa.me/${whatsappValue.replace(/\D/g, '')}` : '#contact'}
+        href={whatsappValue ? `https://wa.me/${whatsappValue.replace(/\D/g, '')}` : staticWhatsappUrl}
         target="_blank"
         rel="noreferrer"
         aria-label="WhatsApp"
       >
-        <svg viewBox="0 0 32 32" aria-hidden="true">
-          <path d="M19.11 17.54c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.95 1.17-.17.2-.35.22-.65.08-1.77-.88-2.93-1.56-4.1-3.54-.31-.54.31-.5.89-1.68.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.5h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.22 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.27.5 1.7.64.72.23 1.38.2 1.9.12.58-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.08-.13-.27-.2-.57-.35ZM16 2.67a13.33 13.33 0 0 0-11.6 20l-1.1 4.03 4.14-1.08A13.33 13.33 0 1 0 16 2.67Zm0 24A10.67 10.67 0 0 1 10.56 25l-.39-.23-2.46.64.66-2.4-.25-.4A10.67 10.67 0 1 1 16 26.67Z" />
-        </svg>
+        <img src="/images/whatsapp-svgrepo-com.svg" alt="" />
       </a>
+      {showBackToTop && (
+        <button
+          className="back-to-top"
+          type="button"
+          onClick={scrollToTop}
+          aria-label={t.backToTop}
+        >
+          <span aria-hidden="true">↑</span>
+        </button>
+      )}
     </div>
   );
 }
 
 function NotFoundPage() {
   const [searchParams] = useSearchParams();
-  const language = searchParams.get('lang');
-  const t = copy[language === 'en' || language === 'tr' ? language : 'ar'];
+  const { language, setLanguage } = useLanguage();
+  const queryLang = searchParams.get('lang');
+
+  useEffect(() => {
+    if (queryLang === 'ar' || queryLang === 'en' || queryLang === 'tr') {
+      setLanguage(queryLang);
+    }
+  }, [queryLang, setLanguage]);
+
+  const t = copy[language];
   return (
-    <main
-      className="not-found"
-      dir={language === 'ar' || !language ? 'rtl' : 'ltr'}
-      lang={language ?? 'ar'}
-    >
+    <main className="not-found" dir={language === 'ar' ? 'rtl' : 'ltr'} lang={language}>
       <h1>{t.notFoundTitle}</h1>
       <Link to="/">{t.returnHome}</Link>
     </main>
@@ -602,53 +795,21 @@ export function App() {
         }
       />
       <Route
-        path="/admin/universities"
+        path="/admin"
         element={
           <RequireAdmin>
-            <AdminUniversityPage />
+            <AdminLayout />
           </RequireAdmin>
         }
-      />
-      <Route
-        path="/admin/testimonials"
-        element={
-          <RequireAdmin>
-            <AdminManagedContentPage section="testimonials" />
-          </RequireAdmin>
-        }
-      />
-      <Route
-        path="/admin/social-links"
-        element={
-          <RequireAdmin>
-            <AdminManagedContentPage section="social" />
-          </RequireAdmin>
-        }
-      />
-      <Route
-        path="/admin/contact"
-        element={
-          <RequireAdmin>
-            <AdminManagedContentPage section="contact" />
-          </RequireAdmin>
-        }
-      />
-      <Route
-        path="/admin/orders"
-        element={
-          <RequireAdmin>
-            <AdminOrdersPage />
-          </RequireAdmin>
-        }
-      />
-      <Route
-        path="/admin/orders/:orderId"
-        element={
-          <RequireAdmin>
-            <AdminOrderDetailPage />
-          </RequireAdmin>
-        }
-      />
+      >
+        <Route index element={<Navigate to="orders" replace />} />
+        <Route path="orders" element={<AdminOrdersPage />} />
+        <Route path="orders/:orderId" element={<AdminOrderDetailPage />} />
+        <Route path="universities" element={<AdminUniversityPage />} />
+        <Route path="testimonials" element={<AdminManagedContentPage section="testimonials" />} />
+        <Route path="social-links" element={<AdminManagedContentPage section="social" />} />
+        <Route path="contact" element={<AdminManagedContentPage section="contact" />} />
+      </Route>
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );

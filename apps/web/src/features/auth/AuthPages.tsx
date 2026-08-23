@@ -1,8 +1,9 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { ApiError } from './auth-client.js';
-import { authCopy, languageFromQuery, type AuthLanguage } from './auth-copy.js';
+import { authCopy, type AuthLanguage } from './auth-copy.js';
 import { useAuth } from './useAuth.js';
+import { useLanguage } from '../i18n/LanguageContext.js';
 
 function errorMessage(error: unknown, fallback: string) {
   return error instanceof ApiError ? error.message : fallback;
@@ -28,7 +29,7 @@ function AuthShell({
     >
       <div className="auth-toolbar">
         <Link to="/" className="brand brand-dark">
-          <img src="/logo.png" alt="" />
+          <img src="/images/logo.png" alt="" />
           <span>
             Abou-Taleb <strong>Education</strong>
           </span>
@@ -56,9 +57,15 @@ function AuthShell({
 
 function useAuthLanguage() {
   const [searchParams] = useSearchParams();
-  const [language, setLanguage] = useState<AuthLanguage>(() =>
-    languageFromQuery(searchParams.get('lang')),
-  );
+  const { language, setLanguage } = useLanguage();
+  const queryLang = searchParams.get('lang');
+
+  useEffect(() => {
+    if (queryLang === 'ar' || queryLang === 'en' || queryLang === 'tr') {
+      setLanguage(queryLang);
+    }
+  }, [queryLang, setLanguage]);
+
   return [language, setLanguage] as const;
 }
 

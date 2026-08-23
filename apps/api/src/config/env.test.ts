@@ -4,13 +4,8 @@ import { parseWebOrigins } from './env.js';
 describe('parseWebOrigins', () => {
   it('parses a comma-separated origin allowlist', () => {
     expect(
-      parseWebOrigins(
-        'https://mahmoudalielbadry.github.io, https://aboutalebeducation.com',
-      ),
-    ).toEqual([
-      'https://mahmoudalielbadry.github.io',
-      'https://aboutalebeducation.com',
-    ]);
+      parseWebOrigins('https://aboutalebeducation.com, https://staging.aboutalebeducation.com'),
+    ).toEqual(['https://aboutalebeducation.com', 'https://staging.aboutalebeducation.com']);
   });
 
   it('rejects an empty allowlist', () => {

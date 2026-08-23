@@ -1,4 +1,6 @@
-export type AuthLanguage = 'ar' | 'en' | 'tr';
+import type { Language } from '../i18n/LanguageContext.js';
+
+export type AuthLanguage = Language;
 
 export const authCopy = {
   ar: {
@@ -77,7 +79,3 @@ export const authCopy = {
     error: 'İstek tamamlanamadı.',
   },
 } as const;
-
-export function languageFromQuery(value: string | null): AuthLanguage {
-  return value === 'ar' || value === 'tr' ? value : 'en';
-}

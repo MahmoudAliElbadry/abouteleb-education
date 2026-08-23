@@ -146,7 +146,7 @@ export function EnrollmentSection({ language }: { language: Language }) {
       </div>
       <div className={`enrollment-card${locked ? ' is-locked' : ''}`}>
         {locked && (
-          <div className="enrollment-lock" aria-hidden="true">
+          <div className="enrollment-lock is-circle" aria-hidden="true">
             🔒
           </div>
         )}

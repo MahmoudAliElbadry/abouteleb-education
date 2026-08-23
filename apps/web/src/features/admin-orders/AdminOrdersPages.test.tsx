@@ -3,6 +3,7 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { AdminOrdersPage } from './AdminOrdersPages.js';
 import { ApiError } from '../auth/auth-client.js';
+import { LanguageProvider } from '../i18n/LanguageContext.js';
 
 const mocks = vi.hoisted(() => ({
   metrics: {
@@ -46,9 +47,11 @@ describe('AdminOrdersPage', () => {
 
   it('binds approved filters and renders a no-results state', () => {
     render(
-      <MemoryRouter>
-        <AdminOrdersPage />
-      </MemoryRouter>,
+      <LanguageProvider>
+        <MemoryRouter>
+          <AdminOrdersPage />
+        </MemoryRouter>
+      </LanguageProvider>,
     );
 
     fireEvent.change(screen.getByRole('combobox', { name: 'Specialization' }), {
@@ -61,9 +64,11 @@ describe('AdminOrdersPage', () => {
   it('renders a retryable permission error', () => {
     mocks.orders.error = new ApiError('FORBIDDEN', 403, 'Forbidden');
     render(
-      <MemoryRouter>
-        <AdminOrdersPage />
-      </MemoryRouter>,
+      <LanguageProvider>
+        <MemoryRouter>
+          <AdminOrdersPage />
+        </MemoryRouter>
+      </LanguageProvider>,
     );
 
     expect(screen.getByRole('alert')).toHaveTextContent(

@@ -3,9 +3,11 @@
 ## Provisioning
 
 1. Create separate Neon staging and production projects. Store each `DATABASE_URL` only in its matching Render environment.
-2. Create the Render API Web Service and Static Site from `render.yaml`. Set the API `WEB_ORIGIN` to the primary static-site URL, or set `WEB_ORIGINS` to a comma-separated allowlist when more than one frontend origin is active. For the temporary Pages deployment, use `https://mahmoudalielbadry.github.io,https://aboutalebeducation.com`. Set `COOKIE_DOMAIN` only once the web app and API share a production parent domain.
-3. Set `VITE_API_BASE_URL` during the static-site build, and configure `SENTRY_DSN` / `VITE_SENTRY_DSN` only after their projects enforce PII scrubbing.
-4. Add Resend DKIM, SPF, and return-path DNS records before production email is enabled.
+2. Deploy the API from `render.yaml`. The blueprint configures `api.aboutalebeducation.com`, `WEB_ORIGIN=https://aboutalebeducation.com`, and `COOKIE_DOMAIN=.aboutalebeducation.com`; leave `WEB_ORIGINS` unset unless an additional same-site frontend is intentionally supported.
+3. In Render, add and verify the `api.aboutalebeducation.com` custom domain. At the DNS provider, create a `CNAME` record for `api` pointing to the API service's `onrender.com` hostname shown by Render. Do not create an `AAAA` record for `api`.
+4. In GitHub repository Settings > Pages, set the custom domain to `aboutalebeducation.com` and enable HTTPS after verification. At the DNS provider, point the apex domain to GitHub Pages with an `ALIAS`/`ANAME`, or GitHub's four documented `A` records; optionally point `www` to `mahmoudalielbadry.github.io`. The Pages workflow publishes the tracked `apps/web/public/CNAME` file and builds with `VITE_API_BASE_URL=https://api.aboutalebeducation.com` at the domain root.
+5. Do not use `https://mahmoudalielbadry.github.io/abouteleb-education/` for authenticated production traffic: it is cross-site with the API and the `SameSite=Lax` session/CSRF cookies will not be sent. Configure `SENTRY_DSN` only after its project enforces PII scrubbing.
+6. Add Resend DKIM, SPF, and return-path DNS records before production email is enabled.
 
 ## Migration and rollback
 
@@ -16,7 +18,8 @@
 ## Staging acceptance
 
 - Check public navigation, direct deep links, catalog, mobile layout, Arabic RTL, and English/Turkish LTR.
-- Verify client registration, email verification, login, logout, order ownership, cancellation, and client responses.
+- Verify client registration, email verification, login, session restore, CSRF-protected changes, logout, order ownership, cancellation, and client responses from `https://aboutalebeducation.com`.
+- Confirm the API returns credentialed CORS headers for `https://aboutalebeducation.com` and does not allow `https://mahmoudalielbadry.github.io`.
 - Verify client/admin authorization, content publication/archive/restore, audit records, CSRF rejection, and rate-limit responses.
 - Confirm `GET /api/v1/health` and `/api/v1/health/readiness` return 200, Sentry receives a deliberately captured non-PII staging error, and UptimeRobot alerts on both public URLs.
 
