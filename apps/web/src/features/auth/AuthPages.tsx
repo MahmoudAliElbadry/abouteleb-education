@@ -5,6 +5,8 @@ import { authCopy, type AuthLanguage } from './auth-copy.js';
 import { useAuth } from './useAuth.js';
 import { useLanguage } from '../i18n/LanguageContext.js';
 
+const publicAsset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
+
 function errorMessage(error: unknown, fallback: string) {
   return error instanceof ApiError ? error.message : fallback;
 }
@@ -29,7 +31,7 @@ function AuthShell({
     >
       <div className="auth-toolbar">
         <Link to="/" className="brand brand-dark">
-          <img src="/images/logo.png" alt="" />
+          <img src={publicAsset('images/logo.png')} alt="" />
           <span>
             Abou-Taleb <strong>Education</strong>
           </span>
