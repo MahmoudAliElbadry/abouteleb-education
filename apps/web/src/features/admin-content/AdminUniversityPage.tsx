@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { ApiError } from '../auth/auth-client.js';
+import { useLanguage } from '../i18n/LanguageContext.js';
 import {
   archiveUniversity,
   createUniversity,
@@ -127,7 +128,7 @@ const emptyForm: UniversityInput = {
 };
 
 export function AdminUniversityPage() {
-  const [language, setLanguage] = useState<Language>('en');
+  const { language, setLanguage } = useLanguage();
   const t = copy[language];
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState('');

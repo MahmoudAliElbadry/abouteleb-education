@@ -1,10 +1,10 @@
-import { useState } from 'react';
 import { ContactAdminSection } from './ContactAdminSection.js';
 import { SocialLinksAdminSection } from './SocialLinksAdminSection.js';
 import { TestimonialsAdminSection } from './TestimonialsAdminSection.js';
+import { useLanguage, type Language } from '../i18n/LanguageContext.js';
 
 export type AdminContentSection = 'testimonials' | 'social' | 'contact';
-export type AdminLanguage = 'ar' | 'en' | 'tr';
+export type AdminLanguage = Language;
 export const adminContentCopy = {
   ar: { testimonials: 'آراء العملاء', social: 'الروابط الاجتماعية', contact: 'بيانات التواصل' },
   en: { testimonials: 'Testimonials', social: 'Social links', contact: 'Contact details' },
@@ -15,7 +15,7 @@ export function AdminManagedContentPage({
 }: {
   section?: AdminContentSection;
 }) {
-  const [language, setLanguage] = useState<AdminLanguage>('en');
+  const { language, setLanguage } = useLanguage();
   return (
     <main className="admin-page">
       <header>

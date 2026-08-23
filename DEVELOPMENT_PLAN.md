@@ -943,6 +943,7 @@ Defer unless the business confirms immediate need:
 - Complex admin permission matrix.
 - Analytics dashboard beyond operational order counts.
 - General drag-and-drop page builder.
+- Translation-assist workflow where an admin writes the source content, generates Arabic/English/Turkish draft translations, reviews/edits them, then saves all three localized versions.
 - SMS or WhatsApp OTP.
 
 ## 17. Testing strategy

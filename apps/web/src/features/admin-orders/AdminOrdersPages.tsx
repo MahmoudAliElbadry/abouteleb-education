@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { OrderStatusValue } from '@abou/contracts';
 import { ApiError } from '../auth/auth-client.js';
 import { useAuth } from '../auth/useAuth.js';
+import { useLanguage, type Language } from '../i18n/LanguageContext.js';
 import {
   addInternalNote,
   assignAdmin,
@@ -12,8 +13,6 @@ import {
   getAdminOrders,
   transitionAdminOrder,
 } from './admin-client.js';
-
-type Language = 'ar' | 'en' | 'tr';
 const labels = {
   ar: {
     title: 'لوحة الطلبات',
@@ -171,7 +170,7 @@ function message(error: unknown, fallback: string) {
 }
 
 export function AdminOrdersPage() {
-  const [language, setLanguage] = useState<Language>('en');
+  const { language, setLanguage } = useLanguage();
   const t = labels[language];
   const [searchParams, setSearchParams] = useSearchParams();
   const status = searchParams.get('status') ?? '';
@@ -360,7 +359,7 @@ export function AdminOrdersPage() {
 }
 
 export function AdminOrderDetailPage() {
-  const [language, setLanguage] = useState<Language>('en');
+  const { language, setLanguage } = useLanguage();
   const t = labels[language];
   const { orderId } = useParams();
   const navigate = useNavigate();
