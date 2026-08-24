@@ -65,6 +65,10 @@ export const updateSocialLink = (id: string, input: Partial<ManagedSocialLink>) 
     ...write,
     body: JSON.stringify(input),
   });
+export const archiveSocialLink = (id: string) =>
+  apiFetch(`/admin/social-links/${id}/archive`, { method: 'POST', ...write });
+export const restoreSocialLink = (id: string) =>
+  apiFetch(`/admin/social-links/${id}/restore`, { method: 'POST', ...write });
 export const getAdminContact = () => apiFetch<{ items: ManagedContact[] }>('/admin/contact');
 export const updateContact = (key: ManagedContactKey, value: string) =>
   apiFetch<{ item: ManagedContact }>(`/admin/contact/${key}`, {

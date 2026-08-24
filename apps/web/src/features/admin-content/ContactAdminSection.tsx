@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import type { ManagedContactKey } from '@abou/contracts';
 import { ApiError } from '../auth/auth-client.js';
 import { getAdminContact, updateContact } from './managed-content-client.js';
 import type { AdminLanguage } from './AdminManagedContentPage.js';
@@ -8,6 +9,26 @@ const copy = {
   en: { save: 'Save', error: 'Unable to save content.' },
   tr: { save: 'Kaydet', error: 'İçerik kaydedilemedi.' },
 } as const;
+const contactLabels: Record<AdminLanguage, Record<ManagedContactKey, string>> = {
+  ar: {
+    contact_phone: 'رقم الهاتف',
+    contact_email_primary: 'البريد الإلكتروني الأساسي',
+    contact_email_secondary: 'البريد الإلكتروني الثانوي',
+    contact_whatsapp: 'رقم واتساب',
+  },
+  en: {
+    contact_phone: 'Phone number',
+    contact_email_primary: 'Primary email',
+    contact_email_secondary: 'Secondary email',
+    contact_whatsapp: 'WhatsApp number',
+  },
+  tr: {
+    contact_phone: 'Telefon numarası',
+    contact_email_primary: 'Birincil e-posta',
+    contact_email_secondary: 'İkincil e-posta',
+    contact_whatsapp: 'WhatsApp numarası',
+  },
+};
 export function ContactAdminSection({ language }: { language: AdminLanguage }) {
   const t = copy[language];
   const client = useQueryClient();
@@ -40,9 +61,9 @@ export function ContactAdminSection({ language }: { language: AdminLanguage }) {
           className="content-form compact-content-form"
         >
           <label>
-            {item.key}
+            {contactLabels[language][item.key]}
             <input
-              aria-label={item.key}
+              aria-label={contactLabels[language][item.key]}
               value={drafts[item.key] ?? item.value}
               onChange={(event) => setDrafts({ ...drafts, [item.key]: event.target.value })}
             />
