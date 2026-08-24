@@ -87,12 +87,13 @@ export function LoginPage() {
   const [params] = useSearchParams();
   const [email, setEmail] = useState(params.get('email') ?? '');
   const [password, setPassword] = useState('');
-  const redirect = params.get('redirect') ?? '/applications';
+  const redirectParam = params.get('redirect');
   async function submit(event: FormEvent) {
     event.preventDefault();
     try {
-      await auth.login.mutateAsync({ email, password });
-      navigate(redirect);
+      const { user } = await auth.login.mutateAsync({ email, password });
+      const fallback = user.role === 'ADMIN' ? '/admin' : '/applications';
+      navigate(redirectParam ?? fallback);
     } catch {
       /* rendered below */
     }
