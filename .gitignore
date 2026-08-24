@@ -16,3 +16,7 @@ test-results/
 *.db-journal
 testsprite_tests/tmp/
 testsprite_tests/tmp/config.json
+
+# Firebase CLI local state
+.firebase/
+firebase-debug.log
