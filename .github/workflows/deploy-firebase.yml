@@ -31,7 +31,7 @@ jobs:
       - name: Build public site
         env:
           VITE_API_BASE_URL: https://api.aboutalebeducation.com
-        run: npm run build -w @abou/web
+        run: npm run build -w @abou/contracts && npm run build -w @abou/web
 
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
