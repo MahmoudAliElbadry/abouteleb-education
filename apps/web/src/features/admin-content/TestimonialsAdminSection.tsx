@@ -109,7 +109,7 @@ export function TestimonialsAdminSection({ language }: { language: AdminLanguage
             onChange={(event) => setForm({ ...form, imageUrl: event.target.value || null })}
           />
         </label>
-        <label>
+        <label className="checkbox-label">
           <input
             type="checkbox"
             checked={form.consentConfirmed}
@@ -117,7 +117,7 @@ export function TestimonialsAdminSection({ language }: { language: AdminLanguage
           />
           {t.consent}
         </label>
-        <label>
+        <label className="checkbox-label">
           <input
             type="checkbox"
             disabled={!form.consentConfirmed}
