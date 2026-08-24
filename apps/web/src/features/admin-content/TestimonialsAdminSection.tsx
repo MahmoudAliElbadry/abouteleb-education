@@ -9,6 +9,7 @@ import {
 import type { AdminLanguage } from './AdminManagedContentPage.js';
 const copy = {
   ar: {
+    title: 'إضافة رأي عميل',
     save: 'حفظ',
     consent: 'تم تأكيد موافقة العميل',
     publish: 'منشور',
@@ -16,6 +17,7 @@ const copy = {
     error: 'تعذر حفظ المحتوى.',
   },
   en: {
+    title: 'Add testimonial',
     save: 'Save',
     consent: 'Client consent confirmed',
     publish: 'Published',
@@ -23,6 +25,7 @@ const copy = {
     error: 'Unable to save content.',
   },
   tr: {
+    title: 'Referans ekle',
     save: 'Kaydet',
     consent: 'Müşteri onayı doğrulandı',
     publish: 'Yayınlandı',
@@ -68,7 +71,8 @@ export function TestimonialsAdminSection({ language }: { language: AdminLanguage
   };
   return (
     <>
-      <form onSubmit={submit} className="content-form">
+      <form onSubmit={submit} className="content-form admin-content-form">
+        <h2>{t.title}</h2>
         <input
           aria-label="English name"
           required
@@ -99,6 +103,7 @@ export function TestimonialsAdminSection({ language }: { language: AdminLanguage
           {t.publish}
         </label>
         <button
+          className="button"
           type="submit"
           disabled={create.isPending || (form.isPublished && !form.consentConfirmed)}
         >
@@ -107,18 +112,21 @@ export function TestimonialsAdminSection({ language }: { language: AdminLanguage
       </form>
       {error ? <p role="alert">{error}</p> : null}
       {query.isPending ? <p role="status">Loading…</p> : null}
-      {query.data?.items.map((item) => (
-        <article key={item.id} className="admin-order-row">
-          <span>{item.clientNameEn}</span>
-          <button
-            type="button"
-            disabled={archive.isPending}
-            onClick={() => archive.mutate(item.id)}
-          >
-            {t.archive}
-          </button>
-        </article>
-      ))}
+      <div className="admin-order-table admin-content-list">
+        {query.data?.items.map((item) => (
+          <article key={item.id} className="admin-order-row">
+            <span>{item.clientNameEn}</span>
+            <button
+              className="button button-small button-danger"
+              type="button"
+              disabled={archive.isPending}
+              onClick={() => archive.mutate(item.id)}
+            >
+              {t.archive}
+            </button>
+          </article>
+        ))}
+      </div>
     </>
   );
 }

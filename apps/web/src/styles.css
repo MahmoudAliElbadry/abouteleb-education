@@ -831,6 +831,11 @@ nav a:hover {
   gap: 0.25rem;
   padding: 1.5rem 1rem;
 }
+.admin-sidebar-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
 .admin-sidebar a {
   border-radius: 0.6rem;
   color: #cbd5e1;
@@ -848,6 +853,11 @@ nav a:hover {
 .admin-sidebar a.is-active {
   background: var(--primary);
   color: #fff;
+}
+.admin-sidebar-home {
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  margin-top: auto;
+  padding-top: 1rem !important;
 }
 .admin-shell-content {
   flex: 1;
@@ -910,6 +920,99 @@ nav a:hover {
   display: flex;
   gap: 0.75rem;
   margin-bottom: 1rem;
+}
+.admin-toolbar.admin-panel {
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.admin-toolbar.admin-panel input {
+  flex: 1;
+}
+.admin-content-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.admin-content-form {
+  background: #fff;
+  border: 1px solid var(--gray-border);
+  border-radius: 1rem;
+  margin-bottom: 1.25rem;
+  padding: clamp(1rem, 3vw, 1.5rem);
+}
+.admin-section-heading {
+  align-items: start;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.admin-section-heading h2,
+.admin-content-form h2 {
+  color: var(--black);
+  margin: 0;
+}
+.content-form-grid {
+  display: grid;
+  gap: 0.9rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.content-form-grid label,
+.content-form-options label,
+.content-form label {
+  display: grid;
+  font-weight: 800;
+  gap: 0.35rem;
+}
+.content-form-grid input,
+.content-form-options input,
+.content-form textarea,
+.content-form input {
+  background: #fff;
+  border: 1px solid #d9e1e8;
+  border-radius: 0.7rem;
+  min-height: 2.8rem;
+  outline-color: var(--primary);
+  padding: 0.55rem 0.75rem;
+  width: 100%;
+}
+.content-form-grid img {
+  border-radius: 0.5rem;
+  margin-top: 0.35rem;
+  object-fit: contain;
+}
+.content-form-options {
+  align-items: end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.content-form-options .checkbox-label {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+}
+.content-form-options .checkbox-label input {
+  min-height: auto;
+  width: auto;
+}
+.compact-content-form {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+.compact-content-form + .admin-content-list,
+.admin-content-list {
+  margin-top: 1rem;
+}
+.admin-content-list .admin-order-row {
+  min-width: 0;
+}
+.button-danger {
+  background: #b42318;
+}
+.button-danger:hover {
+  background: #912018;
 }
 .admin-toolbar input {
   max-width: 30rem;
@@ -1050,6 +1153,13 @@ nav a:hover {
   }
   .admin-detail-grid {
     grid-template-columns: 1fr;
+  }
+  .admin-content-grid,
+  .content-form-grid {
+    grid-template-columns: 1fr;
+  }
+  .admin-toolbar.admin-panel {
+    align-items: stretch;
   }
 }
 
@@ -1406,7 +1516,9 @@ nav a:hover {
 .public-site .services {
   background: var(--black);
   color: #fff;
+  max-width: none;
   position: relative;
+  width: 100%;
 }
 
 .public-site .services::before {

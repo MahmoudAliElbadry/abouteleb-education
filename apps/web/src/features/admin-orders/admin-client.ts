@@ -10,7 +10,6 @@ export type AdminOrderSummary = {
   specialization: Specialization;
   specializationLabel: string;
   status: OrderStatusValue;
-  assignedAdmin: { id: string; email: string; profile: { fullName: string } | null } | null;
   submittedAt: string;
   updatedAt: string;
   closedAt: string | null;
@@ -51,7 +50,6 @@ export function getAdminMetrics() {
 export function getAdminOrders(query: {
   status?: string;
   specialization?: string;
-  assignedAdminId?: string;
   search?: string;
   sort?: string;
   order?: string;
@@ -62,14 +60,7 @@ export function getAdminOrders(query: {
     page: String(query.page),
     pageSize: String(query.pageSize),
   });
-  for (const key of [
-    'status',
-    'specialization',
-    'assignedAdminId',
-    'search',
-    'sort',
-    'order',
-  ] as const)
+  for (const key of ['status', 'specialization', 'search', 'sort', 'order'] as const)
     if (query[key]) params.set(key, query[key]!);
   return apiFetch<{
     items: AdminOrderSummary[];
@@ -81,14 +72,6 @@ export function getAdminOrders(query: {
 
 export function getAdminOrder(id: string) {
   return apiFetch<{ order: AdminOrderDetail }>(`/admin/orders/${id}`);
-}
-
-export function assignAdmin(orderId: string, assignedAdminId: string | null) {
-  return apiFetch(`/admin/orders/${orderId}/assignment`, {
-    method: 'PATCH',
-    headers: { 'X-CSRF-Token': csrfToken() },
-    body: JSON.stringify({ assignedAdminId }),
-  });
 }
 
 export function transitionAdminOrder(

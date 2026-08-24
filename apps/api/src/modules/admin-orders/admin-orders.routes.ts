@@ -1,7 +1,6 @@
 import { Router, type Request } from 'express';
 import {
   adminOrderListQuerySchema,
-  orderAssignmentSchema,
   orderInternalNoteSchema,
   orderStatusTransitionSchema,
 } from '@abou/contracts';
@@ -48,25 +47,6 @@ adminOrdersRouter.get('/:orderId', async (request, response, next) => {
     next(error);
   }
 });
-
-adminOrdersRouter.patch(
-  '/:orderId/assignment',
-  sensitiveRouteLimit(60),
-  requireCsrf,
-  async (request, response, next) => {
-    try {
-      const result = await adminOrdersService.assign(
-        orderIdFrom(request),
-        orderAssignmentSchema.parse(request.body).assignedAdminId,
-        response.locals.user!.id,
-        request.ip,
-      );
-      response.json({ assignment: result });
-    } catch (error) {
-      next(error);
-    }
-  },
-);
 
 adminOrdersRouter.post(
   '/:orderId/status',

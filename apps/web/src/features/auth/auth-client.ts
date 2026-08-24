@@ -72,7 +72,9 @@ export async function getSession(): Promise<AuthResponse | null> {
 }
 
 async function issueCsrfToken() {
-  const response = await apiFetch<{ csrfToken: string }>('/auth/csrf');
+  const response = await apiFetch<{ csrfToken: string }>('/auth/csrf', {
+    cache: 'no-store',
+  });
   return response.csrfToken;
 }
 

@@ -810,9 +810,8 @@ export function App() {
         <Route path="orders" element={<AdminOrdersPage />} />
         <Route path="orders/:orderId" element={<AdminOrderDetailPage />} />
         <Route path="universities" element={<AdminUniversityPage />} />
-        <Route path="testimonials" element={<AdminManagedContentPage section="testimonials" />} />
-        <Route path="social-links" element={<AdminManagedContentPage section="social" />} />
-        <Route path="contact" element={<AdminManagedContentPage section="contact" />} />
+        <Route path="testimonials" element={<AdminManagedContentPage mode="testimonials" />} />
+        <Route path="contact-social" element={<AdminManagedContentPage mode="contact-social" />} />
       </Route>
       <Route path="*" element={<NotFoundPage />} />
     </Routes>

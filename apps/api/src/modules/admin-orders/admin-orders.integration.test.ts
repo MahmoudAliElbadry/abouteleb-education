@@ -75,7 +75,7 @@ integrationDescribe('admin order PostgreSQL integration', () => {
     return { agent, csrf: csrfCookie(login.headers['set-cookie']) ?? '' };
   }
 
-  it('lets admins review, assign, transition, annotate, and inspect an order', async () => {
+  it('lets admins review, transition, annotate, and inspect an order', async () => {
     const client = await signedIn(clientEmail);
     const admin = await signedIn(adminEmail);
     const created = await client.agent
@@ -99,11 +99,6 @@ integrationDescribe('admin order PostgreSQL integration', () => {
 
     await client.agent.get('/api/v1/admin/orders').expect(403);
     await admin.agent
-      .patch(`/api/v1/admin/orders/${orderId}/assignment`)
-      .set('X-CSRF-Token', admin.csrf)
-      .send({ assignedAdminId: adminId })
-      .expect(200);
-    await admin.agent
       .post(`/api/v1/admin/orders/${orderId}/status`)
       .set('X-CSRF-Token', admin.csrf)
       .send({ to: 'CONTACTED', clientVisibleMessage: 'We are reviewing your request.' })
@@ -116,7 +111,7 @@ integrationDescribe('admin order PostgreSQL integration', () => {
 
     const detail = await admin.agent.get(`/api/v1/admin/orders/${orderId}`).expect(200);
     expect(detail.body.order.status).toBe('CONTACTED');
-    expect(detail.body.order.assignedAdmin.id).toBe(adminId);
+    expect(detail.body.order).not.toHaveProperty('assignedAdmin');
     expect(detail.body.order.statusHistory.at(-1)).toMatchObject({
       toStatus: 'CONTACTED',
       clientVisibleMessage: 'We are reviewing your request.',

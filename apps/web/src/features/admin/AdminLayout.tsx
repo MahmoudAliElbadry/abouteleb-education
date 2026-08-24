@@ -6,22 +6,22 @@ const navCopy = {
     orders: 'الطلبات',
     universities: 'الجامعات',
     testimonials: 'آراء العملاء',
-    social: 'الروابط الاجتماعية',
-    contact: 'بيانات التواصل',
+    contactSocial: 'التواصل والروابط',
+    home: 'العودة إلى الصفحة الرئيسية',
   },
   en: {
     orders: 'Orders',
     universities: 'Universities',
     testimonials: 'Testimonials',
-    social: 'Social links',
-    contact: 'Contact',
+    contactSocial: 'Contact & social',
+    home: 'Return to home page',
   },
   tr: {
     orders: 'Siparişler',
     universities: 'Üniversiteler',
     testimonials: 'Referanslar',
-    social: 'Sosyal bağlantılar',
-    contact: 'İletişim',
+    contactSocial: 'İletişim ve sosyal',
+    home: 'Ana sayfaya dön',
   },
 } as const;
 
@@ -29,8 +29,7 @@ const navItems = [
   { to: '/admin/orders', key: 'orders' },
   { to: '/admin/universities', key: 'universities' },
   { to: '/admin/testimonials', key: 'testimonials' },
-  { to: '/admin/social-links', key: 'social' },
-  { to: '/admin/contact', key: 'contact' },
+  { to: '/admin/contact-social', key: 'contactSocial' },
 ] as const;
 
 export function AdminLayout() {
@@ -40,15 +39,20 @@ export function AdminLayout() {
   return (
     <div className="admin-shell" dir={language === 'ar' ? 'rtl' : 'ltr'} lang={language}>
       <nav className="admin-sidebar" aria-label="Admin sections">
-        {navItems.map((item) => (
-          <NavLink
-            key={item.to}
-            to={item.to}
-            className={({ isActive }) => (isActive ? 'is-active' : undefined)}
-          >
-            {t[item.key]}
-          </NavLink>
-        ))}
+        <div className="admin-sidebar-links">
+          {navItems.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              className={({ isActive }) => (isActive ? 'is-active' : undefined)}
+            >
+              {t[item.key]}
+            </NavLink>
+          ))}
+        </div>
+        <NavLink className="admin-sidebar-home" to="/">
+          {t.home}
+        </NavLink>
       </nav>
       <div className="admin-shell-content">
         <Outlet />

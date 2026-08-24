@@ -30,7 +30,6 @@ export const orderResponseSchema = z.object({ body: z.string().trim().min(1).max
 export const adminOrderListQuerySchema = z.object({
   status: orderStatusSchema.optional(),
   specialization: specializationSchema.optional(),
-  assignedAdminId: z.string().trim().min(1).optional(),
   search: z.string().trim().max(120).optional(),
   sort: z.enum(['createdAt', 'updatedAt']).default('createdAt'),
   order: z.enum(['asc', 'desc']).default('desc'),
@@ -40,9 +39,6 @@ export const adminOrderListQuerySchema = z.object({
 export const orderStatusTransitionSchema = z.object({
   to: orderStatusSchema,
   clientVisibleMessage: z.string().trim().max(2000).optional(),
-});
-export const orderAssignmentSchema = z.object({
-  assignedAdminId: z.string().trim().min(1).nullable(),
 });
 export const orderInternalNoteSchema = z.object({ body: z.string().trim().min(1).max(2000) });
 export type CreateOrderInput = z.infer<typeof createOrderSchema>;
