@@ -42,3 +42,7 @@ export function useLanguage() {
   }
   return context;
 }
+
+export function localize<T>(language: Language, ar: T, en: T, tr: T): T {
+  return language === 'ar' ? ar : language === 'tr' ? tr : en;
+}

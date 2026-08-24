@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { ApiError } from '../auth/auth-client.js';
-import { useLanguage } from '../i18n/LanguageContext.js';
+import { useLanguage, localize } from '../i18n/LanguageContext.js';
 import {
   archiveUniversity,
   createUniversity,
@@ -174,11 +174,7 @@ export function AdminUniversityPage() {
     setForm({ ...university, websiteUrl: university.websiteUrl });
   }
   function localizedName(university: ManagedUniversity) {
-    return language === 'ar'
-      ? university.nameAr
-      : language === 'tr'
-        ? university.nameTr
-        : university.nameEn;
+    return localize(language, university.nameAr, university.nameEn, university.nameTr);
   }
   return (
     <main className="admin-page" dir={language === 'ar' ? 'rtl' : 'ltr'} lang={language}>

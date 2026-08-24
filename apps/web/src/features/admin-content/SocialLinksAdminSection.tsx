@@ -76,7 +76,7 @@ export function SocialLinksAdminSection({ language }: { language: AdminLanguage 
         </button>
       </form>
       {error ? <p role="alert">{error}</p> : null}
-      <div className="admin-content-list">
+      <div className="admin-order-table admin-content-list">
         {query.data?.items.map((item, index) => (
           <article key={item.id} className="admin-order-row">
             <span>{item.platform}</span>
