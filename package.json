@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "concurrently -n api,web -c blue,green \"npm run dev -w @abou/api\" \"npm run dev -w @abou/web\"",
     "build": "npm run build -w @abou/contracts && npm run build -w @abou/api && npm run build -w @abou/web",
-    "typecheck": "npm run typecheck -w @abou/contracts && npm run typecheck -w @abou/api && npm run typecheck -w @abou/web",
+    "typecheck": "npm run build -w @abou/contracts && npm run typecheck -w @abou/api && npm run typecheck -w @abou/web",
     "test": "npm run test -w @abou/contracts && npm run test -w @abou/api && npm run test -w @abou/web",
     "lint": "npm run lint -w @abou/contracts && npm run lint -w @abou/api && npm run lint -w @abou/web",
     "format:check": "prettier --check .",
