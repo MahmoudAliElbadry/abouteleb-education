@@ -5,7 +5,7 @@ services:
     domains:
       - api.aboutalebeducation.com
     renderSubdomainPolicy: disabled
-    buildCommand: npm ci && npm run build -w @abou/api
+    buildCommand: npm ci && npm run build -w @abou/contracts && npm run build -w @abou/api
     startCommand: npm run start -w @abou/api
     healthCheckPath: /api/v1/health/readiness
     envVars:
