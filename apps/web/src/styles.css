@@ -529,39 +529,280 @@ nav a:hover {
   text-align: center;
 }
 .account-page {
-  margin: 0 auto;
-  max-width: 42rem;
+  background: #f6f5f3;
+  color: #17171a;
   min-height: 100vh;
-  padding: 3rem 1.25rem;
 }
-.account-page form {
+.account-topbar {
+  padding-inline: max(5%, calc((100% - 75rem) / 2));
+}
+.account-topbar .header-account-action {
+  background: transparent;
+  color: #d1d1d5;
+  font-weight: 700;
+  text-decoration: none;
+}
+.account-main {
+  margin: 0 auto;
+  max-width: 46rem;
+  padding: clamp(2rem, 5vw, 3.5rem) clamp(1rem, 5vw, 2rem) 5rem;
+}
+.account-eyebrow {
+  color: var(--primary);
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+  margin: 0 0 0.5rem;
+  text-transform: uppercase;
+}
+.account-heading {
+  font-size: clamp(1.9rem, 4vw, 2.6rem);
+  letter-spacing: -0.02em;
+  margin: 0 0 0.5rem;
+}
+.account-subtitle {
+  color: var(--text-light);
+  font-size: 0.95rem;
+  margin: 0 0 2.25rem;
+  max-width: 40rem;
+}
+.account-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.account-card {
+  background: #fff;
+  border: 1px solid #dedbd5;
+  border-radius: 1rem;
+  box-shadow: 0 12px 30px rgba(18, 18, 20, 0.05);
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+}
+.account-card h2 {
+  font-size: 1.05rem;
+  margin: 0;
+}
+.account-card-profile {
+  background: var(--black);
+  border-top: 3px solid var(--primary);
+  color: #fff;
   display: grid;
-  gap: 1rem;
-  margin: 1.5rem 0;
+  gap: 1.1rem;
 }
-.account-page label {
+.account-profile-head {
+  align-items: center;
+  display: flex;
+  gap: 0.9rem;
+}
+.account-avatar {
+  align-items: center;
+  background: var(--primary);
+  border-radius: 50%;
+  color: #fff;
+  display: flex;
+  flex: none;
+  font-size: 1.2rem;
+  font-weight: 900;
+  height: 3.4rem;
+  justify-content: center;
+  width: 3.4rem;
+}
+.account-profile-head h2 {
+  color: #fff;
+}
+.account-email {
+  color: #a1a1a8;
+  font-size: 0.78rem;
+  margin: 0.15rem 0 0;
+  word-break: break-word;
+}
+.account-verify-status {
+  color: #a1a1a8;
+  font-size: 0.78rem;
+  margin: 0;
+}
+.account-stats {
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
   display: grid;
-  font-weight: 800;
-  gap: 0.4rem;
+  gap: 0.6rem;
+  grid-template-columns: repeat(3, 1fr);
+  padding-top: 1rem;
 }
-.account-page input,
-.account-page select {
-  border: 1px solid #d9e1e8;
-  border-radius: 0.7rem;
-  min-height: 2.8rem;
-  padding: 0.5rem 0.75rem;
+.account-stats div {
+  text-align: center;
 }
-.account-page [role='alert'] {
+.account-stats div:nth-child(2) {
+  border-inline: 1px solid rgba(255, 255, 255, 0.14);
+}
+.account-stats strong {
+  color: #fff;
+  display: block;
+  font-size: 1.4rem;
+}
+.account-stats div:nth-child(2) strong {
+  color: var(--primary);
+}
+.account-stats span {
+  color: #a1a1a8;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+.account-card-header {
+  align-items: baseline;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.account-card-header span {
+  color: var(--text-light);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+.order-error {
   color: #b42318;
   font-weight: 700;
 }
-.account-page section {
-  border-top: 1px solid #d9e1e8;
-  margin-top: 2rem;
-  padding-top: 1.5rem;
+.order-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
-.account-page li {
-  margin: 0.75rem 0;
+.order-item {
+  border: 1px solid #ebe9e4;
+  border-radius: 0.7rem;
+  overflow: hidden;
+}
+.order-item-toggle {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  display: flex;
+  gap: 0.75rem;
+  justify-content: space-between;
+  padding: 0.85rem 0.95rem;
+  text-align: start;
+  width: 100%;
+}
+.order-item-toggle strong {
+  display: block;
+  font-size: 0.88rem;
+}
+.order-item-meta {
+  color: var(--text-light);
+  display: block;
+  font-size: 0.72rem;
+  margin-top: 0.15rem;
+}
+.order-item-status {
+  align-items: center;
+  display: flex;
+  flex: none;
+  gap: 0.6rem;
+}
+.order-badge {
+  border-radius: 99px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 0.28rem 0.6rem;
+  white-space: nowrap;
+}
+.order-badge-new,
+.order-badge-neutral {
+  background: #eef2f5;
+  color: #17171a;
+}
+.order-badge-waiting {
+  background: rgba(192, 57, 43, 0.12);
+  color: #9a2e22;
+}
+.order-badge-active {
+  background: rgba(192, 57, 43, 0.12);
+  color: var(--primary-dark);
+}
+.order-badge-done {
+  background: var(--black);
+  color: #fff;
+}
+.order-badge-muted {
+  background: #f6f5f3;
+  color: var(--text-light);
+}
+.order-chevron {
+  color: var(--text-light);
+  display: inline-block;
+  font-size: 0.8rem;
+  transition: transform 0.15s ease;
+}
+.order-chevron.is-open {
+  transform: rotate(180deg);
+}
+.order-history {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0.25rem 1rem 0.95rem 2.4rem;
+}
+.order-history li {
+  border-inline-start: 3px solid var(--primary);
+  font-size: 0.78rem;
+  padding-inline-start: 0.7rem;
+}
+.order-history strong {
+  display: block;
+}
+.order-history span {
+  color: var(--text-light);
+  display: block;
+  font-size: 0.72rem;
+  margin-top: 0.1rem;
+}
+.order-history p {
+  color: #28282d;
+  font-size: 0.75rem;
+  margin: 0.2rem 0 0;
+}
+.order-empty {
+  text-align: center;
+}
+.order-empty p {
+  color: var(--text-light);
+  font-size: 0.85rem;
+  margin: 0;
+}
+.order-empty a {
+  display: block;
+  font-weight: 800;
+  margin-top: 0.75rem;
+}
+.account-card-enroll {
+  padding: 0;
+}
+.account-card-enroll .section-heading {
+  margin: 0;
+  max-width: none;
+  padding: clamp(1.25rem, 3vw, 1.75rem) clamp(1.25rem, 3vw, 1.75rem) 0;
+  text-align: start;
+}
+.account-card-enroll .section-heading h2 {
+  font-size: 1.05rem;
+}
+.account-card-enroll .section-heading > span {
+  font-size: 0.82rem;
+}
+.enrollment-card.is-embedded {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  margin: 0;
+  max-width: none;
+  padding: clamp(1.25rem, 3vw, 1.75rem);
 }
 
 @media (max-width: 850px) {
