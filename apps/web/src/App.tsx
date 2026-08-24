@@ -14,6 +14,7 @@ import { RequireAdmin, RequireAuth } from './features/auth/guards.js';
 import { AdminLayout } from './features/admin/AdminLayout.js';
 import { AdminOrderDetailPage, AdminOrdersPage } from './features/admin-orders/AdminOrdersPages.js';
 import { ClientOrdersPage } from './features/client-orders/ClientOrdersPage.js';
+import { AccountPage } from './features/account/AccountPage.js';
 import { AdminUniversityPage } from './features/admin-content/AdminUniversityPage.js';
 import { AdminManagedContentPage } from './features/admin-content/AdminManagedContentPage.js';
 import { universities as bundledUniversities } from './data/universities.js';
@@ -141,6 +142,7 @@ const copy = {
     signIn: 'تسجيل الدخول',
     signOut: 'تسجيل الخروج',
     dashboard: 'لوحة التحكم',
+    myOrders: 'طلباتي',
     badge: 'وكيل معتمد لأقوى الجامعات التركية',
     titleBefore: 'مستقبلك الدراسي في',
     titleAccent: 'تركيا',
@@ -199,6 +201,7 @@ const copy = {
     signIn: 'Sign in',
     signOut: 'Sign out',
     dashboard: 'Dashboard',
+    myOrders: 'My Orders',
     badge: 'Authorized agent for leading Turkish universities',
     titleBefore: 'Your academic future in',
     titleAccent: 'Türkiye',
@@ -270,6 +273,7 @@ const copy = {
     signIn: 'Giriş yap',
     signOut: 'Çıkış yap',
     dashboard: 'Yönetim paneli',
+    myOrders: 'Taleplerim',
     badge: 'Önde gelen Türk üniversitelerinin yetkili temsilcisi',
     titleBefore: 'Akademik geleceğiniz',
     titleAccent: "Türkiye'de",
@@ -479,7 +483,7 @@ function PublicPage() {
             </select>
           </label>
           {showEnrollCta && (
-            <a className="button button-small" href="#enroll">
+            <a className="button header-account-action" href="#enroll">
               {t.apply}
             </a>
           )}
@@ -489,6 +493,11 @@ function PublicPage() {
                 {auth.user.role === 'ADMIN' && (
                   <Link className="button header-account-action" to="/admin/orders">
                     {t.dashboard}
+                  </Link>
+                )}
+                {auth.user.role !== 'ADMIN' && (
+                  <Link className="button header-account-action" to="/account">
+                    {t.myOrders}
                   </Link>
                 )}
                 <button
@@ -765,6 +774,11 @@ function NotFoundPage() {
   );
 }
 
+function ClientOrdersRoute() {
+  const { language } = useLanguage();
+  return <ClientOrdersPage language={language} />;
+}
+
 export function App() {
   return (
     <Routes>
@@ -776,10 +790,18 @@ export function App() {
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
       <Route
+        path="/account"
+        element={
+          <RequireAuth>
+            <AccountPage />
+          </RequireAuth>
+        }
+      />
+      <Route
         path="/account/orders"
         element={
           <RequireAuth>
-            <ClientOrdersPage />
+            <ClientOrdersRoute />
           </RequireAuth>
         }
       />

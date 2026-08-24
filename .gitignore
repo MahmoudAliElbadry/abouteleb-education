@@ -20,3 +20,6 @@ testsprite_tests/tmp/config.json
 # Firebase CLI local state
 .firebase/
 firebase-debug.log
+
+# Claude Code worktrees (nested git repos, never tracked)
+.claude/worktrees/

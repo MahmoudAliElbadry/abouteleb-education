@@ -21,8 +21,8 @@ export type ClientOrdersResponse = {
   pageSize: number;
 };
 
-export function getClientOrders(page = 1): Promise<ClientOrdersResponse> {
-  return apiFetch<ClientOrdersResponse>(`/orders?page=${page}&pageSize=10`);
+export function getClientOrders(page = 1, pageSize = 10): Promise<ClientOrdersResponse> {
+  return apiFetch<ClientOrdersResponse>(`/orders?page=${page}&pageSize=${pageSize}`);
 }
 
 export function clientOrderErrorMessage(error: unknown, fallback: string) {

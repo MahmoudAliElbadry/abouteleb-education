@@ -38,7 +38,7 @@ const copy = {
   },
 } as const;
 
-export function ClientOrdersPage({ language = 'en' }: { language?: keyof typeof copy }) {
+export function OrderHistoryList({ language = 'en' }: { language?: keyof typeof copy }) {
   const [page, setPage] = useState(1);
   const t = copy[language];
   const orders = useQuery({
@@ -47,8 +47,7 @@ export function ClientOrdersPage({ language = 'en' }: { language?: keyof typeof 
   });
 
   return (
-    <main className="account-page" dir={language === 'ar' ? 'rtl' : 'ltr'} lang={language}>
-      <h1>{t.title}</h1>
+    <>
       {orders.isPending ? <p role="status">{t.loading}</p> : null}
       {orders.isError ? (
         <div role="alert">
@@ -100,6 +99,16 @@ export function ClientOrdersPage({ language = 'en' }: { language?: keyof typeof 
           </button>
         </nav>
       ) : null}
+    </>
+  );
+}
+
+export function ClientOrdersPage({ language = 'en' }: { language?: keyof typeof copy }) {
+  const t = copy[language];
+  return (
+    <main className="account-page" dir={language === 'ar' ? 'rtl' : 'ltr'} lang={language}>
+      <h1>{t.title}</h1>
+      <OrderHistoryList language={language} />
     </main>
   );
 }

@@ -88,7 +88,13 @@ const copy = {
 
 type Specialization = keyof (typeof copy)['en']['options'];
 
-export function EnrollmentSection({ language }: { language: Language }) {
+export function EnrollmentSection({
+  language,
+  embedded = false,
+}: {
+  language: Language;
+  embedded?: boolean;
+}) {
   const t = copy[language];
   const { user, isPending } = useAuth();
   const [form, setForm] = useState({
@@ -137,14 +143,20 @@ export function EnrollmentSection({ language }: { language: Language }) {
   const signedOut = !isPending && !user;
   const unverified = Boolean(user && !user.emailVerified);
   const locked = signedOut || unverified;
+  const Wrapper = embedded ? 'article' : 'section';
   return (
-    <section className="enrollment-section" id="enroll">
+    <Wrapper
+      className={embedded ? 'account-card account-card-enroll' : 'enrollment-section'}
+      id="enroll"
+    >
       <div className="section-heading">
         <p>{t.tag}</p>
         <h2>{t.title}</h2>
         <span>{t.description}</span>
       </div>
-      <div className={`enrollment-card${locked ? ' is-locked' : ''}`}>
+      <div
+        className={`enrollment-card${embedded ? ' is-embedded' : ''}${locked ? ' is-locked' : ''}`}
+      >
         {locked && (
           <div className="enrollment-lock is-circle" aria-hidden="true">
             🔒
@@ -227,8 +239,8 @@ export function EnrollmentSection({ language }: { language: Language }) {
             {t.success} <strong>{submittedReference}</strong>
           </p>
         )}
-        {user && <Link to="/account/orders">{t.viewOrders}</Link>}
+        {!embedded && user && <Link to="/account/orders">{t.viewOrders}</Link>}
       </div>
-    </section>
+    </Wrapper>
   );
 }
