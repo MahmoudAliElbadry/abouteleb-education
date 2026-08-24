@@ -37,13 +37,27 @@ automatically, instead of deploying by hand from your machine.
 Firebase CLI (`npm i -g firebase-tools`), run `firebase login`, then from
 the repo root: `npm run build -w @abou/web && firebase deploy --only hosting`.
 
-**Still using GitHub Pages for now:** `deploy-pages.yml` and the legacy
-root `index.html`/`images/`/`CNAME` were intentionally left in place as a
-fallback until the Firebase deploy is verified live. Once you've confirmed
-`aboutalebeducation.com` serves correctly from Firebase, these can be
-removed — ask me to do the cleanup pass.
-
 **Ignore-file additions:** `.gitignore` and `.prettierignore`/`eslint.config.mjs`
 now exclude `.vite/` (Vite's local dependency cache) and `.firebase/`
 (Firebase CLI's local deploy cache) — these are machine-local build
 artifacts that were accidentally being linted/formatted/tracked before.
+
+## 2026-08-24 — GitHub Pages disabled
+
+**What changed:** Removed `.github/workflows/deploy-pages.yml` and disabled
+GitHub Pages in the repository's own settings (`Settings → Pages`, or
+`gh api -X DELETE repos/MahmoudAliElbadry/abouteleb-education/pages`).
+
+**Why it was safe to do immediately** (unlike the "keep until verified"
+plan from earlier): checking the repo's live Pages config
+(`gh api repos/.../pages`) beforehand showed `cname: null` — GitHub Pages
+was never actually connected to `aboutalebeducation.com`, only reachable
+at the unused default `mahmoudalielbadry.github.io/abouteleb-education/`
+URL. Firebase Hosting was already the real origin for the custom domain,
+so disabling Pages has no effect on live production traffic.
+
+**Left alone:** the root `index.html`, `images/`, and `CNAME` files —
+these are the pre-monorepo static site (see `PROJECT_BASELINE.md`) and
+were never part of the Pages workflow's publish step (it built
+`apps/web/dist` instead). They're now fully inert repo history; removing
+them is a separate cleanup you can ask for whenever you want.
