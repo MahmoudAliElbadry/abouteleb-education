@@ -56,6 +56,22 @@ describe('AdminUniversityPage', () => {
   it('renders university records and allows editing', () => {
     renderPage();
     expect(screen.getByText('Example University')).toBeInTheDocument();
+    const form = screen.getByRole('heading', { name: 'Add university' }).closest('form');
+    const toolbar = screen.getByPlaceholderText('Search').closest('section');
+    expect(
+      (form?.compareDocumentPosition(toolbar as Node) ?? 0) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    fireEvent.change(screen.getByRole('combobox', { name: 'Language' }), {
+      target: { value: 'ar' },
+    });
+    expect(screen.getByText('جامعة')).toBeInTheDocument();
+    fireEvent.change(screen.getByRole('combobox', { name: 'Language' }), {
+      target: { value: 'tr' },
+    });
+    expect(screen.getByText('Örnek')).toBeInTheDocument();
+    fireEvent.change(screen.getByRole('combobox', { name: 'Language' }), {
+      target: { value: 'en' },
+    });
     fireEvent.click(screen.getByRole('button', { name: 'Edit' }));
     expect(screen.getByRole('heading', { name: 'Edit' })).toBeInTheDocument();
   });

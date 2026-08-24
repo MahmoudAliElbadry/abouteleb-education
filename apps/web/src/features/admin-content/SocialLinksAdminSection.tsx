@@ -49,7 +49,7 @@ export function SocialLinksAdminSection({ language }: { language: AdminLanguage 
   };
   return (
     <>
-      <form onSubmit={submit} className="content-form">
+      <form onSubmit={submit} className="content-form compact-content-form">
         <input
           aria-label="Platform"
           required
@@ -71,30 +71,34 @@ export function SocialLinksAdminSection({ language }: { language: AdminLanguage 
             setForm({ ...form, iconKey: event.target.value as typeof form.iconKey })
           }
         />
-        <button type="submit" disabled={create.isPending}>
+        <button className="button" type="submit" disabled={create.isPending}>
           {t.save}
         </button>
       </form>
       {error ? <p role="alert">{error}</p> : null}
-      {query.data?.items.map((item, index) => (
-        <article key={item.id} className="admin-order-row">
-          <span>{item.platform}</span>
-          <button
-            type="button"
-            disabled={update.isPending || index === 0}
-            onClick={() => update.mutate({ id: item.id, input: { sortOrder: index - 1 } })}
-          >
-            Move up
-          </button>
-          <button
-            type="button"
-            disabled={update.isPending}
-            onClick={() => update.mutate({ id: item.id, input: { sortOrder: index + 1 } })}
-          >
-            Move down
-          </button>
-        </article>
-      ))}
+      <div className="admin-order-table admin-content-list">
+        {query.data?.items.map((item, index) => (
+          <article key={item.id} className="admin-order-row">
+            <span>{item.platform}</span>
+            <button
+              className="button button-small button-outline"
+              type="button"
+              disabled={update.isPending || index === 0}
+              onClick={() => update.mutate({ id: item.id, input: { sortOrder: index - 1 } })}
+            >
+              Move up
+            </button>
+            <button
+              className="button button-small button-outline"
+              type="button"
+              disabled={update.isPending}
+              onClick={() => update.mutate({ id: item.id, input: { sortOrder: index + 1 } })}
+            >
+              Move down
+            </button>
+          </article>
+        ))}
+      </div>
     </>
   );
 }

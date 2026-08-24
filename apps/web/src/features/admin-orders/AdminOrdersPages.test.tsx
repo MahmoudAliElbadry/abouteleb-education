@@ -32,7 +32,6 @@ vi.mock('@tanstack/react-query', () => ({
   useQuery: ({ queryKey }: { queryKey: string[] }) =>
     queryKey[1] === 'metrics' ? mocks.metrics : mocks.orders,
 }));
-vi.mock('../auth/useAuth.js', () => ({ useAuth: () => ({ user: null }) }));
 
 describe('AdminOrdersPage', () => {
   afterEach(() => {

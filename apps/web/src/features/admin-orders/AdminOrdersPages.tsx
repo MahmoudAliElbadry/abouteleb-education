@@ -3,11 +3,9 @@ import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { OrderStatusValue } from '@abou/contracts';
 import { ApiError } from '../auth/auth-client.js';
-import { useAuth } from '../auth/useAuth.js';
 import { useLanguage, type Language } from '../i18n/LanguageContext.js';
 import {
   addInternalNote,
-  assignAdmin,
   getAdminMetrics,
   getAdminOrder,
   getAdminOrders,
@@ -19,7 +17,6 @@ const labels = {
     total: 'كل الطلبات',
     search: 'بحث',
     specialization: 'التخصص',
-    assignedAdmin: 'معرف المسؤول',
     sort: 'ترتيب حسب',
     createdAt: 'تاريخ الإنشاء',
     updatedAt: 'آخر تحديث',
@@ -35,8 +32,6 @@ const labels = {
     all: 'كل الحالات',
     open: 'فتح',
     detail: 'تفاصيل الطلب',
-    assign: 'تعيين لي',
-    unassign: 'إلغاء التعيين',
     status: 'تغيير الحالة',
     message: 'رسالة للعميل (اختياري)',
     save: 'حفظ',
@@ -63,7 +58,6 @@ const labels = {
     total: 'All orders',
     search: 'Search',
     specialization: 'Specialization',
-    assignedAdmin: 'Admin ID',
     sort: 'Sort by',
     createdAt: 'Created',
     updatedAt: 'Updated',
@@ -79,8 +73,6 @@ const labels = {
     all: 'All statuses',
     open: 'Open',
     detail: 'Order detail',
-    assign: 'Assign to me',
-    unassign: 'Unassign',
     status: 'Change status',
     message: 'Client message (optional)',
     save: 'Save',
@@ -107,7 +99,6 @@ const labels = {
     total: 'Tüm başvurular',
     search: 'Ara',
     specialization: 'Bölüm',
-    assignedAdmin: 'Yönetici kimliği',
     sort: 'Sıralama',
     createdAt: 'Oluşturulma',
     updatedAt: 'Güncelleme',
@@ -123,8 +114,6 @@ const labels = {
     all: 'Tüm durumlar',
     open: 'Aç',
     detail: 'Başvuru detayı',
-    assign: 'Bana ata',
-    unassign: 'Atamayı kaldır',
     status: 'Durumu değiştir',
     message: 'Müşteri mesajı (isteğe bağlı)',
     save: 'Kaydet',
@@ -175,7 +164,6 @@ export function AdminOrdersPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const status = searchParams.get('status') ?? '';
   const specialization = searchParams.get('specialization') ?? '';
-  const assignedAdminId = searchParams.get('assignedAdminId') ?? '';
   const search = searchParams.get('search') ?? '';
   const sort = searchParams.get('sort') ?? 'createdAt';
   const order = searchParams.get('order') ?? 'desc';
@@ -189,16 +177,11 @@ export function AdminOrdersPage() {
   }
   const metrics = useQuery({ queryKey: ['admin', 'metrics'], queryFn: getAdminMetrics });
   const orders = useQuery({
-    queryKey: [
-      'admin',
-      'orders',
-      { status, specialization, assignedAdminId, search, sort, order, page },
-    ],
+    queryKey: ['admin', 'orders', { status, specialization, search, sort, order, page }],
     queryFn: () =>
       getAdminOrders({
         status,
         specialization,
-        assignedAdminId,
         search,
         sort,
         order,
@@ -266,12 +249,6 @@ export function AdminOrdersPage() {
             ),
           )}
         </select>
-        <input
-          aria-label={t.assignedAdmin}
-          value={assignedAdminId}
-          onChange={(event) => updateFilter('assignedAdminId', event.target.value)}
-          placeholder={t.assignedAdmin}
-        />
         <select
           aria-label={t.sort}
           value={sort}
@@ -364,7 +341,6 @@ export function AdminOrderDetailPage() {
   const { orderId } = useParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { user } = useAuth();
   const order = useQuery({
     queryKey: ['admin', 'order', orderId],
     queryFn: () => getAdminOrder(orderId!),
@@ -377,10 +353,6 @@ export function AdminOrderDetailPage() {
   });
   const note = useMutation({
     mutationFn: (body: string) => addInternalNote(orderId!, body),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin', 'order', orderId] }),
-  });
-  const assignment = useMutation({
-    mutationFn: (id: string | null) => assignAdmin(orderId!, id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin', 'order', orderId] }),
   });
   const [nextStatus, setNextStatus] = useState<OrderStatusValue | ''>('');
@@ -442,15 +414,6 @@ export function AdminOrderDetailPage() {
               {t.statuses[item.status]}
             </span>
           </p>
-          <button
-            className="button button-small"
-            type="button"
-            onClick={() =>
-              assignment.mutate(item.assignedAdmin?.id === user?.id ? null : (user?.id ?? null))
-            }
-          >
-            {item.assignedAdmin?.id === user?.id ? t.unassign : t.assign}
-          </button>
         </article>
         <article className="admin-panel">
           <h2>{t.status}</h2>

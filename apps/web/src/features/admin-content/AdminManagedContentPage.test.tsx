@@ -26,13 +26,13 @@ describe('AdminManagedContentPage', () => {
   it('renders localized social controls', () => {
     render(
       <LanguageProvider>
-        <AdminManagedContentPage section="social" />
+        <AdminManagedContentPage mode="contact-social" />
       </LanguageProvider>,
     );
     fireEvent.change(screen.getByRole('combobox', { name: 'Language' }), {
       target: { value: 'tr' },
     });
-    expect(screen.getByRole('heading', { name: 'Sosyal bağlantılar' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'İletişim ve sosyal' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Kaydet' })).toBeInTheDocument();
   });
 });

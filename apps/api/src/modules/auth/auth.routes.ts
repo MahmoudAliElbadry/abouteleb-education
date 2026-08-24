@@ -16,6 +16,14 @@ import type { EmailLocale } from './email.provider.js';
 
 export const authRouter = Router();
 
+// Authentication responses contain short-lived state and must never be served
+// from the browser's cache. In particular, `/csrf` must issue a fresh token
+// instead of allowing a cached 304 response with no JSON body.
+authRouter.use((_request, response, next) => {
+  response.set('Cache-Control', 'no-store');
+  next();
+});
+
 function requestLocale(request: Request): EmailLocale {
   const language = request.header('accept-language')?.toLowerCase() ?? '';
   if (language.startsWith('ar')) return 'ar';

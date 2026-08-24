@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { ApiError } from '../auth/auth-client.js';
-import { useLanguage } from '../i18n/LanguageContext.js';
+import { useLanguage, localize } from '../i18n/LanguageContext.js';
 import {
   archiveUniversity,
   createUniversity,
@@ -173,6 +173,9 @@ export function AdminUniversityPage() {
     setEditing(university);
     setForm({ ...university, websiteUrl: university.websiteUrl });
   }
+  function localizedName(university: ManagedUniversity) {
+    return localize(language, university.nameAr, university.nameEn, university.nameTr);
+  }
   return (
     <main className="admin-page" dir={language === 'ar' ? 'rtl' : 'ltr'} lang={language}>
       <header className="admin-header">
@@ -187,7 +190,89 @@ export function AdminUniversityPage() {
           <option value="tr">Türkçe</option>
         </select>
       </header>
-      <section className="admin-toolbar">
+      <form className="content-form admin-content-form" onSubmit={submit}>
+        <div className="admin-section-heading">
+          <div>
+            <p className="eyebrow">{editing ? t.edit : t.create}</p>
+            <h2>{editing ? t.edit : t.create}</h2>
+          </div>
+          {editing ? (
+            <button
+              className="button button-outline"
+              type="button"
+              onClick={() => {
+                setEditing(null);
+                setForm(emptyForm);
+              }}
+            >
+              {t.cancel}
+            </button>
+          ) : null}
+        </div>
+        <div className="content-form-grid">
+          {(
+            [
+              'slug',
+              'nameAr',
+              'nameEn',
+              'nameTr',
+              'summaryAr',
+              'summaryEn',
+              'summaryTr',
+              'city',
+              'imageUrl',
+              'websiteUrl',
+            ] as const
+          ).map((key) => (
+            <label key={key}>
+              {t[key]}
+              <input
+                value={form[key] ?? ''}
+                onChange={(event) => setForm({ ...form, [key]: event.target.value })}
+                required={key !== 'websiteUrl'}
+              />
+              {key === 'imageUrl' && form.imageUrl.startsWith('https://') ? (
+                <img src={form.imageUrl} alt="" width="80" />
+              ) : null}
+            </label>
+          ))}
+        </div>
+        <div className="content-form-options">
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={form.featured}
+              onChange={(event) => setForm({ ...form, featured: event.target.checked })}
+            />
+            {t.featured}
+          </label>
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={form.isPublished}
+              onChange={(event) => setForm({ ...form, isPublished: event.target.checked })}
+            />
+            {t.isPublished}
+          </label>
+          <label>
+            {t.sortOrder}
+            <input
+              type="number"
+              value={form.sortOrder}
+              onChange={(event) => setForm({ ...form, sortOrder: Number(event.target.value) })}
+            />
+          </label>
+        </div>
+        {formError ? (
+          <p role="alert" className="form-error">
+            {formError}
+          </p>
+        ) : null}
+        <button className="button" type="submit" disabled={save.isPending}>
+          {t.save}
+        </button>
+      </form>
+      <section className="admin-toolbar admin-panel">
         <input
           aria-label={t.search}
           placeholder={t.search}
@@ -204,6 +289,7 @@ export function AdminUniversityPage() {
           <option value="false">{t.draft}</option>
         </select>
         <button
+          className="button"
           type="button"
           onClick={() => {
             setEditing(null);
@@ -229,20 +315,25 @@ export function AdminUniversityPage() {
         {universities.data?.items.map((university) => (
           <article key={university.id} className="admin-order-row">
             <span>
-              <strong>{university.nameEn}</strong>
+              <strong>{localizedName(university)}</strong>
               <small>{university.slug}</small>
             </span>
             <span>{university.city}</span>
             <span>{university.isPublished ? t.published : t.draft}</span>
-            <button type="button" onClick={() => edit(university)}>
+            <button className="button button-small" type="button" onClick={() => edit(university)}>
               {t.edit}
             </button>
             {university.archivedAt ? (
-              <button type="button" onClick={() => restore.mutate(university.id)}>
+              <button
+                className="button button-small button-outline"
+                type="button"
+                onClick={() => restore.mutate(university.id)}
+              >
                 {t.restore}
               </button>
             ) : (
               <button
+                className="button button-small button-danger"
                 type="button"
                 onClick={() => window.confirm(t.confirmArchive) && archive.mutate(university.id)}
               >
@@ -252,74 +343,6 @@ export function AdminUniversityPage() {
           </article>
         ))}
       </div>
-      <form className="content-form" onSubmit={submit}>
-        <h2>{editing ? t.edit : t.create}</h2>
-        {(
-          [
-            'slug',
-            'nameAr',
-            'nameEn',
-            'nameTr',
-            'summaryAr',
-            'summaryEn',
-            'summaryTr',
-            'city',
-            'imageUrl',
-            'websiteUrl',
-          ] as const
-        ).map((key) => (
-          <label key={key}>
-            {t[key]}
-            <input
-              value={form[key] ?? ''}
-              onChange={(event) => setForm({ ...form, [key]: event.target.value })}
-              required={key !== 'websiteUrl'}
-            />
-            {key === 'imageUrl' && form.imageUrl.startsWith('https://') ? (
-              <img src={form.imageUrl} alt="" width="80" />
-            ) : null}
-          </label>
-        ))}
-        <label>
-          <input
-            type="checkbox"
-            checked={form.featured}
-            onChange={(event) => setForm({ ...form, featured: event.target.checked })}
-          />
-          {t.featured}
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            checked={form.isPublished}
-            onChange={(event) => setForm({ ...form, isPublished: event.target.checked })}
-          />
-          {t.isPublished}
-        </label>
-        <label>
-          {t.sortOrder}
-          <input
-            type="number"
-            value={form.sortOrder}
-            onChange={(event) => setForm({ ...form, sortOrder: Number(event.target.value) })}
-          />
-        </label>
-        {formError ? <p role="alert">{formError}</p> : null}
-        <button type="submit" disabled={save.isPending}>
-          {t.save}
-        </button>
-        {editing ? (
-          <button
-            type="button"
-            onClick={() => {
-              setEditing(null);
-              setForm(emptyForm);
-            }}
-          >
-            {t.cancel}
-          </button>
-        ) : null}
-      </form>
     </main>
   );
 }

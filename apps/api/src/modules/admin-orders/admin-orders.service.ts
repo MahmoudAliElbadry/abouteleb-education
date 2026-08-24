@@ -1,17 +1,10 @@
-import { OrderStatus, Prisma, UserRole, UserStatus, type PrismaClient } from '@prisma/client';
+import { OrderStatus, Prisma, UserRole, type PrismaClient } from '@prisma/client';
 import type { AdminOrderListQuery, OrderStatusTransitionInput } from '@abou/contracts';
 import { appErrors, AppError } from '../../core/app-error.js';
 import { assertTransition, isTerminal } from '../orders/order-state.js';
 
 const adminOrderInclude = {
   client: {
-    select: {
-      id: true,
-      email: true,
-      profile: { select: { fullName: true } },
-    },
-  },
-  assignedAdmin: {
     select: {
       id: true,
       email: true,
@@ -51,7 +44,6 @@ function serializeAdminOrder(order: AdminOrder) {
     updatedAt: order.updatedAt,
     closedAt: order.closedAt,
     client: order.client,
-    assignedAdmin: order.assignedAdmin,
     statusHistory: order.statusHistory.map((entry) => ({
       id: entry.id,
       fromStatus: entry.fromStatus,
@@ -95,7 +87,6 @@ export class AdminOrdersService {
     const where: Prisma.OrderWhereInput = {
       ...(query.status ? { status: query.status as OrderStatus } : {}),
       ...(query.specialization ? { specialization: query.specialization } : {}),
-      ...(query.assignedAdminId ? { assignedAdminId: query.assignedAdminId } : {}),
       ...(query.search
         ? {
             OR: [
@@ -114,11 +105,7 @@ export class AdminOrdersService {
         orderBy: [primaryOrder, { id: 'asc' }],
         skip: (query.page - 1) * query.pageSize,
         take: query.pageSize,
-        include: {
-          assignedAdmin: {
-            select: { id: true, email: true, profile: { select: { fullName: true } } },
-          },
-        },
+        include: {},
       }),
       this.prisma.order.count({ where }),
     ]);
@@ -132,7 +119,6 @@ export class AdminOrdersService {
         specialization: order.specialization,
         specializationLabel: order.specializationLabel,
         status: order.status,
-        assignedAdmin: order.assignedAdmin,
         submittedAt: order.submittedAt,
         updatedAt: order.updatedAt,
         closedAt: order.closedAt,
@@ -150,42 +136,6 @@ export class AdminOrdersService {
     });
     if (!order) throw appErrors.notFound();
     return serializeAdminOrder(order);
-  }
-
-  async assign(
-    orderId: string,
-    assignedAdminId: string | null,
-    actorId: string,
-    ipAddress?: string,
-  ) {
-    if (assignedAdminId) {
-      const admin = await this.prisma.user.findFirst({
-        where: { id: assignedAdminId, role: UserRole.ADMIN, status: UserStatus.ACTIVE },
-        select: { id: true },
-      });
-      if (!admin) throw appErrors.invalidAssignment();
-    }
-    const order = await this.prisma.order.findUnique({
-      where: { id: orderId },
-      select: { id: true, reference: true },
-    });
-    if (!order) throw appErrors.notFound();
-    const updated = await this.prisma.order.update({
-      where: { id: orderId },
-      data: { assignedAdminId },
-      select: { id: true, assignedAdminId: true },
-    });
-    await this.prisma.auditLog.create({
-      data: {
-        actorUserId: actorId,
-        action: 'order.assignment_changed',
-        entityType: 'Order',
-        entityId: order.id,
-        metadata: { reference: order.reference, assignedAdminId },
-        ipAddress: ipAddress ?? null,
-      },
-    });
-    return updated;
   }
 
   async transition(

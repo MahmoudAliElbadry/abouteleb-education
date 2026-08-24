@@ -37,7 +37,7 @@ export function ContactAdminSection({ language }: { language: AdminLanguage }) {
             event.preventDefault();
             save.mutate({ key: item.key, value: drafts[item.key] ?? item.value });
           }}
-          className="content-form"
+          className="content-form compact-content-form"
         >
           <label>
             {item.key}
@@ -47,7 +47,7 @@ export function ContactAdminSection({ language }: { language: AdminLanguage }) {
               onChange={(event) => setDrafts({ ...drafts, [item.key]: event.target.value })}
             />
           </label>
-          <button type="submit" disabled={save.isPending}>
+          <button className="button button-small" type="submit" disabled={save.isPending}>
             {t.save}
           </button>
         </form>

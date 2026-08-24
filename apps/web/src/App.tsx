@@ -27,7 +27,7 @@ import {
   type PublicUniversity,
 } from './features/content/public-content-client.js';
 import { useAuth } from './features/auth/useAuth.js';
-import { useLanguage, type Language } from './features/i18n/LanguageContext.js';
+import { useLanguage, localize, type Language } from './features/i18n/LanguageContext.js';
 
 const publicAsset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
 
@@ -432,7 +432,7 @@ function PublicPage() {
       universities.filter(
         (university) =>
           normalizeCatalogSearch(
-            university[language === 'ar' ? 'nameAr' : language === 'tr' ? 'nameTr' : 'nameEn'],
+            localize(language, university.nameAr, university.nameEn, university.nameTr),
           ).includes(normalizeCatalogSearch(search)) &&
           (!city || university.city === city),
       ),
@@ -594,7 +594,7 @@ function PublicPage() {
                     <div className="university-logo">
                       <img
                         src={university.imageUrl}
-                        alt={`${university[language === 'ar' ? 'nameAr' : language === 'tr' ? 'nameTr' : 'nameEn']} logo`}
+                        alt={`${localize(language, university.nameAr, university.nameEn, university.nameTr)} logo`}
                         loading="lazy"
                         width="180"
                         height="100"
@@ -606,11 +606,7 @@ function PublicPage() {
                       />
                     </div>
                     <h3>
-                      {
-                        university[
-                          language === 'ar' ? 'nameAr' : language === 'tr' ? 'nameTr' : 'nameEn'
-                        ]
-                      }
+                      {localize(language, university.nameAr, university.nameEn, university.nameTr)}
                     </h3>
                     <span>
                       {cityLabels[language][university.city as keyof typeof cityLabels.en] ??
@@ -691,19 +687,9 @@ function PublicPage() {
             {testimonialsQuery.data.items.map((item) => (
               <article className="service-card" key={item.id}>
                 <h3>
-                  {
-                    item[
-                      language === 'ar'
-                        ? 'clientNameAr'
-                        : language === 'tr'
-                          ? 'clientNameTr'
-                          : 'clientNameEn'
-                    ]
-                  }
+                  {localize(language, item.clientNameAr, item.clientNameEn, item.clientNameTr)}
                 </h3>
-                <p>
-                  {item[language === 'ar' ? 'quoteAr' : language === 'tr' ? 'quoteTr' : 'quoteEn']}
-                </p>
+                <p>{localize(language, item.quoteAr, item.quoteEn, item.quoteTr)}</p>
               </article>
             ))}
           </div>
@@ -718,8 +704,7 @@ function PublicPage() {
         <div className="contact-links">
           {socialLinks.map((link) => (
             <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer">
-              {link[language === 'ar' ? 'labelAr' : language === 'tr' ? 'labelTr' : 'labelEn'] ||
-                link.platform}
+              {localize(language, link.labelAr, link.labelEn, link.labelTr) || link.platform}
             </a>
           ))}
           {contactDetails
@@ -810,9 +795,10 @@ export function App() {
         <Route path="orders" element={<AdminOrdersPage />} />
         <Route path="orders/:orderId" element={<AdminOrderDetailPage />} />
         <Route path="universities" element={<AdminUniversityPage />} />
-        <Route path="testimonials" element={<AdminManagedContentPage section="testimonials" />} />
-        <Route path="social-links" element={<AdminManagedContentPage section="social" />} />
-        <Route path="contact" element={<AdminManagedContentPage section="contact" />} />
+        <Route path="testimonials" element={<AdminManagedContentPage mode="testimonials" />} />
+        <Route path="contact-social" element={<AdminManagedContentPage mode="contact-social" />} />
+        <Route path="social-links" element={<Navigate to="/admin/contact-social" replace />} />
+        <Route path="contact" element={<Navigate to="/admin/contact-social" replace />} />
       </Route>
       <Route path="*" element={<NotFoundPage />} />
     </Routes>

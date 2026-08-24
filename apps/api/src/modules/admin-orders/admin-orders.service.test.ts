@@ -1,4 +1,4 @@
-import { OrderStatus, UserRole, type PrismaClient } from '@prisma/client';
+import { OrderStatus, type PrismaClient } from '@prisma/client';
 import { describe, expect, it, vi } from 'vitest';
 import { AdminOrdersService } from './admin-orders.service.js';
 
@@ -121,20 +121,6 @@ describe('AdminOrdersService', () => {
     ).rejects.toMatchObject({ code: 'INVALID_ORDER_TRANSITION' });
     expect(transaction.order.updateMany).not.toHaveBeenCalled();
     expect(transaction.orderStatusHistory.create).not.toHaveBeenCalled();
-  });
-
-  it('requires an active admin for assignment', async () => {
-    const prisma = { user: { findFirst: vi.fn().mockResolvedValue(null) } };
-
-    await expect(
-      serviceWith(prisma).assign('order-1', 'client-1', 'admin-1'),
-    ).rejects.toMatchObject({
-      code: 'INVALID_ASSIGNMENT',
-    });
-    expect(prisma.user.findFirst).toHaveBeenCalledWith({
-      where: { id: 'client-1', role: UserRole.ADMIN, status: 'ACTIVE' },
-      select: { id: true },
-    });
   });
 
   it('audits internal notes without exposing them in client data', async () => {
