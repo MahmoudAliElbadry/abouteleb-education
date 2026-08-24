@@ -15,6 +15,7 @@ const copy = {
     publish: 'منشور',
     archive: 'أرشفة',
     error: 'تعذر حفظ المحتوى.',
+    image: 'صورة رسالة العميل (رابط https)',
   },
   en: {
     title: 'Add testimonial',
@@ -23,6 +24,7 @@ const copy = {
     publish: 'Published',
     archive: 'Archive',
     error: 'Unable to save content.',
+    image: 'Client message screenshot (HTTPS URL)',
   },
   tr: {
     title: 'Referans ekle',
@@ -31,9 +33,21 @@ const copy = {
     publish: 'Yayınlandı',
     archive: 'Arşivle',
     error: 'İçerik kaydedilemedi.',
+    image: 'Müşteri mesajı ekran görüntüsü (HTTPS URL)',
   },
 } as const;
-const empty = {
+const empty: {
+  clientNameAr: string;
+  clientNameEn: string;
+  clientNameTr: string;
+  quoteAr: string;
+  quoteEn: string;
+  quoteTr: string;
+  imageUrl: string | null;
+  consentConfirmed: boolean;
+  isPublished: boolean;
+  sortOrder: number;
+} = {
   clientNameAr: '-',
   clientNameEn: '',
   clientNameTr: '-',
@@ -85,6 +99,16 @@ export function TestimonialsAdminSection({ language }: { language: AdminLanguage
           value={form.quoteEn}
           onChange={(event) => setForm({ ...form, quoteEn: event.target.value })}
         />
+        <label>
+          {t.image}
+          <input
+            aria-label={t.image}
+            type="url"
+            placeholder="https://..."
+            value={form.imageUrl ?? ''}
+            onChange={(event) => setForm({ ...form, imageUrl: event.target.value || null })}
+          />
+        </label>
         <label>
           <input
             type="checkbox"
