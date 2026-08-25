@@ -51,7 +51,7 @@ export function AdminLayout() {
           ))}
         </div>
         <NavLink className="admin-sidebar-home" to="/">
-          {t.home}
+          ← {t.home}
         </NavLink>
       </nav>
       <div className="admin-shell-content">

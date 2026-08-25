@@ -996,9 +996,10 @@ nav a:hover {
   border-radius: 0.7rem;
   cursor: pointer;
   display: flex;
+  height: 13.75rem;
   justify-content: center;
-  min-height: 8rem;
   padding: 0.75rem;
+  width: 100%;
 }
 .image-upload-dropzone.is-drag-over {
   border-color: var(--primary);
@@ -1010,7 +1011,7 @@ nav a:hover {
 }
 .image-upload-preview {
   border-radius: 0.5rem;
-  max-height: 6rem;
+  max-height: 100%;
   max-width: 100%;
   object-fit: contain;
 }
@@ -1133,9 +1134,14 @@ nav a:hover {
   color: #fff;
 }
 .admin-sidebar-home {
-  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  align-items: center;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 0.6rem;
+  display: flex;
+  gap: 0.5rem;
   margin-top: auto;
-  padding-top: 1rem !important;
+  padding: 0.75rem 0.85rem !important;
 }
 .admin-shell-content {
   flex: 1;
@@ -1209,7 +1215,7 @@ nav a:hover {
 .admin-content-grid {
   display: grid;
   gap: 1rem;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
 }
 .admin-content-form {
   background: #fff;
@@ -1217,6 +1223,32 @@ nav a:hover {
   border-radius: 1rem;
   margin-bottom: 1.25rem;
   padding: clamp(1rem, 3vw, 1.5rem);
+}
+.content-form {
+  display: grid;
+  gap: 0.9rem;
+}
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+.contact-form-row {
+  align-items: flex-end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 0.75rem;
+}
+.contact-form-row label {
+  display: grid;
+  flex: 1;
+  font-weight: 800;
+  gap: 0.35rem;
+  min-width: 12rem;
+}
+.contact-form-row:first-child {
+  margin-top: 0;
 }
 .admin-section-heading {
   align-items: start;
@@ -1271,6 +1303,22 @@ nav a:hover {
 }
 .button-danger:hover {
   background: #912018;
+}
+.admin-page .button-outline {
+  background: transparent;
+  border-color: #d9e1e8;
+  color: var(--black);
+}
+.admin-page .button-outline:hover {
+  background: #f1f5f9;
+  border-color: #d9e1e8;
+  color: var(--black);
+}
+.admin-page .button-outline:disabled {
+  background: #f1f5f9;
+  border-color: #d9e1e8;
+  color: #94a3b8;
+  cursor: not-allowed;
 }
 .admin-toolbar input {
   max-width: 30rem;
@@ -1386,6 +1434,21 @@ nav a:hover {
 @media (max-width: 850px) {
   .admin-metrics {
     grid-template-columns: repeat(4, 1fr);
+  }
+}
+@media (max-width: 700px) {
+  .admin-order-row {
+    align-items: stretch;
+    flex-wrap: wrap;
+    display: flex;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+  .admin-order-row > * {
+    flex: 1 1 auto;
+  }
+  .admin-order-table {
+    overflow: visible;
   }
 }
 @media (max-width: 600px) {

@@ -58,7 +58,7 @@ export function ContactAdminSection({ language }: { language: AdminLanguage }) {
             event.preventDefault();
             save.mutate({ key: item.key, value: drafts[item.key] ?? item.value });
           }}
-          className="content-form compact-content-form"
+          className="content-form contact-form-row"
         >
           <label>
             {contactLabels[language][item.key]}

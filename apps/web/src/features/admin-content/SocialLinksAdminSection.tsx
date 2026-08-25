@@ -137,14 +137,16 @@ export function SocialLinksAdminSection({ language }: { language: AdminLanguage 
             setForm({ ...form, iconKey: event.target.value as typeof form.iconKey })
           }
         />
-        <button className="button" type="submit" disabled={save.isPending}>
-          {t.save}
-        </button>
-        {editingId ? (
-          <button className="button button-outline" type="button" onClick={cancelEdit}>
-            {t.cancel}
+        <div className="form-actions">
+          <button className="button" type="submit" disabled={save.isPending}>
+            {t.save}
           </button>
-        ) : null}
+          {editingId ? (
+            <button className="button button-outline" type="button" onClick={cancelEdit}>
+              {t.cancel}
+            </button>
+          ) : null}
+        </div>
       </form>
       {error ? <p role="alert">{error}</p> : null}
       <div className="admin-order-table admin-content-list">

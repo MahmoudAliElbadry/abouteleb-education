@@ -206,13 +206,13 @@ export function AdminUniversityPage() {
               />
             </label>
           ))}
-          <ImageUploadField
-            value={form.imageUrl}
-            onChange={(url) => setForm({ ...form, imageUrl: url })}
-            label={t.imageUrl}
-            required
-          />
         </div>
+        <ImageUploadField
+          value={form.imageUrl}
+          onChange={(url) => setForm({ ...form, imageUrl: url })}
+          label={t.imageUrl}
+          required
+        />
         <div className="content-form-options">
           <label className="checkbox-label">
             <input
