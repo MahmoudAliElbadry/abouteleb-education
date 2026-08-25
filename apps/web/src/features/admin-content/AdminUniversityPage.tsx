@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { ApiError } from '../auth/auth-client.js';
 import { useLanguage, localize } from '../i18n/LanguageContext.js';
+import { ImageUploadField } from './ImageUploadField.js';
 import {
   archiveUniversity,
   createUniversity,
@@ -33,11 +34,8 @@ const copy = {
     nameAr: 'الاسم بالعربية',
     nameEn: 'الاسم بالإنجليزية',
     nameTr: 'الاسم بالتركية',
-    summaryAr: 'الملخص بالعربية',
-    summaryEn: 'الملخص بالإنجليزية',
-    summaryTr: 'الملخص بالتركية',
     city: 'المدينة',
-    imageUrl: 'رابط الصورة HTTPS',
+    imageUrl: 'شعار الجامعة',
     websiteUrl: 'الموقع الإلكتروني HTTPS',
     featured: 'مميزة',
     isPublished: 'منشورة',
@@ -65,11 +63,8 @@ const copy = {
     nameAr: 'Arabic name',
     nameEn: 'English name',
     nameTr: 'Turkish name',
-    summaryAr: 'Arabic summary',
-    summaryEn: 'English summary',
-    summaryTr: 'Turkish summary',
     city: 'City',
-    imageUrl: 'HTTPS image URL',
+    imageUrl: 'Upload Logo',
     websiteUrl: 'HTTPS website URL',
     featured: 'Featured',
     isPublished: 'Published',
@@ -97,11 +92,8 @@ const copy = {
     nameAr: 'Arapça ad',
     nameEn: 'İngilizce ad',
     nameTr: 'Türkçe ad',
-    summaryAr: 'Arapça özet',
-    summaryEn: 'İngilizce özet',
-    summaryTr: 'Türkçe özet',
     city: 'Şehir',
-    imageUrl: 'HTTPS görsel URL',
+    imageUrl: 'Logo yükle',
     websiteUrl: 'HTTPS web sitesi URL',
     featured: 'Öne çıkan',
     isPublished: 'Yayınlandı',
@@ -116,9 +108,6 @@ const emptyForm: UniversityInput = {
   nameAr: '',
   nameEn: '',
   nameTr: '',
-  summaryAr: '',
-  summaryEn: '',
-  summaryTr: '',
   city: '',
   imageUrl: '',
   websiteUrl: null,
@@ -160,10 +149,7 @@ export function AdminUniversityPage() {
   function submit(event: React.FormEvent) {
     event.preventDefault();
     setFormError('');
-    if (
-      !form.imageUrl.startsWith('https://') ||
-      (form.websiteUrl && !form.websiteUrl.startsWith('https://'))
-    ) {
+    if (form.websiteUrl && !form.websiteUrl.startsWith('https://')) {
       setFormError(t.invalidUrl);
       return;
     }
@@ -210,20 +196,7 @@ export function AdminUniversityPage() {
           ) : null}
         </div>
         <div className="content-form-grid">
-          {(
-            [
-              'slug',
-              'nameAr',
-              'nameEn',
-              'nameTr',
-              'summaryAr',
-              'summaryEn',
-              'summaryTr',
-              'city',
-              'imageUrl',
-              'websiteUrl',
-            ] as const
-          ).map((key) => (
+          {(['slug', 'nameAr', 'nameEn', 'nameTr', 'city', 'websiteUrl'] as const).map((key) => (
             <label key={key}>
               {t[key]}
               <input
@@ -231,11 +204,14 @@ export function AdminUniversityPage() {
                 onChange={(event) => setForm({ ...form, [key]: event.target.value })}
                 required={key !== 'websiteUrl'}
               />
-              {key === 'imageUrl' && form.imageUrl.startsWith('https://') ? (
-                <img src={form.imageUrl} alt="" width="80" />
-              ) : null}
             </label>
           ))}
+          <ImageUploadField
+            value={form.imageUrl}
+            onChange={(url) => setForm({ ...form, imageUrl: url })}
+            label={t.imageUrl}
+            required
+          />
         </div>
         <div className="content-form-options">
           <label className="checkbox-label">

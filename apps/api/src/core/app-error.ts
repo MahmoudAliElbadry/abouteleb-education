@@ -12,6 +12,7 @@ export type AppErrorCode =
   | 'INVALID_VERIFICATION'
   | 'NOT_FOUND'
   | 'UNAUTHENTICATED'
+  | 'UPLOAD_FAILED'
   | 'VALIDATION_ERROR';
 
 export class AppError extends Error {
@@ -41,8 +42,11 @@ export const appErrors = {
   invalidAssignment: () =>
     new AppError('INVALID_ASSIGNMENT', 400, 'The selected administrator is not available'),
   invalidReset: () => new AppError('INVALID_RESET', 400, 'Invalid or expired reset code'),
+  invalidUpload: () => new AppError('VALIDATION_ERROR', 400, 'A valid image file is required'),
   invalidVerification: () =>
     new AppError('INVALID_VERIFICATION', 400, 'Invalid or expired verification code'),
   notFound: () => new AppError('NOT_FOUND', 404, 'Route not found'),
   unauthenticated: () => new AppError('UNAUTHENTICATED', 401, 'Sign in required'),
+  uploadFailed: () =>
+    new AppError('UPLOAD_FAILED', 503, 'Unable to upload image. Please try again shortly.'),
 };

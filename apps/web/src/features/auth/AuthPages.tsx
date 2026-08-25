@@ -92,7 +92,7 @@ export function LoginPage() {
     event.preventDefault();
     try {
       const { user } = await auth.login.mutateAsync({ email, password });
-      const fallback = user.role === 'ADMIN' ? '/admin' : '/applications';
+      const fallback = user.role === 'ADMIN' ? '/admin' : '/';
       navigate(redirectParam ?? fallback);
     } catch {
       /* rendered below */

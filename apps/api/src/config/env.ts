@@ -34,6 +34,9 @@ const baseEnvSchema = z.object({
   SESSION_COOKIE_NAME: z.string().min(1).default('abou_session'),
   CSRF_COOKIE_NAME: z.string().min(1).default('abou_csrf'),
   SENTRY_DSN: z.string().url().optional(),
+  CLOUDINARY_CLOUD_NAME: z.string().min(1).optional(),
+  CLOUDINARY_API_KEY: z.string().min(1).optional(),
+  CLOUDINARY_API_SECRET: z.string().min(1).optional(),
 });
 
 function parseEnv() {
@@ -55,6 +58,9 @@ function parseEnv() {
     SESSION_COOKIE_NAME: process.env.SESSION_COOKIE_NAME,
     CSRF_COOKIE_NAME: process.env.CSRF_COOKIE_NAME,
     SENTRY_DSN: process.env.SENTRY_DSN || undefined,
+    CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME || undefined,
+    CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY || undefined,
+    CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET || undefined,
   });
 
   const emailProvider =
@@ -73,6 +79,13 @@ function parseEnv() {
     }
     if (!parsed.COOKIE_DOMAIN) {
       throw new Error('COOKIE_DOMAIN is required in production');
+    }
+    if (
+      !parsed.CLOUDINARY_CLOUD_NAME ||
+      !parsed.CLOUDINARY_API_KEY ||
+      !parsed.CLOUDINARY_API_SECRET
+    ) {
+      throw new Error('Cloudinary credentials are required in production');
     }
   }
 

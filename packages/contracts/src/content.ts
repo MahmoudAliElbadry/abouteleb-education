@@ -16,6 +16,7 @@ export const imageRefSchema = z.union([
   httpsUrlSchema,
   z.string().regex(/^\/images\/[a-z0-9-]+\.(png|svg|webp|jpe?g)$/),
 ]);
+export const uploadImageResponseSchema = z.object({ secure_url: httpsUrlSchema });
 const sortOrderSchema = z.number().int().finite().min(0).max(1_000_000);
 
 export const universityCreateSchema = z.object({
@@ -23,9 +24,6 @@ export const universityCreateSchema = z.object({
   nameAr: managedTextSchema,
   nameEn: managedTextSchema,
   nameTr: managedTextSchema,
-  summaryAr: managedSummarySchema,
-  summaryEn: managedSummarySchema,
-  summaryTr: managedSummarySchema,
   city: managedTextSchema.max(120),
   imageUrl: imageRefSchema,
   websiteUrl: httpsUrlSchema.nullable().optional(),
@@ -114,9 +112,6 @@ export const universityPublicSchema = managedTimestampsSchema.extend({
   nameAr: managedTextSchema,
   nameEn: managedTextSchema,
   nameTr: managedTextSchema,
-  summaryAr: managedSummarySchema,
-  summaryEn: managedSummarySchema,
-  summaryTr: managedSummarySchema,
   city: managedTextSchema.max(120),
   imageUrl: imageRefSchema,
   websiteUrl: httpsUrlSchema.nullable(),
@@ -165,3 +160,4 @@ export type UniversityAdmin = z.infer<typeof universityAdminSchema>;
 export type TestimonialPublic = z.infer<typeof testimonialPublicSchema>;
 export type SocialLinkPublic = z.infer<typeof socialLinkPublicSchema>;
 export type ManagedContact = z.infer<typeof managedContactSchema>;
+export type UploadImageResponse = z.infer<typeof uploadImageResponseSchema>;
