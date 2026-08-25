@@ -7,6 +7,7 @@ import {
   testimonialCreateSchema,
   testimonialUpdateSchema,
   universityCreateSchema,
+  uploadImageResponseSchema,
 } from './index.js';
 
 describe('healthResponseSchema', () => {
@@ -24,9 +25,6 @@ describe('managed content contracts', () => {
     nameAr: 'جامعة تجريبية',
     nameEn: 'Example University',
     nameTr: 'Örnek Üniversitesi',
-    summaryAr: 'ملخص',
-    summaryEn: 'Summary',
-    summaryTr: 'Özet',
     city: 'Istanbul',
     imageUrl: 'https://aboutalebeducation.com/example.png',
   };
@@ -90,5 +88,23 @@ describe('managed content contracts', () => {
       }),
     ).toThrow();
     expect(() => managedContactUpsertSchema.parse({ key: 'arbitrary_key', value: 'x' })).toThrow();
+  });
+});
+
+describe('uploadImageResponseSchema', () => {
+  it('accepts an HTTPS secure_url', () => {
+    expect(
+      uploadImageResponseSchema.parse({ secure_url: 'https://res.cloudinary.com/demo/a.png' }),
+    ).toEqual({ secure_url: 'https://res.cloudinary.com/demo/a.png' });
+  });
+
+  it('rejects a non-HTTPS URL', () => {
+    expect(() =>
+      uploadImageResponseSchema.parse({ secure_url: 'http://res.cloudinary.com/demo/a.png' }),
+    ).toThrow();
+  });
+
+  it('rejects a missing secure_url', () => {
+    expect(() => uploadImageResponseSchema.parse({})).toThrow();
   });
 });

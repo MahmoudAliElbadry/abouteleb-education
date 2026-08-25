@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ApiError } from '../auth/auth-client.js';
+import { ImageUploadField } from './ImageUploadField.js';
 import {
   archiveTestimonial,
   createTestimonial,
@@ -15,7 +16,7 @@ const copy = {
     publish: 'منشور',
     archive: 'أرشفة',
     error: 'تعذر حفظ المحتوى.',
-    image: 'صورة رسالة العميل (رابط https)',
+    image: 'صورة رسالة العميل',
   },
   en: {
     title: 'Add testimonial',
@@ -24,7 +25,7 @@ const copy = {
     publish: 'Published',
     archive: 'Archive',
     error: 'Unable to save content.',
-    image: 'Client message screenshot (HTTPS URL)',
+    image: 'Client message screenshot',
   },
   tr: {
     title: 'Referans ekle',
@@ -33,7 +34,7 @@ const copy = {
     publish: 'Yayınlandı',
     archive: 'Arşivle',
     error: 'İçerik kaydedilemedi.',
-    image: 'Müşteri mesajı ekran görüntüsü (HTTPS URL)',
+    image: 'Müşteri mesajı ekran görüntüsü',
   },
 } as const;
 const empty: {
@@ -99,17 +100,12 @@ export function TestimonialsAdminSection({ language }: { language: AdminLanguage
           value={form.quoteEn}
           onChange={(event) => setForm({ ...form, quoteEn: event.target.value })}
         />
-        <label>
-          {t.image}
-          <input
-            aria-label={t.image}
-            type="url"
-            placeholder="https://..."
-            value={form.imageUrl ?? ''}
-            onChange={(event) => setForm({ ...form, imageUrl: event.target.value || null })}
-          />
-        </label>
-        <label>
+        <ImageUploadField
+          value={form.imageUrl}
+          onChange={(url) => setForm({ ...form, imageUrl: url })}
+          label={t.image}
+        />
+        <label className="checkbox-label">
           <input
             type="checkbox"
             checked={form.consentConfirmed}
@@ -117,7 +113,7 @@ export function TestimonialsAdminSection({ language }: { language: AdminLanguage
           />
           {t.consent}
         </label>
-        <label>
+        <label className="checkbox-label">
           <input
             type="checkbox"
             disabled={!form.consentConfirmed}

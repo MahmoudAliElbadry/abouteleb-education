@@ -192,9 +192,6 @@ model University {
   nameAr      String
   nameEn      String
   nameTr      String
-  summaryAr   String
-  summaryEn   String
-  summaryTr   String
   city        String
   imageUrl    String
   websiteUrl  String?

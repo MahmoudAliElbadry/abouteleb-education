@@ -42,7 +42,7 @@ describe('EnrollmentSection', () => {
     ).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Sign in to unlock the form' })).toHaveAttribute(
       'href',
-      '/login?redirect=%2Fapplications',
+      '/login?redirect=%2F%23enroll',
     );
     expect(screen.getByRole('group')).toBeDisabled();
   });

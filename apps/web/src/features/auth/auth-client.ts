@@ -42,12 +42,7 @@ export function csrfToken() {
   );
 }
 
-export async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
-  const response = await fetch(`${apiBaseUrl}/api/v1${path}`, {
-    credentials: 'include',
-    ...options,
-    headers: { 'Content-Type': 'application/json', ...(options.headers ?? {}) },
-  });
+async function toApiResult<T>(response: Response): Promise<T> {
   if (!response.ok) {
     const body = (await response.json().catch(() => null)) as {
       error?: { code?: string; message?: string; requestId?: string };
@@ -60,6 +55,25 @@ export async function apiFetch<T>(path: string, options: RequestInit = {}): Prom
     );
   }
   return response.status === 204 ? (undefined as T) : (response.json() as Promise<T>);
+}
+
+export async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
+  const response = await fetch(`${apiBaseUrl}/api/v1${path}`, {
+    credentials: 'include',
+    ...options,
+    headers: { 'Content-Type': 'application/json', ...(options.headers ?? {}) },
+  });
+  return toApiResult<T>(response);
+}
+
+export async function apiUpload<T>(path: string, formData: FormData): Promise<T> {
+  const response = await fetch(`${apiBaseUrl}/api/v1${path}`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'X-CSRF-Token': csrfToken() },
+    body: formData,
+  });
+  return toApiResult<T>(response);
 }
 
 export async function getSession(): Promise<AuthResponse | null> {

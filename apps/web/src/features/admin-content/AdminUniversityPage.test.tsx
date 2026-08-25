@@ -23,9 +23,6 @@ const mocks = vi.hoisted(() => ({
           nameAr: 'جامعة',
           nameEn: 'Example University',
           nameTr: 'Örnek',
-          summaryAr: 'ملخص',
-          summaryEn: 'Summary',
-          summaryTr: 'Özet',
           city: 'Istanbul',
           imageUrl: 'https://aboutalebeducation.com/u.png',
           websiteUrl: null,
@@ -75,7 +72,7 @@ describe('AdminUniversityPage', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Edit' }));
     expect(screen.getByRole('heading', { name: 'Edit' })).toBeInTheDocument();
   });
-  it('rejects a non-HTTPS image URL before mutation', () => {
+  it('rejects a non-HTTPS website URL before mutation', () => {
     renderPage();
     fireEvent.click(screen.getByRole('button', { name: 'Add university' }));
     for (const [label, value] of [
@@ -83,15 +80,12 @@ describe('AdminUniversityPage', () => {
       ['Arabic name', 'جامعة'],
       ['English name', 'Example University'],
       ['Turkish name', 'Örnek'],
-      ['Arabic summary', 'ملخص'],
-      ['English summary', 'Summary'],
-      ['Turkish summary', 'Özet'],
       ['City', 'Istanbul'],
     ] as const) {
       fireEvent.change(screen.getByLabelText(label), { target: { value } });
     }
-    fireEvent.change(screen.getByLabelText('HTTPS image URL'), {
-      target: { value: 'http://example.com/u.png' },
+    fireEvent.change(screen.getByLabelText('HTTPS website URL'), {
+      target: { value: 'http://example.com' },
     });
     fireEvent.click(screen.getByRole('button', { name: 'Save' }));
     expect(screen.getByRole('alert')).toHaveTextContent('The URL must start with https://.');

@@ -7,9 +7,6 @@ export type ManagedUniversity = {
   nameAr: string;
   nameEn: string;
   nameTr: string;
-  summaryAr: string;
-  summaryEn: string;
-  summaryTr: string;
   city: string;
   imageUrl: string;
   websiteUrl: string | null;

@@ -4,6 +4,7 @@ import express, { type ErrorRequestHandler } from 'express';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import { ZodError } from 'zod';
+import multer from 'multer';
 import { healthResponseSchema } from '@abou/contracts';
 import { env } from './config/env.js';
 import { authRouter } from './modules/auth/auth.routes.js';
@@ -24,6 +25,7 @@ import {
 } from './modules/content/testimonials.routes.js';
 import { adminSocialRouter, publicSocialRouter } from './modules/content/social-link.routes.js';
 import { adminContactRouter, publicContactRouter } from './modules/content/contact.routes.js';
+import { adminUploadsRouter } from './modules/uploads/uploads.routes.js';
 
 export const app = express();
 
@@ -47,6 +49,7 @@ app.use('/api/v1/social-links', publicSocialRouter);
 app.use('/api/v1/contact', publicContactRouter);
 app.use('/api/v1/admin/social-links', adminSocialRouter);
 app.use('/api/v1/admin/contact', adminContactRouter);
+app.use('/api/v1/admin/uploads', adminUploadsRouter);
 
 app.get('/api/v1/health', (_request, response) => {
   response.json(healthResponseSchema.parse({ status: 'ok', service: 'api' }));
@@ -77,6 +80,16 @@ const errorHandler: ErrorRequestHandler = (error, request, response, _next) => {
       error: {
         code: 'VALIDATION_ERROR',
         message: 'Request validation failed',
+        requestId: response.locals.requestId,
+      },
+    });
+    return;
+  }
+  if (error instanceof multer.MulterError) {
+    response.status(400).json({
+      error: {
+        code: 'VALIDATION_ERROR',
+        message: 'A valid image file is required',
         requestId: response.locals.requestId,
       },
     });

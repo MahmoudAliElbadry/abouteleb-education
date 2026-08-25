@@ -5,7 +5,7 @@ services:
     domains:
       - api.aboutalebeducation.com
     renderSubdomainPolicy: disabled
-    buildCommand: npm ci && npm run db:generate && npm run build -w @abou/contracts && npm run build -w @abou/api
+    buildCommand: npm ci && npm run db:generate && npm run db:deploy && npm run build -w @abou/contracts && npm run build -w @abou/api
     startCommand: npm run start -w @abou/api
     healthCheckPath: /api/v1/health/readiness
     envVars:
@@ -28,4 +28,10 @@ services:
       - key: EMAIL_BRAND_URL
         value: https://aboutalebeducation.com
       - key: SENTRY_DSN
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
         sync: false
