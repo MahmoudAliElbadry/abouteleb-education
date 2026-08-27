@@ -1102,6 +1102,9 @@ nav a:hover {
   display: flex;
   min-height: 100vh;
 }
+.admin-navigation-toggle {
+  display: none;
+}
 .admin-sidebar {
   background: var(--black);
   display: flex;
@@ -1451,14 +1454,30 @@ nav a:hover {
     overflow: visible;
   }
 }
-@media (max-width: 600px) {
+@media (max-width: 850px) {
   .admin-shell {
     flex-direction: column;
   }
+  .admin-navigation-toggle {
+    align-items: center;
+    background: var(--black);
+    border: 0;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    font: inherit;
+    font-weight: 700;
+    gap: 0.5rem;
+    justify-content: flex-start;
+    padding: 1rem 1.25rem;
+  }
   .admin-sidebar {
+    display: none;
     flex: none;
-    flex-direction: row;
-    overflow-x: auto;
+    padding: 0 1rem 1rem;
+  }
+  .admin-sidebar.is-open {
+    display: flex;
   }
   .admin-header,
   .admin-toolbar {
