@@ -60,7 +60,7 @@ describe('UploadsService', () => {
 
     await service.uploadImage(Buffer.from('bytes'));
 
-    expect(uploadStreamMock.mock.calls[0][0]).toEqual({
+    expect(uploadStreamMock.mock.calls[0]?.[0]).toEqual({
       folder: 'abou-taleb/uploads',
       resource_type: 'image',
     });
@@ -78,7 +78,7 @@ describe('UploadsService', () => {
       folder: 'abou-taleb/universities',
     });
 
-    expect(uploadStreamMock.mock.calls[0][0]).toEqual({
+    expect(uploadStreamMock.mock.calls[0]?.[0]).toEqual({
       folder: 'abou-taleb/universities',
       resource_type: 'image',
       public_id: 'acibadem',
