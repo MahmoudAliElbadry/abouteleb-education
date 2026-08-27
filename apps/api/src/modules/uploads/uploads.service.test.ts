@@ -50,4 +50,40 @@ describe('UploadsService', () => {
       code: 'UPLOAD_FAILED',
     });
   });
+
+  it('uploads to the default folder with no public_id by default', async () => {
+    uploadStreamMock.mockImplementation((_options, callback) => ({
+      end: () => callback(null, { secure_url: 'https://res.cloudinary.com/demo/a.png' }),
+    }));
+    const { UploadsService } = await import('./uploads.service.js');
+    const service = new UploadsService();
+
+    await service.uploadImage(Buffer.from('bytes'));
+
+    expect(uploadStreamMock.mock.calls[0]?.[0]).toEqual({
+      folder: 'abou-taleb/uploads',
+      resource_type: 'image',
+    });
+  });
+
+  it('passes a deterministic public_id and overwrite when given one', async () => {
+    uploadStreamMock.mockImplementation((_options, callback) => ({
+      end: () => callback(null, { secure_url: 'https://res.cloudinary.com/demo/b.png' }),
+    }));
+    const { UploadsService } = await import('./uploads.service.js');
+    const service = new UploadsService();
+
+    await service.uploadImage(Buffer.from('bytes'), {
+      publicId: 'acibadem',
+      folder: 'abou-taleb/universities',
+    });
+
+    expect(uploadStreamMock.mock.calls[0]?.[0]).toEqual({
+      folder: 'abou-taleb/universities',
+      resource_type: 'image',
+      public_id: 'acibadem',
+      overwrite: true,
+      invalidate: true,
+    });
+  });
 });

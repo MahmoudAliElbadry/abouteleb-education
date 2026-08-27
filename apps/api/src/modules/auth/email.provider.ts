@@ -83,7 +83,7 @@ export class ResendEmailProvider implements EmailProvider {
     private readonly fetcher: typeof fetch = fetch,
     private readonly brand = {
       name: 'Abou-Taleb Education',
-      logoUrl: 'https://aboutalebeducation.com/images/email-logo.png',
+      logoUrl: env.EMAIL_LOGO_URL,
       brandUrl: 'https://aboutalebeducation.com',
     },
   ) {}

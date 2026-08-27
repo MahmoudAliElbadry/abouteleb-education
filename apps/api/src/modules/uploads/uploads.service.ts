@@ -9,19 +9,26 @@ export class UploadsService {
     return ALLOWED_MIME_TYPES.has(mimetype);
   }
 
-  async uploadImage(buffer: Buffer): Promise<UploadApiResponse> {
+  async uploadImage(
+    buffer: Buffer,
+    options: { publicId?: string; folder?: string } = {},
+  ): Promise<UploadApiResponse> {
+    const uploadOptions = {
+      folder: options.folder ?? 'abou-taleb/uploads',
+      resource_type: 'image' as const,
+      ...(options.publicId
+        ? { public_id: options.publicId, overwrite: true, invalidate: true }
+        : {}),
+    };
     return new Promise((resolve, reject) => {
       cloudinary.uploader
-        .upload_stream(
-          { folder: 'abou-taleb/uploads', resource_type: 'image' },
-          (error, result) => {
-            if (error || !result) {
-              reject(appErrors.uploadFailed());
-              return;
-            }
-            resolve(result);
-          },
-        )
+        .upload_stream(uploadOptions, (error, result) => {
+          if (error || !result) {
+            reject(appErrors.uploadFailed());
+            return;
+          }
+          resolve(result);
+        })
         .end(buffer);
     });
   }

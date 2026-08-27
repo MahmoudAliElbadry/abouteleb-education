@@ -2,6 +2,7 @@ import 'dotenv/config';
 import { PrismaClient } from '@prisma/client';
 import { UserRole } from '@prisma/client';
 import { universities } from '../apps/web/src/data/universities.ts';
+import universityImages from '../scripts/university-image-manifest.json' with { type: 'json' };
 
 const prisma = new PrismaClient();
 const contactKeys = new Set([
@@ -10,6 +11,16 @@ const contactKeys = new Set([
   'contact_email_secondary',
   'contact_whatsapp',
 ]);
+
+function resolveImageUrl(slug: string): string {
+  const entry = (universityImages as Record<string, { secureUrl: string }>)[slug];
+  if (!entry) {
+    throw new Error(
+      `No Cloudinary image for "${slug}". Run: npx tsx scripts/migrate-university-images.ts`,
+    );
+  }
+  return entry.secureUrl;
+}
 
 async function main() {
   const email = process.env.BOOTSTRAP_ADMIN_EMAIL?.trim().toLowerCase();
@@ -45,7 +56,7 @@ async function main() {
           nameAr: university.name,
           nameEn: university.name,
           nameTr: university.name,
-          imageUrl: `/images/${university.id}.png`,
+          imageUrl: resolveImageUrl(university.id),
           city: university.city,
           featured: sortOrder < 8,
           isPublished: true,
@@ -58,7 +69,7 @@ async function main() {
           nameEn: university.name,
           nameTr: university.name,
           city: university.city,
-          imageUrl: `/images/${university.id}.png`,
+          imageUrl: resolveImageUrl(university.id),
           featured: sortOrder < 8,
           isPublished: true,
           sortOrder,
