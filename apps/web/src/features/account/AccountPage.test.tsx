@@ -85,5 +85,8 @@ describe('AccountPage', () => {
       screen.getByRole('heading', { name: 'Start your admission request' }),
     ).toBeInTheDocument();
     expect(screen.getByText('ATE-2026-TEST')).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'How does your order progress?' }),
+    ).toBeInTheDocument();
   });
 });

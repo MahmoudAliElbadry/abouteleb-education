@@ -89,33 +89,64 @@ export function createOtpTemplate(
 }
 
 export function createOrderTemplate(
-  input: { reference: string; event: OrderNotificationEvent; newStatus?: string },
+  input: {
+    reference: string;
+    event: OrderNotificationEvent;
+    newStatus?: string;
+    clientVisibleMessage?: string;
+  },
   brand: EmailBrand,
 ): EmailTemplate {
+  const status = input.newStatus ?? 'updated';
+  const escapedReference = escapeHtml(input.reference);
+  const escapedStatus = escapeHtml(status);
+  const escapedMessage = input.clientVisibleMessage ? escapeHtml(input.clientVisibleMessage) : null;
   const subject =
     input.event === 'submitted'
-      ? `Application request received: ${input.reference}`
-      : `Application request update: ${input.reference}`;
-  const text =
+      ? `تم استلام طلب التقديم | Application request received: ${input.reference}`
+      : `تحديث طلب التقديم | Application request update: ${input.reference}`;
+  const arabicText =
+    input.event === 'submitted'
+      ? `تم استلام طلب التقديم الخاص بك ${input.reference}.`
+      : `تم تحديث طلب التقديم الخاص بك ${input.reference}. الحالة الحالية: ${status}.`;
+  const englishText =
     input.event === 'submitted'
       ? `We received your application request ${input.reference}.`
-      : `Your application request ${input.reference} is now ${input.newStatus ?? 'updated'}.`;
-  const title =
+      : `Your application request ${input.reference} is now ${status}.`;
+  const messageText = input.clientVisibleMessage
+    ? `\n\nرسالة من المستشار / Message from your consultant:\n${input.clientVisibleMessage}`
+    : '';
+  const arabicTitle = input.event === 'submitted' ? 'تم استلام طلب التقديم' : 'تحديث طلب التقديم';
+  const englishTitle =
     input.event === 'submitted' ? 'Application request received' : 'Application request update';
-  const status = input.newStatus ? escapeHtml(input.newStatus) : 'updated';
+  const messageHtml = escapedMessage
+    ? `<div style="margin-top:18px;padding:14px 16px;background:#fff7ed;border:1px solid #fed7aa;border-radius:6px;">
+         <div dir="rtl" style="font-weight:700;">رسالة من المستشار</div>
+         <div dir="ltr" style="margin-top:4px;color:#666666;font-size:13px;">Message from your consultant</div>
+         <p style="margin:10px 0 0;white-space:pre-wrap;">${escapedMessage}</p>
+       </div>`
+    : '';
 
   return {
     subject,
-    text,
+    text: `${arabicText}\n\n${englishText}${messageText}`,
     html: layout(
       brand,
-      `<h1 style="margin:0 0 16px;color:#111111;font-size:24px;">${title}</h1>
-       <p style="margin:0 0 18px;">${escapeHtml(text)}</p>
+      `<section dir="rtl" lang="ar" style="text-align:right;">
+         <h1 style="margin:0 0 16px;color:#111111;font-size:24px;">${arabicTitle}</h1>
+         <p style="margin:0 0 18px;">${escapeHtml(arabicText)}</p>
+       </section>
+       <hr style="margin:24px 0;border:0;border-top:1px solid #eeeeee;">
+       <section dir="ltr" lang="en" style="text-align:left;">
+         <h1 style="margin:0 0 16px;color:#111111;font-size:24px;">${englishTitle}</h1>
+         <p style="margin:0 0 18px;">${escapeHtml(englishText)}</p>
+       </section>
        <div style="padding:14px 16px;background:#f7f7f7;border-left:4px solid #e30613;">
-         <div style="color:#666666;font-size:13px;">Application reference</div>
-         <div style="margin-top:4px;font-weight:700;">${escapeHtml(input.reference)}</div>
-         ${input.event === 'status_changed' ? `<div style="margin-top:12px;color:#666666;font-size:13px;">Current status</div><div style="margin-top:4px;font-weight:700;color:#e30613;">${status}</div>` : ''}
-       </div>`,
+         <div style="color:#666666;font-size:13px;">مرجع الطلب / Application reference</div>
+         <div dir="ltr" style="margin-top:4px;font-weight:700;">${escapedReference}</div>
+         ${input.event === 'status_changed' ? `<div style="margin-top:12px;color:#666666;font-size:13px;">الحالة الحالية / Current status</div><div dir="ltr" style="margin-top:4px;font-weight:700;color:#e30613;">${escapedStatus}</div>` : ''}
+       </div>
+       ${messageHtml}`,
     ),
   };
 }

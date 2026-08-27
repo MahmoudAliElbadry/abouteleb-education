@@ -129,14 +129,6 @@ export function SocialLinksAdminSection({ language }: { language: AdminLanguage 
           value={form.url}
           onChange={(event) => setForm({ ...form, url: event.target.value })}
         />
-        <input
-          aria-label="Icon"
-          required
-          value={form.iconKey}
-          onChange={(event) =>
-            setForm({ ...form, iconKey: event.target.value as typeof form.iconKey })
-          }
-        />
         <div className="form-actions">
           <button className="button" type="submit" disabled={save.isPending}>
             {t.save}

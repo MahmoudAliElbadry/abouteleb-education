@@ -53,7 +53,7 @@ const empty: {
   clientNameEn: '',
   clientNameTr: '-',
   quoteAr: '-',
-  quoteEn: '',
+  quoteEn: '-',
   quoteTr: '-',
   imageUrl: null,
   consentConfirmed: false,
@@ -93,12 +93,6 @@ export function TestimonialsAdminSection({ language }: { language: AdminLanguage
           required
           value={form.clientNameEn}
           onChange={(event) => setForm({ ...form, clientNameEn: event.target.value })}
-        />
-        <textarea
-          aria-label="English quote"
-          required
-          value={form.quoteEn}
-          onChange={(event) => setForm({ ...form, quoteEn: event.target.value })}
         />
         <ImageUploadField
           value={form.imageUrl}

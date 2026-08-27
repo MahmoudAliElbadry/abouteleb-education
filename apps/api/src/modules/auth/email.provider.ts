@@ -19,6 +19,7 @@ export interface EmailProvider {
     reference: string;
     event: OrderNotificationEvent;
     newStatus?: string;
+    clientVisibleMessage?: string;
   }): Promise<void>;
 }
 
@@ -33,6 +34,7 @@ type DevelopmentOrderMessage = {
   reference: string;
   event: OrderNotificationEvent;
   newStatus?: string;
+  clientVisibleMessage?: string;
 };
 type ResendEmail = {
   recipient: string;

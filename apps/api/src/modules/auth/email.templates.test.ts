@@ -29,6 +29,7 @@ describe('transactional email templates', () => {
         reference: '<ATE&2026>',
         event: 'status_changed',
         newStatus: 'WAITING <CLIENT>',
+        clientVisibleMessage: 'Please send <documents>.',
       },
       brand,
     );
@@ -36,6 +37,8 @@ describe('transactional email templates', () => {
     expect(template.text).toContain('<ATE&2026>');
     expect(template.html).toContain('&lt;ATE&amp;2026&gt;');
     expect(template.html).toContain('WAITING &lt;CLIENT&gt;');
+    expect(template.html).toContain('Please send &lt;documents&gt;.');
+    expect(template.html).toContain('تحديث طلب التقديم');
     expect(template.html).not.toContain('<ATE&2026>');
   });
 });

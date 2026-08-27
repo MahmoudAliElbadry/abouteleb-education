@@ -64,6 +64,9 @@ adminOrdersRouter.post(
         recipient: result.recipient,
         reference: result.reference,
         newStatus: result.toStatus,
+        ...(result.clientVisibleMessage
+          ? { clientVisibleMessage: result.clientVisibleMessage }
+          : {}),
       });
       response.json({ transition: result });
     } catch (error) {

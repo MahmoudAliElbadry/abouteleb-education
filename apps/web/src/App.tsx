@@ -723,6 +723,7 @@ function PublicPage() {
                 className="contact-detail"
                 key={item.key}
                 href={item.value.includes('@') ? `mailto:${item.value}` : undefined}
+                dir={item.key === 'contact_phone' ? 'ltr' : undefined}
               >
                 {item.value}
               </a>
