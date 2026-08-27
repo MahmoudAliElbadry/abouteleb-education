@@ -1,0 +1,166 @@
+{
+  "acibadem": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837435/abou-taleb/universities/acibadem.png",
+    "publicId": "abou-taleb/universities/acibadem"
+  },
+  "altinbas": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837462/abou-taleb/universities/altinbas.png",
+    "publicId": "abou-taleb/universities/altinbas"
+  },
+  "ankara-bilim": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837464/abou-taleb/universities/ankara-bilim.png",
+    "publicId": "abou-taleb/universities/ankara-bilim"
+  },
+  "ankara-medipol": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837474/abou-taleb/universities/ankara-medipol.png",
+    "publicId": "abou-taleb/universities/ankara-medipol"
+  },
+  "atilim": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837479/abou-taleb/universities/atilim.png",
+    "publicId": "abou-taleb/universities/atilim"
+  },
+  "bahcesehir": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837481/abou-taleb/universities/bahcesehir.png",
+    "publicId": "abou-taleb/universities/bahcesehir"
+  },
+  "beykoz": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837485/abou-taleb/universities/beykoz.png",
+    "publicId": "abou-taleb/universities/beykoz"
+  },
+  "bezmialem": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837488/abou-taleb/universities/bezmialem.png",
+    "publicId": "abou-taleb/universities/bezmialem"
+  },
+  "biruni": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837492/abou-taleb/universities/biruni.png",
+    "publicId": "abou-taleb/universities/biruni"
+  },
+  "dogus": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837497/abou-taleb/universities/dogus.png",
+    "publicId": "abou-taleb/universities/dogus"
+  },
+  "fatih-sultan-mehmet": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837499/abou-taleb/universities/fatih-sultan-mehmet.png",
+    "publicId": "abou-taleb/universities/fatih-sultan-mehmet"
+  },
+  "fenerbahce": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837509/abou-taleb/universities/fenerbahce.png",
+    "publicId": "abou-taleb/universities/fenerbahce"
+  },
+  "halic": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837512/abou-taleb/universities/halic.png",
+    "publicId": "abou-taleb/universities/halic"
+  },
+  "ibn-haldun": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837515/abou-taleb/universities/ibn-haldun.png",
+    "publicId": "abou-taleb/universities/ibn-haldun"
+  },
+  "istanbul-arel": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837517/abou-taleb/universities/istanbul-arel.png",
+    "publicId": "abou-taleb/universities/istanbul-arel"
+  },
+  "istanbul-atlas": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837520/abou-taleb/universities/istanbul-atlas.png",
+    "publicId": "abou-taleb/universities/istanbul-atlas"
+  },
+  "istanbul-aydin": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837523/abou-taleb/universities/istanbul-aydin.png",
+    "publicId": "abou-taleb/universities/istanbul-aydin"
+  },
+  "istanbul-beykent": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837529/abou-taleb/universities/istanbul-beykent.png",
+    "publicId": "abou-taleb/universities/istanbul-beykent"
+  },
+  "istanbul-bilgi": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837534/abou-taleb/universities/istanbul-bilgi.png",
+    "publicId": "abou-taleb/universities/istanbul-bilgi"
+  },
+  "istanbul-esenyurt": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837537/abou-taleb/universities/istanbul-esenyurt.png",
+    "publicId": "abou-taleb/universities/istanbul-esenyurt"
+  },
+  "istanbul-galata": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837543/abou-taleb/universities/istanbul-galata.png",
+    "publicId": "abou-taleb/universities/istanbul-galata"
+  },
+  "istanbul-gedik": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837547/abou-taleb/universities/istanbul-gedik.png",
+    "publicId": "abou-taleb/universities/istanbul-gedik"
+  },
+  "istanbul-gelisim": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837552/abou-taleb/universities/istanbul-gelisim.png",
+    "publicId": "abou-taleb/universities/istanbul-gelisim"
+  },
+  "istanbul-kent": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837559/abou-taleb/universities/istanbul-kent.png",
+    "publicId": "abou-taleb/universities/istanbul-kent"
+  },
+  "istanbul-kultur": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837564/abou-taleb/universities/istanbul-kultur.png",
+    "publicId": "abou-taleb/universities/istanbul-kultur"
+  },
+  "istanbul-medipol": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837566/abou-taleb/universities/istanbul-medipol.png",
+    "publicId": "abou-taleb/universities/istanbul-medipol"
+  },
+  "istanbul-nisantasi": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837572/abou-taleb/universities/istanbul-nisantasi.png",
+    "publicId": "abou-taleb/universities/istanbul-nisantasi"
+  },
+  "istanbul-okan": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837574/abou-taleb/universities/istanbul-okan.png",
+    "publicId": "abou-taleb/universities/istanbul-okan"
+  },
+  "istanbul-sabahattin-zaim": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837579/abou-taleb/universities/istanbul-sabahattin-zaim.png",
+    "publicId": "abou-taleb/universities/istanbul-sabahattin-zaim"
+  },
+  "istanbul-ticaret": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837584/abou-taleb/universities/istanbul-ticaret.png",
+    "publicId": "abou-taleb/universities/istanbul-ticaret"
+  },
+  "istanbul-topkapi": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837585/abou-taleb/universities/istanbul-topkapi.png",
+    "publicId": "abou-taleb/universities/istanbul-topkapi"
+  },
+  "istanbul-yeni-yuzyil": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837588/abou-taleb/universities/istanbul-yeni-yuzyil.png",
+    "publicId": "abou-taleb/universities/istanbul-yeni-yuzyil"
+  },
+  "istinye": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837596/abou-taleb/universities/istinye.png",
+    "publicId": "abou-taleb/universities/istinye"
+  },
+  "isik": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837599/abou-taleb/universities/isik.png",
+    "publicId": "abou-taleb/universities/isik"
+  },
+  "kocaeli-saglik": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837608/abou-taleb/universities/kocaeli-saglik.png",
+    "publicId": "abou-taleb/universities/kocaeli-saglik"
+  },
+  "maltepe": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837612/abou-taleb/universities/maltepe.png",
+    "publicId": "abou-taleb/universities/maltepe"
+  },
+  "ozyegin": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837615/abou-taleb/universities/ozyegin.png",
+    "publicId": "abou-taleb/universities/ozyegin"
+  },
+  "ostim": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837618/abou-taleb/universities/ostim.png",
+    "publicId": "abou-taleb/universities/ostim"
+  },
+  "turk-hava-kurumu": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837628/abou-taleb/universities/turk-hava-kurumu.png",
+    "publicId": "abou-taleb/universities/turk-hava-kurumu"
+  },
+  "uskudar": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837632/abou-taleb/universities/uskudar.png",
+    "publicId": "abou-taleb/universities/uskudar"
+  },
+  "yeditepe": {
+    "secureUrl": "https://res.cloudinary.com/dshfjhzvn/image/upload/v1787837727/abou-taleb/universities/yeditepe.png",
+    "publicId": "abou-taleb/universities/yeditepe"
+  }
+}
