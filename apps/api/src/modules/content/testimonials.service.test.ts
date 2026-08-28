@@ -55,6 +55,7 @@ describe('TestimonialsService', () => {
   });
 
   it('audits a consented publication', async () => {
+    const imageUrl = 'https://res.cloudinary.com/demo/image/upload/testimonial.png';
     const prisma = {
       testimonial: { create: vi.fn().mockResolvedValue(testimonial) },
       auditLog: { create: vi.fn() },
@@ -68,12 +69,15 @@ describe('TestimonialsService', () => {
         quoteAr: 'رأي',
         quoteEn: 'Quote',
         quoteTr: 'Alıntı',
-        imageUrl: null,
+        imageUrl,
         consentConfirmed: true,
         isPublished: true,
         sortOrder: 0,
       },
       'admin-1',
+    );
+    expect(prisma.testimonial.create).toHaveBeenCalledWith(
+      expect.objectContaining({ data: expect.objectContaining({ imageUrl }) }),
     );
     expect(prisma.auditLog.create).toHaveBeenCalledWith(
       expect.objectContaining({

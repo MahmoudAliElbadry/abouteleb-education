@@ -59,7 +59,7 @@ select {
   gap: 2rem;
   justify-content: space-between;
   min-height: 5.3rem;
-  padding: 0.45rem max(5%, calc((100% - 75rem) / 2));
+  padding: 0.45rem max(2.5%, calc((100% - 92rem) / 2));
   position: sticky;
   top: 0;
   z-index: 10;
@@ -298,7 +298,7 @@ nav a:hover {
   margin-top: 0.6rem;
 }
 .catalog-section {
-  padding-bottom: 3rem;
+  padding-bottom: 0;
 }
 .catalog-controls {
   display: flex;
@@ -330,16 +330,16 @@ nav a:hover {
 }
 .university-grid {
   display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr));
 }
 .university-card {
   background: #fff;
   border: 1px solid var(--gray-border);
   border-radius: 1.25rem;
   display: grid;
-  min-height: 16.5rem;
-  padding: 1rem;
+  min-height: 19rem;
+  padding: 1.5rem;
   place-items: center;
   text-align: center;
   transition:
@@ -357,7 +357,7 @@ nav a:hover {
   aspect-ratio: 1;
   display: flex;
   justify-content: center;
-  max-width: 8rem;
+  max-width: 9.5rem;
   width: 100%;
 }
 .university-logo img {
@@ -366,13 +366,13 @@ nav a:hover {
   width: 100%;
 }
 .university-card h3 {
-  font-size: 0.78rem;
+  font-size: 1rem;
   line-height: 1.5;
-  margin: 0.65rem 0 0.15rem;
+  margin: 0.7rem 0 0.2rem;
 }
 .university-card span {
   color: var(--text-light);
-  font-size: 0.72rem;
+  font-size: 0.88rem;
 }
 .empty-state {
   background: #fff;
@@ -402,20 +402,20 @@ nav a:hover {
 .services {
   background: #f1f5f9;
   max-width: none;
-  padding-inline: max(1.25rem, calc((100% - 75rem) / 2));
+  padding-inline: max(2.5%, calc((100% - 90rem) / 2));
 }
 .service-grid {
   display: grid;
-  gap: 1rem;
+  gap: 1.15rem;
   grid-template-columns: repeat(4, 1fr);
   margin: 0 auto;
-  max-width: 75rem;
+  max-width: 90rem;
 }
 .service-card {
   background: #fff;
   border: 1px solid var(--gray-border);
   border-radius: 1.25rem;
-  padding: 1.5rem;
+  padding: 1.75rem;
   text-align: center;
 }
 .service-card > span {
@@ -425,18 +425,18 @@ nav a:hover {
   color: var(--primary);
   display: inline-flex;
   font-weight: 900;
-  height: 3rem;
+  height: 3.2rem;
   justify-content: center;
-  width: 3rem;
+  width: 3.2rem;
 }
 .service-card h3 {
-  font-size: 1rem;
-  margin: 1rem 0 0.5rem;
+  font-size: 1.1rem;
+  margin: 1.1rem 0 0.55rem;
 }
 .service-card p {
   color: var(--text-light);
-  font-size: 0.82rem;
-  line-height: 1.75;
+  font-size: 0.9rem;
+  line-height: 1.8;
   margin: 0;
 }
 .steps {
@@ -445,16 +445,32 @@ nav a:hover {
 .steps-list {
   counter-reset: step;
   display: grid;
-  gap: 1.25rem;
-  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
   list-style: none;
   margin: 0 auto;
-  max-width: 68rem;
+  max-width: 42rem;
   padding: 0;
+  position: relative;
+}
+.steps-list::before {
+  border-inline-start: 2px dashed var(--primary);
+  bottom: 0.4rem;
+  content: '';
+  inset-inline-start: 1.7rem;
+  position: absolute;
+  top: 0.4rem;
+  width: 0;
 }
 .steps-list li {
+  align-items: flex-start;
+  display: flex;
+  gap: 1.4rem;
+  margin-bottom: 1.9rem;
   position: relative;
-  text-align: center;
+  text-align: start;
+}
+.steps-list li:last-child {
+  margin-bottom: 0;
 }
 .steps-list span {
   align-items: center;
@@ -463,20 +479,30 @@ nav a:hover {
   border-radius: 50%;
   color: #fff;
   display: inline-flex;
-  font-size: 1.1rem;
+  flex: none;
+  font-size: 1.15rem;
   font-weight: 900;
   height: 3.4rem;
   justify-content: center;
+  position: relative;
   width: 3.4rem;
+  z-index: 1;
 }
-.steps-list h3 {
-  font-size: 1rem;
-  margin: 0.85rem 0 0.3rem;
+.steps-card {
+  background: #fff;
+  border: 1px solid var(--gray-border);
+  border-radius: 1rem;
+  flex: 1;
+  padding: 1.35rem 1.5rem;
 }
-.steps-list p {
+.steps-card h3 {
+  font-size: 1.1rem;
+  margin: 0 0 0.4rem;
+}
+.steps-card p {
   color: var(--text-light);
-  font-size: 0.82rem;
-  line-height: 1.7;
+  font-size: 0.9rem;
+  line-height: 1.75;
   margin: 0;
 }
 .contact {
@@ -486,15 +512,16 @@ nav a:hover {
   display: flex;
   gap: 2rem;
   justify-content: space-between;
-  padding: clamp(3rem, 6vw, 5rem) max(5%, calc((100% - 70rem) / 2));
+  padding: clamp(3.5rem, 7vw, 5.5rem) max(2.5%, calc((100% - 88rem) / 2));
 }
 .contact h2 {
   color: #fff;
-  max-width: 32rem;
+  max-width: 36rem;
 }
 .contact span {
   color: #94a3b8;
   display: block;
+  font-size: 1.02rem;
   margin-top: 0.7rem;
 }
 .whatsapp {
@@ -864,9 +891,6 @@ nav a:hover {
   .service-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  .steps-list {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 @media (max-width: 600px) {
   .topbar {
@@ -909,9 +933,6 @@ nav a:hover {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .service-grid {
-    grid-template-columns: 1fr;
-  }
-  .steps-list {
     grid-template-columns: 1fr;
   }
   .contact {
@@ -1618,7 +1639,7 @@ nav a:hover {
 .public-site nav a {
   border-bottom-width: 1px;
   color: #d1d1d5;
-  font-size: 0.76rem;
+  font-size: 0.86rem;
   letter-spacing: 0.03em;
 }
 
@@ -1637,8 +1658,9 @@ nav a:hover {
   border-color: var(--primary);
   border-radius: 0.55rem;
   box-shadow: 0 9px 18px rgba(225, 29, 36, 0.18);
+  font-size: 0.95rem;
   letter-spacing: 0.01em;
-  padding: 0.82rem 1.4rem;
+  padding: 0.95rem 1.6rem;
 }
 
 .public-site .button:hover {
@@ -1694,18 +1716,18 @@ nav a:hover {
 }
 
 .public-site .hero-content {
-  margin-inline: max(0px, calc((100% - 70rem) / 2));
-  max-width: 42rem;
-  padding-inline: 1.25rem;
+  margin-inline: max(0px, calc((100% - 92rem) / 2));
+  max-width: 48rem;
+  padding-inline: 2.5%;
 }
 
 .public-site .hero-badge {
   background: rgba(255, 255, 255, 0.06);
   border-color: rgba(255, 255, 255, 0.2);
   color: #fff;
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   letter-spacing: 0.08em;
-  padding: 0.45rem 0.78rem;
+  padding: 0.5rem 0.85rem;
 }
 
 .public-site .hero-badge::before {
@@ -1720,7 +1742,7 @@ nav a:hover {
 }
 
 .public-site .hero h1 {
-  font-size: clamp(2.55rem, 5.3vw, 4.9rem);
+  font-size: clamp(2.8rem, 5.8vw, 5.4rem);
   letter-spacing: -0.035em;
   line-height: 1.18;
   max-width: 11ch;
@@ -1732,8 +1754,9 @@ nav a:hover {
 
 .public-site .hero p:not(.hero-badge) {
   color: #d1d1d5;
+  font-size: clamp(1.1rem, 2.2vw, 1.3rem);
   margin-inline: 0;
-  max-width: 35rem;
+  max-width: 40rem;
 }
 
 .public-site .hero-actions {
@@ -1795,12 +1818,16 @@ nav a:hover {
   border: 1px solid var(--line);
   border-radius: 0.85rem;
   box-shadow: 0 18px 50px rgba(18, 18, 20, 0.08);
-  max-width: 70rem;
+  max-width: 84rem;
 }
 
 .public-site .stats strong {
   color: var(--black);
-  font-size: clamp(1.45rem, 2.5vw, 2rem);
+  font-size: clamp(1.7rem, 3vw, 2.4rem);
+}
+
+.public-site .stats span {
+  font-size: 0.85rem;
 }
 
 .public-site .stats div:first-child strong {
@@ -1813,29 +1840,35 @@ nav a:hover {
 }
 
 .public-site .content-section {
-  max-width: 76rem;
+  max-width: 90rem;
   padding-block: clamp(4.7rem, 9vw, 7rem);
 }
 
 .public-site .section-heading {
-  margin-bottom: 2.8rem;
+  margin-bottom: 3.2rem;
+  max-width: 58rem;
 }
 
 .public-site .section-heading > p,
 .public-site .contact > div > p {
   color: var(--primary);
-  font-size: 0.73rem;
+  font-size: clamp(1.15rem, 1.5vw, 1.3rem);
   letter-spacing: 0.13em;
 }
 
 .public-site .section-heading h2,
 .public-site .contact h2 {
-  font-size: clamp(2rem, 3.6vw, 3rem);
+  font-size: clamp(2.3rem, 4.4vw, 3.6rem);
   letter-spacing: -0.025em;
 }
 
+.public-site .section-heading > span {
+  font-size: 1.12rem;
+  line-height: 1.85;
+}
+
 .public-site .catalog-section {
-  padding-bottom: clamp(4.7rem, 9vw, 7rem);
+  padding-bottom: 0;
 }
 
 .public-site .catalog-controls {
@@ -1843,8 +1876,8 @@ nav a:hover {
   border: 1px solid var(--line);
   border-radius: 0.85rem;
   box-shadow: 0 12px 30px rgba(18, 18, 20, 0.04);
-  max-width: 48rem;
-  padding: 0.5rem;
+  max-width: 56rem;
+  padding: 0.6rem;
 }
 
 .public-site .catalog-controls input,
@@ -1861,15 +1894,16 @@ nav a:hover {
 }
 
 .public-site .university-grid {
-  gap: 1.15rem;
+  gap: 1.4rem;
+  grid-template-columns: repeat(auto-fit, minmax(14.5rem, 1fr));
 }
 
 .public-site .university-card {
   background: #fff;
   border-color: var(--line);
   border-radius: 0.85rem;
-  min-height: 17rem;
-  padding: 1.25rem;
+  min-height: 20rem;
+  padding: 1.6rem;
 }
 
 .public-site .university-card:hover {
@@ -1880,16 +1914,17 @@ nav a:hover {
 
 .public-site .university-logo {
   border-bottom: 1px solid var(--surface-strong);
-  max-width: 8.8rem;
-  padding-bottom: 0.7rem;
+  max-width: 10rem;
+  padding-bottom: 0.8rem;
 }
 
 .public-site .university-card h3 {
-  font-size: 0.8rem;
+  font-size: 1.02rem;
 }
 
 .public-site .university-card span {
   color: var(--muted);
+  font-size: 0.9rem;
 }
 
 .public-site .empty-state {
@@ -1975,32 +2010,313 @@ nav a:hover {
 }
 
 .public-site .steps-list {
-  gap: 0;
-  max-width: 72rem;
-}
-
-.public-site .steps-list li {
-  padding-inline: 1rem;
-}
-
-.public-site .steps-list li:not(:last-child)::after {
-  background: var(--line);
-  content: '';
-  height: 1px;
-  inset-inline-start: calc(50% + 2.2rem);
-  position: absolute;
-  top: 1.7rem;
-  width: calc(100% - 4.4rem);
+  max-width: 44rem;
 }
 
 .public-site .steps-list span {
   box-shadow: 0 0 0 0.55rem var(--surface);
+}
+
+.public-site .steps-card {
+  border-color: var(--line);
+  box-shadow: 0 10px 24px rgba(18, 18, 20, 0.06);
+}
+
+.public-site .steps-card p {
+  color: var(--muted);
+}
+
+.public-site .who-we-are-grid {
+  align-items: center;
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  grid-template-columns: 1fr 1.25fr;
+}
+
+.public-site .who-we-are-grid h3 {
+  color: var(--black);
+  font-size: clamp(1.55rem, 2.8vw, 2.1rem);
+  letter-spacing: -0.02em;
+  line-height: 1.35;
+  margin: 0 0 1.1rem;
+}
+
+.public-site .who-we-are-grid > div:first-child > p {
+  color: var(--muted);
+  font-size: 1.02rem;
+  line-height: 1.9;
+  margin: 0 0 1.35rem;
+}
+
+.public-site .who-we-are-grid ul {
+  display: grid;
+  gap: 0.7rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.public-site .who-we-are-grid li {
+  align-items: center;
+  color: var(--ink);
+  display: flex;
+  font-size: 1rem;
+  font-weight: 700;
+  gap: 0.7rem;
+}
+
+.public-site .who-we-are-grid li > span {
+  align-items: center;
+  background: rgba(225, 29, 36, 0.1);
+  border-radius: 50%;
+  color: var(--primary);
+  display: inline-flex;
+  flex: none;
+  font-size: 0.88rem;
+  font-weight: 900;
+  height: 1.8rem;
+  justify-content: center;
+  width: 1.8rem;
+}
+
+.public-site .who-we-are-video {
+  aspect-ratio: 16 / 9;
+  background-color: var(--black);
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.04) 0,
+    rgba(255, 255, 255, 0.04) 12px,
+    transparent 12px,
+    transparent 24px
+  );
+  border: 1px solid var(--line);
+  border-radius: 0.85rem;
+  box-shadow: 0 22px 50px rgba(18, 18, 20, 0.12);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  overflow: hidden;
+  padding: 1.5rem;
   position: relative;
+  text-align: center;
+}
+
+.public-site .who-we-are-video button {
+  align-items: center;
+  background: var(--primary);
+  border: 0;
+  border-radius: 50%;
+  box-shadow: 0 12px 30px rgba(225, 29, 36, 0.4);
+  cursor: pointer;
+  display: flex;
+  height: 5rem;
+  justify-content: center;
+  transition: background 0.2s ease;
+  width: 5rem;
+}
+
+.public-site .who-we-are-video button:hover {
+  background: var(--primary-dark);
+}
+
+.public-site .who-we-are-video button > span {
+  background: #fff;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  display: block;
+  height: 1.55rem;
+  transform: translateX(0.08rem);
+  width: 1.3rem;
+}
+
+.public-site .who-we-are-video > span {
+  color: rgba(255, 255, 255, 0.62);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 860px) {
+  .public-site .who-we-are-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.public-site .reviews {
+  background: var(--black);
+  color: #fff;
+  max-width: none;
+  width: 100%;
+}
+
+.public-site .reviews .section-heading h2 {
+  color: #fff;
+}
+
+.public-site .reviews .section-heading > span {
+  color: #a1a1a8;
+}
+
+.public-site .reviews-carousel {
+  align-items: center;
+  display: flex;
+  gap: 1.25rem;
+  margin-inline: auto;
+  max-width: 88rem;
+}
+
+.public-site .reviews-nav {
+  align-items: center;
+  background: #17171b;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 50%;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  flex: none;
+  font-size: 1.3rem;
+  height: 3.2rem;
+  justify-content: center;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+  width: 3.2rem;
+}
+
+.public-site .reviews-nav:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.public-site .reviews-viewport {
+  flex: 1;
+  height: 23.5rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.public-site .reviews-track {
+  display: flex;
+  gap: 1.25rem;
+  left: 50%;
+  position: absolute;
+  top: 0;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.public-site .review-card {
+  background: #17171b;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.85rem;
+  box-sizing: border-box;
+  flex: 0 0 16rem;
+  margin: 0;
+  overflow: hidden;
+  position: relative;
+  transition:
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.6s ease,
+    opacity 0.6s ease;
+  width: 16rem;
+}
+
+.public-site .review-card-media {
+  align-items: center;
+  aspect-ratio: 9 / 13;
+  background-color: #1f1f24;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.05) 0,
+    rgba(255, 255, 255, 0.05) 10px,
+    transparent 10px,
+    transparent 20px
+  );
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.public-site .review-card-media img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.public-site .review-card-initial {
+  color: rgba(255, 255, 255, 0.28);
+  font-size: 3rem;
+  font-weight: 900;
+}
+
+.public-site .review-card figcaption {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.75), transparent);
+  bottom: 0;
+  color: #fff;
+  font-size: 0.92rem;
+  font-weight: 800;
+  inset-inline: 0;
+  padding: 1.75rem 1rem 0.85rem;
+  position: absolute;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.55);
+}
+
+.public-site .review-card.is-active {
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.5);
+  filter: brightness(1);
+  opacity: 1;
+  transform: scale(1);
+  z-index: 3;
+}
+
+.public-site .review-card.is-near {
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.4);
+  filter: brightness(0.5);
+  opacity: 0.85;
+  transform: scale(0.86);
+  z-index: 2;
+}
+
+.public-site .review-card.is-far {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  filter: brightness(0.32);
+  opacity: 0.55;
+  transform: scale(0.75);
   z-index: 1;
 }
 
-.public-site .steps-list p {
-  color: var(--muted);
+.public-site .reviews-dots {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 1.75rem;
+}
+
+.public-site .reviews-dots button {
+  background: rgba(255, 255, 255, 0.22);
+  border: 0;
+  border-radius: 99px;
+  cursor: pointer;
+  height: 0.55rem;
+  transition: all 0.3s ease;
+  width: 0.55rem;
+}
+
+.public-site .reviews-dots button.is-active {
+  background: var(--primary);
+  width: 1.6rem;
+}
+
+@media (max-width: 640px) {
+  .public-site .reviews-viewport {
+    height: 17rem;
+  }
+  .public-site .review-card {
+    flex-basis: 11rem;
+    width: 11rem;
+  }
 }
 
 .public-site .contact {
@@ -2147,12 +2463,12 @@ nav a:hover {
     inset-inline-end: -20rem;
   }
 
-  .public-site .steps-list {
-    gap: 1.75rem;
+  .public-site .steps-list::before {
+    inset-inline-start: 1.45rem;
   }
 
-  .public-site .steps-list li:not(:last-child)::after {
-    display: none;
+  .public-site .steps-list span {
+    box-shadow: 0 0 0 0.4rem var(--surface);
   }
 }
 

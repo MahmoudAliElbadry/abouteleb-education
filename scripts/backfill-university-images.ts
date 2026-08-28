@@ -7,7 +7,9 @@ const manifest = universityImages as Record<string, { secureUrl: string; publicI
 const apply = process.argv.includes('--apply');
 
 async function main() {
-  const rows = await prisma.university.findMany({ select: { id: true, slug: true, imageUrl: true } });
+  const rows = await prisma.university.findMany({
+    select: { id: true, slug: true, imageUrl: true },
+  });
 
   const planned: { id: string; slug: string; from: string; to: string }[] = [];
   const alreadyCloudinary: string[] = [];

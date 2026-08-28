@@ -49,12 +49,12 @@ Never write passwords or verification codes in this document.
 
 Run the complete critical path in the primary browser and the public/responsive checks in the others.
 
-| Target | Minimum coverage | Result |
-|---|---|---|
-| Chrome or Chromium desktop | Complete checklist | |
-| Firefox desktop | Public page, authentication, and client request | |
-| Mobile viewport — 390 × 844 | Public navigation, forms, account, and admin navigation | |
-| Tablet viewport — 768 × 1024 | Public page and admin layout | |
+| Target                       | Minimum coverage                                        | Result |
+| ---------------------------- | ------------------------------------------------------- | ------ |
+| Chrome or Chromium desktop   | Complete checklist                                      |        |
+| Firefox desktop              | Public page, authentication, and client request         |        |
+| Mobile viewport — 390 × 844  | Public navigation, forms, account, and admin navigation |        |
+| Tablet viewport — 768 × 1024 | Public page and admin layout                            |        |
 
 ---
 
@@ -654,29 +654,29 @@ Critical tests: MAN-001 through MAN-004, MAN-007, MAN-009 through MAN-014, MAN-0
 
 ## Test summary
 
-| Result | Count |
-|---|---:|
-| Passed | |
-| Failed | |
-| Blocked | |
-| Not applicable | |
+| Result         | Count |
+| -------------- | ----: |
+| Passed         |       |
+| Failed         |       |
+| Blocked        |       |
+| Not applicable |       |
 
 ### Outstanding failures
 
 | Test ID | Severity | Summary | Owner | Resolution |
-|---|---|---|---|---|
-| | | | | |
+| ------- | -------- | ------- | ----- | ---------- |
+|         |          |         |       |            |
 
 ### QA data created
 
-| Type | Identifier/reference | Final state | Cleanup notes |
-|---|---|---|---|
-| Account | | | |
-| Admission request | | | |
-| University | | Archived | |
-| Testimonial | | Archived | |
-| Social link | | Archived | |
-| Uploaded image | | | |
+| Type              | Identifier/reference | Final state | Cleanup notes |
+| ----------------- | -------------------- | ----------- | ------------- |
+| Account           |                      |             |               |
+| Admission request |                      |             |               |
+| University        |                      | Archived    |               |
+| Testimonial       |                      | Archived    |               |
+| Social link       |                      | Archived    |               |
+| Uploaded image    |                      |             |               |
 
 ## Sign-off
 

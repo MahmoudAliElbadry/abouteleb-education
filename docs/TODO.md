@@ -9,3 +9,6 @@
   - [x] Add a confirmed cancel-order action to the admin order detail page.
   - [x] Add an order-status flow guide to the account page.
   - [x] Document the purpose of university slug and website URL fields.
+  - [x] On an `EMAIL_NOT_VERIFIED` login error, offer a verify-account action that sends a fresh OTP and opens the verification page.
+  - [x] Increase the red introductory paragraph text at the top of public sections.
+  - [x] Center the play-arrow glyph inside the introductory-video button.

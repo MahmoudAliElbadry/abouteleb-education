@@ -22,4 +22,3 @@ Provide TestSprite with these values through its secure credential mechanism, no
 - An optional small disposable PNG or JPEG for upload testing
 
 If those credentials are unavailable, instruct TestSprite to skip authenticated and OTP-dependent scenarios rather than guessing credentials or repeatedly retrying.
-

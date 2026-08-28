@@ -31,10 +31,10 @@ Read this before starting. It is the factual baseline every task assumes.
 
 **Static (`/images/…`) — inherited from the old GitHub Pages site:**
 
-| Location | Contents | Size |
-|---|---|---|
-| `images/` (repo root) | 41 logos under **original mangled filenames** (e.g. `ACIBADEM MEHMET ALI_ç AYDINLAR U_êNI_çVERSI_çTESI_ç.png`) + `logo.png` | 14 MB |
-| `apps/web/public/images/` | 41 logos renamed to slugs (`acibadem.png`) + `logo.png` + `email-logo.png` + `whatsapp-svgrepo-com.svg` = 44 files | 14 MB |
+| Location                  | Contents                                                                                                                    | Size  |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ----- |
+| `images/` (repo root)     | 41 logos under **original mangled filenames** (e.g. `ACIBADEM MEHMET ALI_ç AYDINLAR U_êNI_çVERSI_çTESI_ç.png`) + `logo.png` | 14 MB |
+| `apps/web/public/images/` | 41 logos renamed to slugs (`acibadem.png`) + `logo.png` + `email-logo.png` + `whatsapp-svgrepo-com.svg` = 44 files          | 14 MB |
 
 Only `apps/web/public/images/` is served. Root `images/` is the pre-rename source and is referenced by nothing.
 
@@ -43,6 +43,7 @@ Referenced through a helper **duplicated verbatim in three files**:
 ```ts
 const publicAsset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
 ```
+
 `apps/web/src/App.tsx:33`, `apps/web/src/features/account/AccountPage.tsx:9`, `apps/web/src/features/auth/AuthPages.tsx:8`.
 
 **Cloudinary — already fully built, but holds zero university logos:**
@@ -67,7 +68,7 @@ Wired into `AdminUniversityPage.tsx:210` (required) and `TestimonialsAdminSectio
 
 ```ts
 export const imageRefSchema = z.union([
-  httpsUrlSchema,                                              // Cloudinary
+  httpsUrlSchema, // Cloudinary
   z.string().regex(/^\/images\/[a-z0-9-]+\.(png|svg|webp|jpe?g)$/), // legacy static
 ]);
 ```
@@ -76,7 +77,7 @@ This union is the migration seam — both forms coexist without breakage. `Unive
 
 ### Why the DB currently points at static paths
 
-`prisma/seed.ts:48,61` writes `imageUrl: \`/images/${university.id}.png\`` for all 41 rows, sourced from `apps/web/src/data/universities.ts` (41 entries, `id` used as both slug and filename stem).
+`prisma/seed.ts:48,61` writes `imageUrl: \`/images/${university.id}.png\``for all 41 rows, sourced from`apps/web/src/data/universities.ts`(41 entries,`id` used as both slug and filename stem).
 
 ### Known gaps this plan closes
 
@@ -86,16 +87,16 @@ This union is the migration seam — both forms coexist without breakage. `Unive
 
 ### Assets that deliberately do NOT move
 
-| Asset | Decision | Reason |
-|---|---|---|
-| `logo.png` (header/account/auth chrome) | **stays local** | App shell, never admin-edited. Cloudinary would add a third-party dependency to header rendering for zero benefit. |
-| `whatsapp-svgrepo-com.svg` | **stays local** | Same. |
-| `logo.png` as `<img onError>` fallback (`App.tsx:613`) | **stays local, keep the behaviour** | Handles a *single* image 404 (deleted asset, blocked request) — unrelated to API health. Matters **more** after migration, since URLs now point at a third party. |
-| `email-logo.png` | **stays at its current URL — see Task 7** | Not a local asset: `env.ts:31` defaults `EMAIL_LOGO_URL` to `https://aboutalebeducation.com/images/email-logo.png`, and `email.provider.ts:86` hardcodes the same string. Email clients need an absolute, permanently-reachable URL. |
+| Asset                                                  | Decision                                  | Reason                                                                                                                                                                                                                               |
+| ------------------------------------------------------ | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `logo.png` (header/account/auth chrome)                | **stays local**                           | App shell, never admin-edited. Cloudinary would add a third-party dependency to header rendering for zero benefit.                                                                                                                   |
+| `whatsapp-svgrepo-com.svg`                             | **stays local**                           | Same.                                                                                                                                                                                                                                |
+| `logo.png` as `<img onError>` fallback (`App.tsx:613`) | **stays local, keep the behaviour**       | Handles a _single_ image 404 (deleted asset, blocked request) — unrelated to API health. Matters **more** after migration, since URLs now point at a third party.                                                                    |
+| `email-logo.png`                                       | **stays at its current URL — see Task 7** | Not a local asset: `env.ts:31` defaults `EMAIL_LOGO_URL` to `https://aboutalebeducation.com/images/email-logo.png`, and `email.provider.ts:86` hardcodes the same string. Email clients need an absolute, permanently-reachable URL. |
 
 ### ⚠️ Open decision blocking Task 6 only
 
-`fallbackUniversities` (`App.tsx:35-47`) renders the bundled 41-university list when `getPublicUniversities()` fails. **My recommendation is to remove it** — the API and web app share a deployment, so if the API is down the contact form, lead capture and auth are dead too; showing a pristine catalogue is stale by construction, silently diverges from admin edits, and means the client can *never* actually remove a university from the public site. That is a content-management bug wearing a resilience costume.
+`fallbackUniversities` (`App.tsx:35-47`) renders the bundled 41-university list when `getPublicUniversities()` fails. **My recommendation is to remove it** — the API and web app share a deployment, so if the API is down the contact form, lead capture and auth are dead too; showing a pristine catalogue is stale by construction, silently diverges from admin edits, and means the client can _never_ actually remove a university from the public site. That is a content-management bug wearing a resilience costume.
 
 **But this is a visible product decision, not cleanup** — it changes what visitors see during an outage from "full catalogue" to "error + retry". If the client asked for the site to look complete during backend hiccups, the recommendation reverses.
 
@@ -105,20 +106,20 @@ This union is the migration seam — both forms coexist without breakage. `Unive
 
 ## File Structure
 
-| File | Change | Responsibility |
-|---|---|---|
-| `apps/api/src/modules/uploads/uploads.service.ts` | modify | Add optional `publicId` to `uploadImage`; unchanged default behaviour for ad-hoc admin uploads |
-| `apps/api/src/modules/uploads/uploads.service.test.ts` | modify | Cover the new option |
-| `scripts/migrate-university-images.ts` | create | One-off: upload 41 logos with deterministic public_ids, emit manifest |
-| `scripts/university-image-manifest.json` | create (generated) | slug → Cloudinary `secure_url` + `public_id`. Committed — it is the seed's source of truth |
-| `scripts/backfill-university-images.ts` | create | One-off: rewrite `University.imageUrl` from the manifest |
-| `prisma/seed.ts` | modify `:44-66` | Seed from the manifest instead of `/images/${id}.png` |
-| `apps/web/src/App.tsx` | modify `:33-47`, `:595-599` | Remove bundled fallback (Task 6, gated) |
-| `apps/web/src/App.test.tsx` | modify `:217-241` | Update fallback expectations (Task 6, gated) |
-| `packages/contracts/src/content.ts` | modify `:15-18` | Tighten `imageRefSchema` once backfill is confirmed (Task 8) |
-| `packages/contracts/src/index.test.ts` | modify | Cover the tightened schema |
-| `images/` (root) | delete | 14 MB dead pre-rename source |
-| `apps/web/public/images/*.png` (41 logos) | delete | Superseded by Cloudinary (Task 6/6-ALT decides timing) |
+| File                                                   | Change                      | Responsibility                                                                                 |
+| ------------------------------------------------------ | --------------------------- | ---------------------------------------------------------------------------------------------- |
+| `apps/api/src/modules/uploads/uploads.service.ts`      | modify                      | Add optional `publicId` to `uploadImage`; unchanged default behaviour for ad-hoc admin uploads |
+| `apps/api/src/modules/uploads/uploads.service.test.ts` | modify                      | Cover the new option                                                                           |
+| `scripts/migrate-university-images.ts`                 | create                      | One-off: upload 41 logos with deterministic public_ids, emit manifest                          |
+| `scripts/university-image-manifest.json`               | create (generated)          | slug → Cloudinary `secure_url` + `public_id`. Committed — it is the seed's source of truth     |
+| `scripts/backfill-university-images.ts`                | create                      | One-off: rewrite `University.imageUrl` from the manifest                                       |
+| `prisma/seed.ts`                                       | modify `:44-66`             | Seed from the manifest instead of `/images/${id}.png`                                          |
+| `apps/web/src/App.tsx`                                 | modify `:33-47`, `:595-599` | Remove bundled fallback (Task 6, gated)                                                        |
+| `apps/web/src/App.test.tsx`                            | modify `:217-241`           | Update fallback expectations (Task 6, gated)                                                   |
+| `packages/contracts/src/content.ts`                    | modify `:15-18`             | Tighten `imageRefSchema` once backfill is confirmed (Task 8)                                   |
+| `packages/contracts/src/index.test.ts`                 | modify                      | Cover the tightened schema                                                                     |
+| `images/` (root)                                       | delete                      | 14 MB dead pre-rename source                                                                   |
+| `apps/web/public/images/*.png` (41 logos)              | delete                      | Superseded by Cloudinary (Task 6/6-ALT decides timing)                                         |
 
 ---
 
@@ -127,10 +128,12 @@ This union is the migration seam — both forms coexist without breakage. `Unive
 Makes uploads idempotent and replaceable. The HTTP route keeps its current behaviour exactly — only the migration script passes the new option.
 
 **Files:**
+
 - Modify: `apps/api/src/modules/uploads/uploads.service.ts:12-27`
 - Test: `apps/api/src/modules/uploads/uploads.service.test.ts`
 
 **Interfaces:**
+
 - Consumes: nothing from earlier tasks.
 - Produces: `UploadsService.uploadImage(buffer: Buffer, options?: { publicId?: string; folder?: string }): Promise<UploadApiResponse>`. When `publicId` is given, passes `{ public_id, overwrite: true, invalidate: true }` to Cloudinary. Default folder stays `'abou-taleb/uploads'`. Task 2 depends on this signature.
 
@@ -139,41 +142,41 @@ Makes uploads idempotent and replaceable. The HTTP route keeps its current behav
 Append inside the existing `describe('UploadsService', …)` block in `apps/api/src/modules/uploads/uploads.service.test.ts`:
 
 ```ts
-  it('uploads to the default folder with no public_id by default', async () => {
-    uploadStreamMock.mockImplementation((_options, callback) => ({
-      end: () => callback(null, { secure_url: 'https://res.cloudinary.com/demo/a.png' }),
-    }));
-    const { UploadsService } = await import('./uploads.service.js');
-    const service = new UploadsService();
+it('uploads to the default folder with no public_id by default', async () => {
+  uploadStreamMock.mockImplementation((_options, callback) => ({
+    end: () => callback(null, { secure_url: 'https://res.cloudinary.com/demo/a.png' }),
+  }));
+  const { UploadsService } = await import('./uploads.service.js');
+  const service = new UploadsService();
 
-    await service.uploadImage(Buffer.from('bytes'));
+  await service.uploadImage(Buffer.from('bytes'));
 
-    expect(uploadStreamMock.mock.calls[0][0]).toEqual({
-      folder: 'abou-taleb/uploads',
-      resource_type: 'image',
-    });
+  expect(uploadStreamMock.mock.calls[0][0]).toEqual({
+    folder: 'abou-taleb/uploads',
+    resource_type: 'image',
+  });
+});
+
+it('passes a deterministic public_id and overwrite when given one', async () => {
+  uploadStreamMock.mockImplementation((_options, callback) => ({
+    end: () => callback(null, { secure_url: 'https://res.cloudinary.com/demo/b.png' }),
+  }));
+  const { UploadsService } = await import('./uploads.service.js');
+  const service = new UploadsService();
+
+  await service.uploadImage(Buffer.from('bytes'), {
+    publicId: 'acibadem',
+    folder: 'abou-taleb/universities',
   });
 
-  it('passes a deterministic public_id and overwrite when given one', async () => {
-    uploadStreamMock.mockImplementation((_options, callback) => ({
-      end: () => callback(null, { secure_url: 'https://res.cloudinary.com/demo/b.png' }),
-    }));
-    const { UploadsService } = await import('./uploads.service.js');
-    const service = new UploadsService();
-
-    await service.uploadImage(Buffer.from('bytes'), {
-      publicId: 'acibadem',
-      folder: 'abou-taleb/universities',
-    });
-
-    expect(uploadStreamMock.mock.calls[0][0]).toEqual({
-      folder: 'abou-taleb/universities',
-      resource_type: 'image',
-      public_id: 'acibadem',
-      overwrite: true,
-      invalidate: true,
-    });
+  expect(uploadStreamMock.mock.calls[0][0]).toEqual({
+    folder: 'abou-taleb/universities',
+    resource_type: 'image',
+    public_id: 'acibadem',
+    overwrite: true,
+    invalidate: true,
   });
+});
 ```
 
 - [ ] **Step 2: Run test to verify it fails**
@@ -235,10 +238,12 @@ git commit -m "feat(uploads): support deterministic public_id for idempotent upl
 Reads `apps/web/public/images/<slug>.png` for each entry in `apps/web/src/data/universities.ts`, uploads with `public_id = slug` into `abou-taleb/universities`, writes a manifest.
 
 **Files:**
+
 - Create: `scripts/migrate-university-images.ts`
 - Create (generated by running it): `scripts/university-image-manifest.json`
 
 **Interfaces:**
+
 - Consumes: `UploadsService.uploadImage(buffer, { publicId, folder })` from Task 1. `universities` array from `apps/web/src/data/universities.ts` — each entry has `id: string`, `name: string`, `image: string`, `city: 'Istanbul' | 'Ankara' | 'Kocaeli'`. Note: `id` is the slug; the `image` field holds the **old mangled filename** and must be ignored.
 - Produces: `scripts/university-image-manifest.json`, shape `Record<string, { secureUrl: string; publicId: string }>` keyed by slug. Tasks 3 and 4 read this file.
 
@@ -308,6 +313,7 @@ The manifest is written after **every** upload, so an interrupted run resumes wh
 - [ ] **Step 2: Verify every source file exists before uploading anything**
 
 Run:
+
 ```bash
 cd /mnt/HDD/Freelance/abouteleb-education
 grep -o "id: '[a-z0-9-]*'" apps/web/src/data/universities.ts | sed "s/id: '//;s/'//" | sort > /tmp/ids.txt
@@ -315,30 +321,37 @@ ls apps/web/public/images | grep '\.png$' | sed 's/\.png$//' | sort > /tmp/files
 comm -23 /tmp/ids.txt /tmp/files.txt
 wc -l < /tmp/ids.txt
 ```
+
 Expected: **empty output** from `comm` (no university lacks a file), and `41` from `wc`. If `comm` prints any slug, stop — that logo is missing and must be sourced from the client before proceeding.
 
 - [ ] **Step 3: Dry-run against one university**
 
 Temporarily add `.slice(0, 1)` to the loop source (`for (const university of universities.slice(0, 1))`), then run:
+
 ```bash
 npx tsx scripts/migrate-university-images.ts
 ```
+
 Expected: one `ok acibadem -> https://res.cloudinary.com/…` line, and `scripts/university-image-manifest.json` created with exactly one entry. Open the printed URL in a browser and confirm the Acıbadem logo renders.
 
 - [ ] **Step 4: Remove the slice and run the full migration**
 
 Remove `.slice(0, 1)`, then:
+
 ```bash
 npx tsx scripts/migrate-university-images.ts
 ```
+
 Expected: `Done. uploaded=40 skipped=1 total=41` (the Acıbadem entry is skipped from the dry run).
 
 - [ ] **Step 5: Verify the manifest is complete**
 
 Run:
+
 ```bash
 node -e "const m=require('./scripts/university-image-manifest.json');console.log(Object.keys(m).length);console.log(Object.values(m).every(e=>e.secureUrl.startsWith('https://')&&e.publicId))"
 ```
+
 Expected: `41` then `true`.
 
 - [ ] **Step 6: Commit**
@@ -353,9 +366,11 @@ git commit -m "feat(assets): migrate 41 university logos to Cloudinary"
 ### Task 3: Seed from the manifest
 
 **Files:**
+
 - Modify: `prisma/seed.ts:1-5` (imports), `:44-66` (the university upsert block)
 
 **Interfaces:**
+
 - Consumes: `scripts/university-image-manifest.json` from Task 2.
 - Produces: seeded `University` rows whose `imageUrl` is a Cloudinary HTTPS URL. Task 4 and Task 8 depend on this.
 
@@ -412,6 +427,7 @@ Expected: exits 0, no `No Cloudinary image for …` error.
 - [ ] **Step 5: Verify the rows**
 
 Run:
+
 ```bash
 npx prisma db execute --stdin <<'SQL'
 SELECT count(*) FILTER (WHERE "imageUrl" LIKE 'https://res.cloudinary.com/%') AS cloudinary,
@@ -419,6 +435,7 @@ SELECT count(*) FILTER (WHERE "imageUrl" LIKE 'https://res.cloudinary.com/%') AS
 FROM "University";
 SQL
 ```
+
 Expected: `cloudinary = 41`, `legacy = 0`.
 
 - [ ] **Step 6: Commit**
@@ -435,9 +452,11 @@ git commit -m "feat(seed): seed university logos from the Cloudinary manifest"
 The seed only fixes environments you re-seed. Production rows edited since the last seed must be rewritten in place, without clobbering logos an admin already replaced via the dashboard.
 
 **Files:**
+
 - Create: `scripts/backfill-university-images.ts`
 
 **Interfaces:**
+
 - Consumes: `scripts/university-image-manifest.json` from Task 2.
 - Produces: nothing other tasks read. Task 8 requires this to have been run in every environment.
 
@@ -455,7 +474,9 @@ const manifest = universityImages as Record<string, { secureUrl: string; publicI
 const apply = process.argv.includes('--apply');
 
 async function main() {
-  const rows = await prisma.university.findMany({ select: { id: true, slug: true, imageUrl: true } });
+  const rows = await prisma.university.findMany({
+    select: { id: true, slug: true, imageUrl: true },
+  });
 
   const planned: { id: string; slug: string; from: string; to: string }[] = [];
   const alreadyCloudinary: string[] = [];
@@ -572,11 +593,13 @@ If every check passed, the migration is functionally complete; Tasks 6-8 are cle
 **Do not start until the client has confirmed** they accept an error state instead of a stale catalogue during an API outage. See "Open decision" above. If they want the fallback kept, do **Task 6-ALT** instead.
 
 **Files:**
+
 - Modify: `apps/web/src/App.tsx:20` (import), `:35-47` (`fallbackUniversities`), `:399` (`usingUniversityFallback`), `:595-599` (fallback notice)
 - Modify: `apps/web/src/App.test.tsx:217-241`
 - Delete: `apps/web/public/images/<41 slugs>.png`
 
 **Interfaces:**
+
 - Consumes: the verified-working Cloudinary rendering from Task 5.
 - Produces: an `App.tsx` with no bundled catalogue. Task 8 depends on no `/images/…` university reference remaining in the web app.
 
@@ -602,18 +625,19 @@ Expected: FAIL — articles are still rendered from the bundled fallback.
 - [ ] **Step 3: Remove the fallback**
 
 In `apps/web/src/App.tsx`:
+
 1. Delete the `fallbackUniversities` constant (lines 35-47).
 2. Delete the import at line 20: `import { universities as bundledUniversities } from './data/universities.js';`
 3. Change line 400 from:
 
 ```ts
-  const universities: PublicUniversity[] = universitiesQuery.data?.items ?? fallbackUniversities;
+const universities: PublicUniversity[] = universitiesQuery.data?.items ?? fallbackUniversities;
 ```
 
 to:
 
 ```ts
-  const universities: PublicUniversity[] = universitiesQuery.data?.items ?? [];
+const universities: PublicUniversity[] = universitiesQuery.data?.items ?? [];
 ```
 
 Leave line 399 (`usingUniversityFallback`) and the `role="status"` notice at line 595 alone — they still drive the error message; only the data substitution goes away. `shownUniversities` at line 445 derives from `universities`, so it needs no edit.
@@ -633,6 +657,7 @@ grep -o "id: '[a-z0-9-]*'" apps/web/src/data/universities.ts | sed "s/id: '//;s/
   | while read -r slug; do git rm "apps/web/public/images/$slug.png"; done
 ls apps/web/public/images
 ```
+
 Expected remaining: `logo.png`, `email-logo.png`, `whatsapp-svgrepo-com.svg`.
 
 - [ ] **Step 6: Decide the fate of `data/universities.ts`**
@@ -660,6 +685,7 @@ git commit -m "refactor(web): drop bundled university catalogue in favour of Clo
 If the client wants the catalogue visible during outages, the bundled logos must stay — but they should no longer masquerade as live content.
 
 **Files:**
+
 - Modify: `apps/web/src/App.tsx:595-599`
 
 - [ ] **Step 1: Make the stale state explicit in the test**
@@ -667,8 +693,8 @@ If the client wants the catalogue visible during outages, the bundled logos must
 In `apps/web/src/App.test.tsx`, extend the existing test at line 217:
 
 ```ts
-    expect(screen.getByRole('status')).toHaveTextContent('Unable to load universities.');
-    expect(screen.getByRole('status')).toHaveTextContent('cached list');
+expect(screen.getByRole('status')).toHaveTextContent('Unable to load universities.');
+expect(screen.getByRole('status')).toHaveTextContent('cached list');
 ```
 
 - [ ] **Step 2: Run it to verify it fails**
@@ -699,16 +725,19 @@ Note: choosing 6-ALT means **Task 8 cannot tighten `imageRefSchema`** to HTTPS-o
 ### Task 7: Root `images/` cleanup and the email-logo decision
 
 **Files:**
+
 - Delete: `images/` (repo root, 14 MB)
 - Possibly modify: `apps/api/src/modules/auth/email.provider.ts:86`
 
 - [ ] **Step 1: Prove root `images/` is referenced by nothing**
 
 Run:
+
 ```bash
 cd /mnt/HDD/Freelance/abouteleb-education
 grep -rn "ACIBADEM\|U_êNI_çVERSI" --include=* . 2>/dev/null | grep -v node_modules | grep -v "^./images/" | grep -v .git/
 ```
+
 Expected: **no output**. If anything matches, investigate before deleting.
 
 - [ ] **Step 2: Delete it**
@@ -757,16 +786,19 @@ git commit -m "chore(assets): remove dead root images dir, honour EMAIL_LOGO_URL
 **Only after Task 6 (not 6-ALT) is merged AND Task 4's backfill has been applied in every environment including production.** Tightening early makes existing legacy rows fail validation on the next admin edit.
 
 **Files:**
+
 - Modify: `packages/contracts/src/content.ts:15-18`
 - Modify: `packages/contracts/src/index.test.ts`
 
 **Interfaces:**
+
 - Consumes: a database where no `University.imageUrl` or `Testimonial.imageUrl` starts with `/images/`.
 - Produces: `imageRefSchema` as a plain HTTPS URL schema.
 
 - [ ] **Step 1: Confirm production has no legacy refs**
 
 Against the production database:
+
 ```bash
 npx prisma db execute --stdin <<'SQL'
 SELECT 'university' AS t, count(*) FROM "University" WHERE "imageUrl" LIKE '/images/%'
@@ -774,6 +806,7 @@ UNION ALL
 SELECT 'testimonial', count(*) FROM "Testimonial" WHERE "imageUrl" LIKE '/images/%';
 SQL
 ```
+
 Expected: `0` for both. **If either is non-zero, stop** and run Task 4's backfill there first.
 
 - [ ] **Step 2: Write the failing test**
@@ -843,18 +876,18 @@ git commit -m "refactor(contracts): require HTTPS image refs now that migration 
 
 ## Rollback
 
-| Task | How to undo |
-|---|---|
-| 1 | Revert the commit — `uploadImage(buffer)` behaviour is unchanged by default, so nothing depends on it. |
-| 2 | Cloudinary assets are additive and harmless. Delete the `abou-taleb/universities` folder in the Cloudinary console if truly needed. |
-| 3 | Revert `prisma/seed.ts`. |
-| 4 | `UPDATE "University" SET "imageUrl" = '/images/' \|\| slug \|\| '.png';` — valid only while the local files still exist (i.e. before Task 6). |
-| 6 | `git revert` restores both `App.tsx` and the 41 PNGs. |
-| 7 | `git checkout <commit-before>^ -- images` restores the root directory. |
-| 8 | Revert the commit; the union schema accepts both forms again. |
+| Task | How to undo                                                                                                                                   |
+| ---- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1    | Revert the commit — `uploadImage(buffer)` behaviour is unchanged by default, so nothing depends on it.                                        |
+| 2    | Cloudinary assets are additive and harmless. Delete the `abou-taleb/universities` folder in the Cloudinary console if truly needed.           |
+| 3    | Revert `prisma/seed.ts`.                                                                                                                      |
+| 4    | `UPDATE "University" SET "imageUrl" = '/images/' \|\| slug \|\| '.png';` — valid only while the local files still exist (i.e. before Task 6). |
+| 6    | `git revert` restores both `App.tsx` and the 41 PNGs.                                                                                         |
+| 7    | `git checkout <commit-before>^ -- images` restores the root directory.                                                                        |
+| 8    | Revert the commit; the union schema accepts both forms again.                                                                                 |
 
 ## Post-migration operational notes
 
-- Ad-hoc admin uploads still land in `abou-taleb/uploads` **without** a `public_id`, so replacing an image through the dashboard still orphans the previous asset. Task 1 only makes *migrated* logos replaceable in place. Fully solving this needs a `publicId` column on `University`/`Testimonial` plus a delete-on-replace step — deliberately **out of scope** here, and worth raising with the client as a follow-up if Cloudinary storage cost becomes a concern.
+- Ad-hoc admin uploads still land in `abou-taleb/uploads` **without** a `public_id`, so replacing an image through the dashboard still orphans the previous asset. Task 1 only makes _migrated_ logos replaceable in place. Fully solving this needs a `publicId` column on `University`/`Testimonial` plus a delete-on-replace step — deliberately **out of scope** here, and worth raising with the client as a follow-up if Cloudinary storage cost becomes a concern.
 - The Cloudinary free tier's transformation and bandwidth quotas are worth checking against expected traffic before launch — 41 logos on every homepage visit is the site's dominant image load.
 - Consider adding `f_auto,q_auto` transformations to the delivered URLs for bandwidth savings. Not done here because it changes stored URLs; better implemented as a render-time URL helper.

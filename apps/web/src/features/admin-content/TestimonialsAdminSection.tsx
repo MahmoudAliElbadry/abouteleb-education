@@ -11,6 +11,12 @@ import type { AdminLanguage } from './AdminManagedContentPage.js';
 const copy = {
   ar: {
     title: 'إضافة رأي عميل',
+    nameAr: 'اسم العميل بالعربية',
+    nameEn: 'اسم العميل بالإنجليزية',
+    nameTr: 'اسم العميل بالتركية',
+    quoteAr: 'رأي العميل بالعربية',
+    quoteEn: 'رأي العميل بالإنجليزية',
+    quoteTr: 'رأي العميل بالتركية',
     save: 'حفظ',
     consent: 'تم تأكيد موافقة العميل',
     publish: 'منشور',
@@ -20,6 +26,12 @@ const copy = {
   },
   en: {
     title: 'Add testimonial',
+    nameAr: 'Arabic client name',
+    nameEn: 'English client name',
+    nameTr: 'Turkish client name',
+    quoteAr: 'Arabic quote',
+    quoteEn: 'English quote',
+    quoteTr: 'Turkish quote',
     save: 'Save',
     consent: 'Client consent confirmed',
     publish: 'Published',
@@ -29,6 +41,12 @@ const copy = {
   },
   tr: {
     title: 'Referans ekle',
+    nameAr: 'Arapça müşteri adı',
+    nameEn: 'İngilizce müşteri adı',
+    nameTr: 'Türkçe müşteri adı',
+    quoteAr: 'Arapça yorum',
+    quoteEn: 'İngilizce yorum',
+    quoteTr: 'Türkçe yorum',
     save: 'Kaydet',
     consent: 'Müşteri onayı doğrulandı',
     publish: 'Yayınlandı',
@@ -37,7 +55,7 @@ const copy = {
     image: 'Müşteri mesajı ekran görüntüsü',
   },
 } as const;
-const empty: {
+type TestimonialForm = {
   clientNameAr: string;
   clientNameEn: string;
   clientNameTr: string;
@@ -48,13 +66,14 @@ const empty: {
   consentConfirmed: boolean;
   isPublished: boolean;
   sortOrder: number;
-} = {
-  clientNameAr: '-',
+};
+const empty: TestimonialForm = {
+  clientNameAr: '',
   clientNameEn: '',
-  clientNameTr: '-',
-  quoteAr: '-',
-  quoteEn: '-',
-  quoteTr: '-',
+  clientNameTr: '',
+  quoteAr: '',
+  quoteEn: '',
+  quoteTr: '',
   imageUrl: null,
   consentConfirmed: false,
   isPublished: false,
@@ -65,12 +84,15 @@ export function TestimonialsAdminSection({ language }: { language: AdminLanguage
   const client = useQueryClient();
   const [form, setForm] = useState(empty);
   const [error, setError] = useState('');
+  const [isUploading, setIsUploading] = useState(false);
   const query = useQuery({ queryKey: ['admin-testimonials'], queryFn: getAdminTestimonials });
   const create = useMutation({
     mutationFn: createTestimonial,
     onSuccess: () => {
       setError('');
+      setForm(empty);
       void client.invalidateQueries({ queryKey: ['admin-testimonials'] });
+      void client.invalidateQueries({ queryKey: ['public-testimonials'] });
     },
     onError: (reason) => setError(reason instanceof ApiError ? reason.message : t.error),
   });
@@ -81,22 +103,49 @@ export function TestimonialsAdminSection({ language }: { language: AdminLanguage
   });
   const submit = (event: FormEvent) => {
     event.preventDefault();
-    if (form.isPublished && !form.consentConfirmed) return;
+    setError('');
+    if (isUploading) return;
+    if (form.isPublished && !form.consentConfirmed) {
+      setError(t.error);
+      return;
+    }
     create.mutate(form);
   };
   return (
     <>
       <form onSubmit={submit} className="content-form admin-content-form">
         <h2>{t.title}</h2>
-        <input
-          aria-label="English name"
-          required
-          value={form.clientNameEn}
-          onChange={(event) => setForm({ ...form, clientNameEn: event.target.value })}
-        />
+        <div className="content-form-grid">
+          {(['clientNameAr', 'clientNameEn', 'clientNameTr'] as const).map((key) => (
+            <label key={key}>
+              {t[key.replace('clientName', 'name') as 'nameAr' | 'nameEn' | 'nameTr']}
+              <input
+                aria-label={t[key.replace('clientName', 'name') as 'nameAr' | 'nameEn' | 'nameTr']}
+                required
+                value={form[key]}
+                onChange={(event) => setForm({ ...form, [key]: event.target.value })}
+              />
+            </label>
+          ))}
+        </div>
+        <div className="content-form-grid">
+          {(['quoteAr', 'quoteEn', 'quoteTr'] as const).map((key) => (
+            <label key={key}>
+              {t[key]}
+              <textarea
+                aria-label={t[key]}
+                required
+                rows={4}
+                value={form[key]}
+                onChange={(event) => setForm({ ...form, [key]: event.target.value })}
+              />
+            </label>
+          ))}
+        </div>
         <ImageUploadField
           value={form.imageUrl}
           onChange={(url) => setForm({ ...form, imageUrl: url })}
+          onUploadingChange={setIsUploading}
           label={t.image}
         />
         <label className="checkbox-label">
@@ -119,7 +168,7 @@ export function TestimonialsAdminSection({ language }: { language: AdminLanguage
         <button
           className="button"
           type="submit"
-          disabled={create.isPending || (form.isPublished && !form.consentConfirmed)}
+          disabled={isUploading || create.isPending || (form.isPublished && !form.consentConfirmed)}
         >
           {t.save}
         </button>

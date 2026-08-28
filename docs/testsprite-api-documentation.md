@@ -92,24 +92,24 @@ Valid status transitions are:
 
 ## Health endpoints
 
-| Method | Path | Authentication | Description |
-|---|---|---|---|
-| GET | `/api/v1/health` | Public | Returns `{ "status": "ok", "service": "api" }`. |
-| GET | `/api/v1/health/readiness` | Public | Checks the database. Returns `200` when ready or `503` when unavailable. |
+| Method | Path                       | Authentication | Description                                                              |
+| ------ | -------------------------- | -------------- | ------------------------------------------------------------------------ |
+| GET    | `/api/v1/health`           | Public         | Returns `{ "status": "ok", "service": "api" }`.                          |
+| GET    | `/api/v1/health/readiness` | Public         | Checks the database. Returns `200` when ready or `503` when unavailable. |
 
 ## Authentication endpoints
 
-| Method | Path | Authentication | Request body | Success |
-|---|---|---|---|---|
-| POST | `/api/v1/auth/register` | Public | `fullName` 2-120 chars, valid `email`, `password` 8-128 chars, `consentAccepted: true` | `201` with `user` and verification message |
-| POST | `/api/v1/auth/verify-email` | Public | `email`, six-digit `code` | `200` with verified `user` |
-| POST | `/api/v1/auth/resend-verification` | Public | `email` | `200` generic anti-enumeration message |
-| GET | `/api/v1/auth/csrf` | Public | None | `200` with `{ "csrfToken": "..." }` and CSRF cookie |
-| POST | `/api/v1/auth/login` | CSRF | `email`, `password` | `200` with `user` and session cookie |
-| POST | `/api/v1/auth/logout` | Session + CSRF | None | `204`; revokes session |
-| GET | `/api/v1/auth/session` | Session | None | `200` with current `user` |
-| POST | `/api/v1/auth/forgot-password` | Public | `email` | `200` generic anti-enumeration message |
-| POST | `/api/v1/auth/reset-password` | Public | `email`, six-digit `code`, `newPassword` 8-128 chars | `200` success message; existing sessions are invalidated |
+| Method | Path                               | Authentication | Request body                                                                           | Success                                                  |
+| ------ | ---------------------------------- | -------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| POST   | `/api/v1/auth/register`            | Public         | `fullName` 2-120 chars, valid `email`, `password` 8-128 chars, `consentAccepted: true` | `201` with `user` and verification message               |
+| POST   | `/api/v1/auth/verify-email`        | Public         | `email`, six-digit `code`                                                              | `200` with verified `user`                               |
+| POST   | `/api/v1/auth/resend-verification` | Public         | `email`                                                                                | `200` generic anti-enumeration message                   |
+| GET    | `/api/v1/auth/csrf`                | Public         | None                                                                                   | `200` with `{ "csrfToken": "..." }` and CSRF cookie      |
+| POST   | `/api/v1/auth/login`               | CSRF           | `email`, `password`                                                                    | `200` with `user` and session cookie                     |
+| POST   | `/api/v1/auth/logout`              | Session + CSRF | None                                                                                   | `204`; revokes session                                   |
+| GET    | `/api/v1/auth/session`             | Session        | None                                                                                   | `200` with current `user`                                |
+| POST   | `/api/v1/auth/forgot-password`     | Public         | `email`                                                                                | `200` generic anti-enumeration message                   |
+| POST   | `/api/v1/auth/reset-password`      | Public         | `email`, six-digit `code`, `newPassword` 8-128 chars                                   | `200` success message; existing sessions are invalidated |
 
 Authentication endpoints are rate-limited. Do not repeatedly brute-force passwords or six-digit codes.
 
@@ -117,13 +117,13 @@ Authentication endpoints are rate-limited. Do not repeatedly brute-force passwor
 
 All endpoints in this section require an authenticated client session. State-changing endpoints also require CSRF.
 
-| Method | Path | Request | Success |
-|---|---|---|---|
-| GET | `/api/v1/orders?page=1&pageSize=10` | Query: `page >= 1`, `pageSize` 1-50 | Paginated list of the current client's requests |
-| POST | `/api/v1/orders` | `{ "fullName": "2-120 chars", "phoneNumber": "7-32 chars", "specialization": "medicine" }` | `201` with `{ "order": ... }`; verified clients only |
-| GET | `/api/v1/orders/{orderId}` | Owned request ID | `200` with `{ "order": ... }` |
-| POST | `/api/v1/orders/{orderId}/cancel` | No body | `204` if cancellation is permitted |
-| POST | `/api/v1/orders/{orderId}/responses` | `{ "body": "1-2000 chars" }` | `201` with the created client response |
+| Method | Path                                 | Request                                                                                    | Success                                              |
+| ------ | ------------------------------------ | ------------------------------------------------------------------------------------------ | ---------------------------------------------------- |
+| GET    | `/api/v1/orders?page=1&pageSize=10`  | Query: `page >= 1`, `pageSize` 1-50                                                        | Paginated list of the current client's requests      |
+| POST   | `/api/v1/orders`                     | `{ "fullName": "2-120 chars", "phoneNumber": "7-32 chars", "specialization": "medicine" }` | `201` with `{ "order": ... }`; verified clients only |
+| GET    | `/api/v1/orders/{orderId}`           | Owned request ID                                                                           | `200` with `{ "order": ... }`                        |
+| POST   | `/api/v1/orders/{orderId}/cancel`    | No body                                                                                    | `204` if cancellation is permitted                   |
+| POST   | `/api/v1/orders/{orderId}/responses` | `{ "body": "1-2000 chars" }`                                                               | `201` with the created client response               |
 
 An order representation includes its ID, unique reference, client details, specialization and label, current status, submission/update timestamps, status history, client-visible messages, and—on detailed views—client responses as applicable. A client must never be able to read or mutate another client's order.
 
@@ -131,25 +131,25 @@ An order representation includes its ID, unique reference, client details, speci
 
 All endpoints require an authenticated administrator. State-changing endpoints also require CSRF.
 
-| Method | Path | Request | Success |
-|---|---|---|---|
-| GET | `/api/v1/admin/orders/metrics` | None | Total and per-status counts |
-| GET | `/api/v1/admin/orders` | Optional query: `status`, `specialization`, `search` max 120, `sort=createdAt|updatedAt`, `order=asc|desc`, `page`, `pageSize` 1-100 | Paginated request list |
-| GET | `/api/v1/admin/orders/{orderId}` | Request ID | Detailed order, history, internal notes, and client responses |
-| POST | `/api/v1/admin/orders/{orderId}/status` | `{ "to": "STATUS", "clientVisibleMessage": "optional, max 2000" }` | `200` with completed transition |
-| POST | `/api/v1/admin/orders/{orderId}/internal-notes` | `{ "body": "1-2000 chars" }` | `201` with created internal note |
+| Method | Path                                            | Request                                                                       | Success                                                       |
+| ------ | ----------------------------------------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| GET    | `/api/v1/admin/orders/metrics`                  | None                                                                          | Total and per-status counts                                   |
+| GET    | `/api/v1/admin/orders`                          | Optional query: `status`, `specialization`, `search` max 120, `sort=createdAt | updatedAt`, `order=asc                                        | desc`, `page`, `pageSize` 1-100 | Paginated request list |
+| GET    | `/api/v1/admin/orders/{orderId}`                | Request ID                                                                    | Detailed order, history, internal notes, and client responses |
+| POST   | `/api/v1/admin/orders/{orderId}/status`         | `{ "to": "STATUS", "clientVisibleMessage": "optional, max 2000" }`            | `200` with completed transition                               |
+| POST   | `/api/v1/admin/orders/{orderId}/internal-notes` | `{ "body": "1-2000 chars" }`                                                  | `201` with created internal note                              |
 
 Internal notes must not appear in client order responses. Invalid or terminal status transitions must be rejected.
 
 ## Public-content endpoints
 
-| Method | Path | Authentication | Success |
-|---|---|---|---|
-| GET | `/api/v1/universities` | Public | `{ "items": [...] }` containing published, non-archived universities |
-| GET | `/api/v1/universities/{slug}` | Public | `{ "university": ... }` for a published university |
-| GET | `/api/v1/testimonials` | Public | Published, consented, non-archived testimonials |
-| GET | `/api/v1/social-links` | Public | Visible, non-archived social links in display order |
-| GET | `/api/v1/contact` | Public | Managed public contact values |
+| Method | Path                          | Authentication | Success                                                              |
+| ------ | ----------------------------- | -------------- | -------------------------------------------------------------------- |
+| GET    | `/api/v1/universities`        | Public         | `{ "items": [...] }` containing published, non-archived universities |
+| GET    | `/api/v1/universities/{slug}` | Public         | `{ "university": ... }` for a published university                   |
+| GET    | `/api/v1/testimonials`        | Public         | Published, consented, non-archived testimonials                      |
+| GET    | `/api/v1/social-links`        | Public         | Visible, non-archived social links in display order                  |
+| GET    | `/api/v1/contact`             | Public         | Managed public contact values                                        |
 
 ### University fields
 
@@ -169,14 +169,14 @@ All endpoints require an administrator session. Mutations also require CSRF.
 
 ### Universities
 
-| Method | Path | Description |
-|---|---|---|
-| GET | `/api/v1/admin/universities` | List with `page`, `pageSize`, `search`, and optional `isPublished=true|false` |
-| GET | `/api/v1/admin/universities/{universityId}` | Read one managed university |
-| POST | `/api/v1/admin/universities` | Create a university |
-| PATCH | `/api/v1/admin/universities/{universityId}` | Partially update a university |
-| POST | `/api/v1/admin/universities/{universityId}/archive` | Archive; returns `204` |
-| POST | `/api/v1/admin/universities/{universityId}/restore` | Restore; returns `204` |
+| Method | Path                                                | Description                                                            |
+| ------ | --------------------------------------------------- | ---------------------------------------------------------------------- |
+| GET    | `/api/v1/admin/universities`                        | List with `page`, `pageSize`, `search`, and optional `isPublished=true | false` |
+| GET    | `/api/v1/admin/universities/{universityId}`         | Read one managed university                                            |
+| POST   | `/api/v1/admin/universities`                        | Create a university                                                    |
+| PATCH  | `/api/v1/admin/universities/{universityId}`         | Partially update a university                                          |
+| POST   | `/api/v1/admin/universities/{universityId}/archive` | Archive; returns `204`                                                 |
+| POST   | `/api/v1/admin/universities/{universityId}/restore` | Restore; returns `204`                                                 |
 
 Create body:
 
@@ -199,43 +199,42 @@ The slug must contain lowercase letters, digits, and single hyphens only. Extern
 
 ### Testimonials
 
-| Method | Path | Description |
-|---|---|---|
-| GET | `/api/v1/admin/testimonials` | List managed testimonials |
-| GET | `/api/v1/admin/testimonials/{testimonialId}` | Read one testimonial |
-| POST | `/api/v1/admin/testimonials` | Create a testimonial |
-| PATCH | `/api/v1/admin/testimonials/{testimonialId}` | Partially update a testimonial |
-| POST | `/api/v1/admin/testimonials/{testimonialId}/archive` | Archive; returns `204` |
-| POST | `/api/v1/admin/testimonials/{testimonialId}/restore` | Restore; returns `204` |
+| Method | Path                                                 | Description                    |
+| ------ | ---------------------------------------------------- | ------------------------------ |
+| GET    | `/api/v1/admin/testimonials`                         | List managed testimonials      |
+| GET    | `/api/v1/admin/testimonials/{testimonialId}`         | Read one testimonial           |
+| POST   | `/api/v1/admin/testimonials`                         | Create a testimonial           |
+| PATCH  | `/api/v1/admin/testimonials/{testimonialId}`         | Partially update a testimonial |
+| POST   | `/api/v1/admin/testimonials/{testimonialId}/archive` | Archive; returns `204`         |
+| POST   | `/api/v1/admin/testimonials/{testimonialId}/restore` | Restore; returns `204`         |
 
 Localized names are 1-500 characters and quotes are 1-2000 characters. A testimonial cannot be published unless `consentConfirmed` is true.
 
 ### Social links
 
-| Method | Path | Description |
-|---|---|---|
-| GET | `/api/v1/admin/social-links` | List managed social links |
-| POST | `/api/v1/admin/social-links` | Create a social link |
-| PATCH | `/api/v1/admin/social-links/{socialLinkId}` | Partially update a social link |
-| POST | `/api/v1/admin/social-links/{socialLinkId}/archive` | Archive; returns `204` |
-| POST | `/api/v1/admin/social-links/{socialLinkId}/restore` | Restore; returns `204` |
+| Method | Path                                                | Description                    |
+| ------ | --------------------------------------------------- | ------------------------------ |
+| GET    | `/api/v1/admin/social-links`                        | List managed social links      |
+| POST   | `/api/v1/admin/social-links`                        | Create a social link           |
+| PATCH  | `/api/v1/admin/social-links/{socialLinkId}`         | Partially update a social link |
+| POST   | `/api/v1/admin/social-links/{socialLinkId}/archive` | Archive; returns `204`         |
+| POST   | `/api/v1/admin/social-links/{socialLinkId}/restore` | Restore; returns `204`         |
 
 ### Contact information
 
-| Method | Path | Description |
-|---|---|---|
-| GET | `/api/v1/admin/contact` | Read all managed contact values |
-| PUT | `/api/v1/admin/contact/{key}` | Upsert `{ "value": "1-500 chars" }` |
+| Method | Path                          | Description                         |
+| ------ | ----------------------------- | ----------------------------------- |
+| GET    | `/api/v1/admin/contact`       | Read all managed contact values     |
+| PUT    | `/api/v1/admin/contact/{key}` | Upsert `{ "value": "1-500 chars" }` |
 
 Allowed contact keys are `contact_phone`, `contact_email_primary`, `contact_email_secondary`, and `contact_whatsapp`.
 
 ### Image uploads
 
-| Method | Path | Request | Success |
-|---|---|---|---|
-| POST | `/api/v1/admin/uploads/image` | `multipart/form-data`, one field named `file`, maximum 5 MiB, supported image MIME type | `201` with `{ "secure_url": "https://..." }` |
+| Method | Path                          | Request                                                                                 | Success                                      |
+| ------ | ----------------------------- | --------------------------------------------------------------------------------------- | -------------------------------------------- |
+| POST   | `/api/v1/admin/uploads/image` | `multipart/form-data`, one field named `file`, maximum 5 MiB, supported image MIME type | `201` with `{ "secure_url": "https://..." }` |
 
 ## Live-test safety
 
 The production API sends real verification and status-notification email and stores persistent data. Prefer dedicated test accounts and clearly prefixed test records, such as `testsprite-<timestamp>`. Do not archive, overwrite, or reorder existing production content. Clean up only records created by the same test run, using their exact returned IDs.
-
