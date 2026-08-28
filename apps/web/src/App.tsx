@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link, Navigate, Route, Routes, useSearchParams } from 'react-router-dom';
 import { ApplicationPage } from './ApplicationPage.js';
@@ -137,6 +137,7 @@ const copy = {
     services: 'خدماتنا',
     universities: 'الجامعات',
     registrationSteps: 'خطوات التسجيل',
+    whoWeAre: 'من نحن',
     contact: 'تواصل معنا',
     apply: 'سجل الآن',
     signIn: 'تسجيل الدخول',
@@ -174,6 +175,21 @@ const copy = {
       ['تجهيز الملفات', 'نرتب ملف التقديم والترجمة والتصديقات المطلوبة خطوة بخطوة.'],
       ['تأمين السكن', 'نساعدك في الوصول إلى خيارات سكن مناسبة لميزانيتك وموقع جامعتك.'],
     ],
+    whoWeAreTag: 'تعرف علينا',
+    whoWeAreTitle: 'من نحن',
+    whoWeAreDescription:
+      'شاهد مقدمة مختصرة عن مؤسسة أبو طالب للتعليم والخدمات التي نقدمها للطلاب المتجهين إلى تركيا.',
+    whoWeAreHeading: 'شريكك الموثوق للدراسة في تركيا',
+    whoWeAreBody:
+      'مؤسسة أبو طالب للتعليم وكيل معتمد لأقوى الجامعات التركية. من القبولات المجانية والخصومات الحصرية على الرسوم الدراسية إلى تجهيز الأوراق والسكن، يرافقك فريقنا في كل خطوة من رحلتك الأكاديمية.',
+    whoWeArePoints: [
+      'وكيل معتمد لأقوى الجامعات التركية',
+      'قبولات جامعية مجانية بدون رسوم خفية',
+      'دعم كامل للأوراق والتأشيرة من الألف إلى الياء',
+      'مساعدة في تأمين السكن عند الوصول',
+    ],
+    whoWeArePlay: 'تشغيل الفيديو التعريفي',
+    whoWeAreCaption: 'فيديو تعريفي بالمؤسسة',
     stepsTag: 'بساطة الإجراءات',
     stepsTitle: 'خطوات رحلتك معنا',
     steps: [
@@ -182,6 +198,12 @@ const copy = {
       ['أرسل أوراقك', 'نراجع أوراقك ونجهز ملف التقديم.'],
       ['ابدأ الدراسة', 'نتابع معك حتى بداية رحلتك الجامعية في تركيا.'],
     ],
+    reviewsTag: 'آراء حقيقية',
+    reviewsTitle: 'آراء عملائنا',
+    reviewsDescription: 'ما يقوله طلابنا وأسرهم عن تجربتهم معنا.',
+    reviewsPrev: 'المراجعات السابقة',
+    reviewsNext: 'المراجعات التالية',
+    reviewsGoTo: 'الانتقال إلى صفحة المراجعات',
     ready: 'هل أنت جاهز لبدء مستقبلك؟',
     readyDescription: 'تواصل معنا الآن، وسيتابع معك أحد مستشارينا التعليميين.',
     catalog: 'كتالوج الجامعات',
@@ -196,6 +218,7 @@ const copy = {
     services: 'Services',
     universities: 'Universities',
     registrationSteps: 'Registration steps',
+    whoWeAre: 'Who we are',
     contact: 'Contact',
     apply: 'Apply now',
     signIn: 'Sign in',
@@ -246,6 +269,21 @@ const copy = {
         'We help you explore housing suited to your budget and university location.',
       ],
     ],
+    whoWeAreTag: 'Get to know us',
+    whoWeAreTitle: 'Who we are',
+    whoWeAreDescription:
+      'Watch a short introduction to Abou-Taleb Education and the services we provide to students heading to Türkiye.',
+    whoWeAreHeading: 'Your trusted partner for studying in Türkiye',
+    whoWeAreBody:
+      'Abou-Taleb Education is an authorized agent for leading Turkish universities. From free admissions and exclusive tuition discounts to document preparation and accommodation, our team guides you through every step of your academic journey.',
+    whoWeArePoints: [
+      'Authorized agent for leading Turkish universities',
+      'Free university admissions with no hidden fees',
+      'End-to-end document and visa support',
+      'Accommodation assistance on arrival',
+    ],
+    whoWeArePlay: 'Play company introduction',
+    whoWeAreCaption: 'Company intro video',
     stepsTag: 'A simple process',
     stepsTitle: 'Your journey with us',
     steps: [
@@ -254,6 +292,12 @@ const copy = {
       ['Send your documents', 'We review your documents and prepare the application file.'],
       ['Start studying', 'We stay with you until your university journey in Türkiye begins.'],
     ],
+    reviewsTag: 'Real feedback',
+    reviewsTitle: 'Customer reviews',
+    reviewsDescription: 'What our students and their families say about their experience with us.',
+    reviewsPrev: 'Previous reviews',
+    reviewsNext: 'Next reviews',
+    reviewsGoTo: 'Go to review page',
     ready: 'Ready to start your future?',
     readyDescription: 'Contact us now and one of our educational consultants will guide you.',
     catalog: 'University catalog',
@@ -268,6 +312,7 @@ const copy = {
     services: 'Hizmetlerimiz',
     universities: 'Üniversiteler',
     registrationSteps: 'Kayıt adımları',
+    whoWeAre: 'Biz kimiz',
     contact: 'İletişim',
     apply: 'Şimdi başvur',
     signIn: 'Giriş yap',
@@ -312,6 +357,21 @@ const copy = {
         'Bütçenize ve üniversite konumunuza uygun konaklama seçeneklerini araştırıyoruz.',
       ],
     ],
+    whoWeAreTag: 'Bizi tanıyın',
+    whoWeAreTitle: 'Biz kimiz',
+    whoWeAreDescription:
+      "Abou-Taleb Education'a ve Türkiye'ye giden öğrencilere sunduğumuz hizmetlere kısa bir giriş izleyin.",
+    whoWeAreHeading: "Türkiye'de eğitim için güvenilir ortağınız",
+    whoWeAreBody:
+      'Abou-Taleb Education, önde gelen Türk üniversitelerinin yetkili temsilcisidir. Ücretsiz kabullerden özel öğrenim ücreti indirimlerine, belge hazırlığından konaklamaya kadar ekibimiz akademik yolculuğunuzun her adımında size rehberlik eder.',
+    whoWeArePoints: [
+      'Önde gelen Türk üniversitelerinin yetkili temsilcisi',
+      'Gizli ücret olmadan ücretsiz üniversite kabulü',
+      'Uçtan uca belge ve vize desteği',
+      'Varışta konaklama desteği',
+    ],
+    whoWeArePlay: 'Tanıtım videosunu oynat',
+    whoWeAreCaption: 'Tanıtım videosu',
     stepsTag: 'Basit süreç',
     stepsTitle: 'Bizimle yolculuğunuz',
     steps: [
@@ -323,6 +383,12 @@ const copy = {
       ['Belgelerinizi gönderin', 'Belgelerinizi inceliyor ve başvuru dosyanızı hazırlıyoruz.'],
       ['Eğitime başlayın', "Türkiye'deki üniversite yolculuğunuz başlayana kadar yanınızdayız."],
     ],
+    reviewsTag: 'Gerçek geri bildirim',
+    reviewsTitle: 'Müşteri yorumları',
+    reviewsDescription: 'Öğrencilerimizin ve ailelerinin deneyimleri hakkında söyledikleri.',
+    reviewsPrev: 'Önceki yorumlar',
+    reviewsNext: 'Sonraki yorumlar',
+    reviewsGoTo: 'Yorum sayfasına git',
     ready: 'Geleceğinize başlamaya hazır mısınız?',
     readyDescription: 'Şimdi iletişime geçin, eğitim danışmanlarımızdan biri size yardımcı olsun.',
     catalog: 'Üniversite kataloğu',
@@ -371,6 +437,96 @@ const cityLabels = {
   tr: { Istanbul: 'İstanbul', Ankara: 'Ankara', Kocaeli: 'Kocaeli' },
 } as const;
 
+const REVIEW_CARD_REM = 16;
+const REVIEW_GAP_REM = 1.25;
+const REVIEW_SLOT_REM = REVIEW_CARD_REM + REVIEW_GAP_REM;
+
+type ReviewCardData = { id: string; name: string; imageUrl: string | null };
+
+function ReviewsCarousel({
+  items,
+  prevLabel,
+  nextLabel,
+  goToLabel,
+}: {
+  items: ReviewCardData[];
+  prevLabel: string;
+  nextLabel: string;
+  goToLabel: string;
+}) {
+  const [index, setIndex] = useState(0);
+  const timerRef = useRef<number | undefined>(undefined);
+
+  const restartTimer = useCallback(() => {
+    if (timerRef.current) window.clearInterval(timerRef.current);
+    if (items.length < 2) return;
+    timerRef.current = window.setInterval(() => {
+      setIndex((current) => (current + 1) % items.length);
+    }, 10000);
+  }, [items.length]);
+
+  useEffect(() => {
+    restartTimer();
+    return () => {
+      if (timerRef.current) window.clearInterval(timerRef.current);
+    };
+  }, [restartTimer]);
+
+  function goTo(next: number) {
+    setIndex(next);
+    restartTimer();
+  }
+  const next = () => goTo((index + 1) % items.length);
+  const prev = () => goTo((index - 1 + items.length) % items.length);
+
+  return (
+    <div className="reviews-carousel">
+      <button type="button" className="reviews-nav" aria-label={prevLabel} onClick={prev}>
+        ‹
+      </button>
+      <div className="reviews-viewport">
+        <div
+          className="reviews-track"
+          style={{ transform: `translateX(-${index * REVIEW_SLOT_REM + REVIEW_CARD_REM / 2}rem)` }}
+        >
+          {items.map((item, position) => {
+            const distance = Math.abs(position - index);
+            const state = distance === 0 ? 'is-active' : distance === 1 ? 'is-near' : 'is-far';
+            return (
+              <figure key={item.id} className={`review-card ${state}`}>
+                <div className="review-card-media">
+                  {item.imageUrl ? (
+                    <img src={item.imageUrl} alt="" loading="lazy" />
+                  ) : (
+                    <span className="review-card-initial" aria-hidden="true">
+                      {item.name.trim().charAt(0).toLocaleUpperCase()}
+                    </span>
+                  )}
+                </div>
+                <figcaption>{item.name}</figcaption>
+              </figure>
+            );
+          })}
+        </div>
+      </div>
+      <button type="button" className="reviews-nav" aria-label={nextLabel} onClick={next}>
+        ›
+      </button>
+      <div className="reviews-dots">
+        {items.map((item, position) => (
+          <button
+            key={item.id}
+            type="button"
+            aria-label={goToLabel}
+            className={position === index ? 'is-active' : undefined}
+            onClick={() => goTo(position)}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function PublicPage() {
   const auth = useAuth();
   const { language, setLanguage } = useLanguage();
@@ -379,6 +535,7 @@ function PublicPage() {
   const [city, setCity] = useState('');
   const [showAllUniversities, setShowAllUniversities] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const whoWeAreReveal = useSectionReveal<HTMLUListElement>();
   const servicesReveal = useSectionReveal<HTMLDivElement>();
   const stepsReveal = useSectionReveal<HTMLOListElement>();
   const statsReveal = useSectionReveal<HTMLElement>();
@@ -459,6 +616,7 @@ function PublicPage() {
           {[
             ['#home', t.home],
             ['#universities', t.universities],
+            ['#who-we-are', t.whoWeAre],
             ['#services', t.services],
             ['#steps', t.registrationSteps],
             ['#contact', t.contact],
@@ -641,6 +799,34 @@ function PublicPage() {
           )}
         </section>
 
+        <section className="content-section who-we-are" id="who-we-are">
+          <div className="section-heading">
+            <p>{t.whoWeAreTag}</p>
+            <h2>{t.whoWeAreTitle}</h2>
+            <span>{t.whoWeAreDescription}</span>
+          </div>
+          <div className="who-we-are-grid">
+            <div>
+              <h3>{t.whoWeAreHeading}</h3>
+              <p>{t.whoWeAreBody}</p>
+              <ul ref={whoWeAreReveal.ref}>
+                {t.whoWeArePoints.map((point) => (
+                  <li key={point}>
+                    <span aria-hidden="true">✓</span>
+                    {point}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="who-we-are-video">
+              <button type="button" aria-label={t.whoWeArePlay}>
+                <span aria-hidden="true" />
+              </button>
+              <span>{t.whoWeAreCaption}</span>
+            </div>
+          </div>
+        </section>
+
         <section className="content-section services" id="services">
           <div className="section-heading">
             <p>{t.serviceTag}</p>
@@ -672,38 +858,38 @@ function PublicPage() {
             {steps.map(([title, description], index) => (
               <li key={title}>
                 <span>{index + 1}</span>
-                <h3>{title}</h3>
-                <p>{description}</p>
+                <div className="steps-card">
+                  <h3>{title}</h3>
+                  <p>{description}</p>
+                </div>
               </li>
             ))}
           </ol>
         </section>
+
+        {testimonialsQuery.data?.items.length ? (
+          <section className="content-section reviews" id="reviews">
+            <div className="section-heading">
+              <p>{t.reviewsTag}</p>
+              <h2>{t.reviewsTitle}</h2>
+              <span>{t.reviewsDescription}</span>
+            </div>
+            <ReviewsCarousel
+              items={testimonialsQuery.data.items.map((item) => ({
+                id: item.id,
+                name: localize(language, item.clientNameAr, item.clientNameEn, item.clientNameTr),
+                imageUrl: item.imageUrl,
+              }))}
+              prevLabel={t.reviewsPrev}
+              nextLabel={t.reviewsNext}
+              goToLabel={t.reviewsGoTo}
+            />
+          </section>
+        ) : null}
+
         <EnrollmentSection language={language} />
       </main>
 
-      {testimonialsQuery.data?.items.length ? (
-        <section className="content-section testimonials" aria-labelledby="testimonials-title">
-          <div className="section-heading">
-            <h2 id="testimonials-title">
-              {language === 'ar'
-                ? 'آراء طلابنا'
-                : language === 'tr'
-                  ? 'Öğrenci yorumları'
-                  : 'Student stories'}
-            </h2>
-          </div>
-          <div className="service-grid">
-            {testimonialsQuery.data.items.map((item) => (
-              <article className="service-card" key={item.id}>
-                <h3>
-                  {localize(language, item.clientNameAr, item.clientNameEn, item.clientNameTr)}
-                </h3>
-                <p>{localize(language, item.quoteAr, item.quoteEn, item.quoteTr)}</p>
-              </article>
-            ))}
-          </div>
-        </section>
-      ) : null}
       <section className="contact" id="contact">
         <div>
           <p>{t.catalog}</p>
@@ -723,6 +909,7 @@ function PublicPage() {
                 className="contact-detail"
                 key={item.key}
                 href={item.value.includes('@') ? `mailto:${item.value}` : undefined}
+                dir={item.key === 'contact_phone' ? 'ltr' : undefined}
               >
                 {item.value}
               </a>

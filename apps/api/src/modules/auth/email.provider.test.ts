@@ -34,17 +34,22 @@ describe('ResendEmailProvider', () => {
       reference: 'ATE-2026-ABCD',
       event: 'status_changed',
       newStatus: 'CONTACTED',
+      clientVisibleMessage: 'We are reviewing your request.',
     });
 
     const request = fetcher.mock.calls[0]?.[1] as RequestInit;
     expect(JSON.parse(String(request.body))).toMatchObject({
       from: 'test@example.com',
       to: ['client@example.com'],
-      subject: 'Application request update: ATE-2026-ABCD',
-      text: 'Your application request ATE-2026-ABCD is now CONTACTED.',
+      subject: 'تحديث طلب التقديم | Application request update: ATE-2026-ABCD',
     });
     expect(JSON.parse(String(request.body)).html).toContain('ATE-2026-ABCD');
     expect(JSON.parse(String(request.body)).html).toContain('CONTACTED');
+    expect(JSON.parse(String(request.body)).text).toContain(
+      'Your application request ATE-2026-ABCD is now CONTACTED.',
+    );
+    expect(JSON.parse(String(request.body)).text).toContain('تم تحديث طلب التقديم');
+    expect(JSON.parse(String(request.body)).html).toContain('We are reviewing your request.');
   });
 
   it('localizes OTP subject and body for the request locale', async () => {

@@ -31,7 +31,15 @@ describe('order notifier', () => {
         recipient: 'client@example.com',
         reference: 'ATE-2026-ABCD',
         newStatus: 'CONTACTED',
+        clientVisibleMessage: 'We are reviewing your request.',
       }),
     ).resolves.toBeUndefined();
+    expect(emailProvider.sendOrderNotification).toHaveBeenCalledWith({
+      recipient: 'client@example.com',
+      reference: 'ATE-2026-ABCD',
+      newStatus: 'CONTACTED',
+      clientVisibleMessage: 'We are reviewing your request.',
+      event: 'status_changed',
+    });
   });
 });

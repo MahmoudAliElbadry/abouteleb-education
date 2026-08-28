@@ -23,6 +23,20 @@ describe('AdminManagedContentPage', () => {
     const publish = consent.parentElement?.nextElementSibling?.querySelector('input');
     expect(publish).toBeDisabled();
   });
+  it('renders all required testimonial content fields', () => {
+    render(
+      <LanguageProvider>
+        <AdminManagedContentPage />
+      </LanguageProvider>,
+    );
+
+    expect(screen.getByRole('textbox', { name: 'Arabic client name' })).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: 'English client name' })).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: 'Turkish client name' })).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: 'Arabic quote' })).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: 'English quote' })).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: 'Turkish quote' })).toBeInTheDocument();
+  });
   it('renders localized social controls', () => {
     render(
       <LanguageProvider>

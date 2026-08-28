@@ -5,7 +5,6 @@ import type { OrderStatusValue } from '@abou/contracts';
 import { ApiError } from '../auth/auth-client.js';
 import { useLanguage, type Language } from '../i18n/LanguageContext.js';
 import {
-  addInternalNote,
   getAdminMetrics,
   getAdminOrder,
   getAdminOrders,
@@ -40,6 +39,8 @@ const labels = {
     add: 'إضافة',
     history: 'سجل الحالات',
     responses: 'ردود العميل',
+    cancelOrder: 'إلغاء الطلب',
+    cancelConfirm: 'هل أنت متأكد من إلغاء هذا الطلب؟ لا يمكن التراجع عن هذا الإجراء.',
     back: 'العودة للطلبات',
     noData: 'لا توجد طلبات.',
     error: 'تعذر تحميل البيانات.',
@@ -81,6 +82,8 @@ const labels = {
     add: 'Add note',
     history: 'Status history',
     responses: 'Client responses',
+    cancelOrder: 'Cancel order',
+    cancelConfirm: 'Are you sure you want to cancel this order? This action cannot be undone.',
     back: 'Back to orders',
     noData: 'No orders found.',
     error: 'Unable to load the data.',
@@ -122,6 +125,8 @@ const labels = {
     add: 'Not ekle',
     history: 'Durum geçmişi',
     responses: 'Müşteri yanıtları',
+    cancelOrder: 'Başvuruyu iptal et',
+    cancelConfirm: 'Bu başvuruyu iptal etmek istediğinizden emin misiniz? Bu işlem geri alınamaz.',
     back: 'Başvurulara dön',
     noData: 'Başvuru bulunamadı.',
     error: 'Veriler yüklenemedi.',
@@ -351,13 +356,8 @@ export function AdminOrderDetailPage() {
       transitionAdminOrder(orderId!, input),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin', 'order', orderId] }),
   });
-  const note = useMutation({
-    mutationFn: (body: string) => addInternalNote(orderId!, body),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin', 'order', orderId] }),
-  });
   const [nextStatus, setNextStatus] = useState<OrderStatusValue | ''>('');
   const [clientMessage, setClientMessage] = useState('');
-  const [noteBody, setNoteBody] = useState('');
   if (order.isPending)
     return (
       <main className="admin-page">
@@ -381,11 +381,16 @@ export function AdminOrderDetailPage() {
     setNextStatus('');
     setClientMessage('');
   }
-  async function saveNote() {
-    if (!noteBody.trim()) return;
-    await note.mutateAsync(noteBody.trim());
-    setNoteBody('');
+  async function cancelOrder() {
+    if (!window.confirm(t.cancelConfirm)) return;
+    await transition.mutateAsync({
+      to: 'CANCELLED',
+      ...(clientMessage ? { clientVisibleMessage: clientMessage } : {}),
+    });
+    setNextStatus('');
+    setClientMessage('');
   }
+  const canCancel = options.includes('CANCELLED');
   return (
     <main className="admin-page" dir={language === 'ar' ? 'rtl' : 'ltr'}>
       <header className="admin-header">
@@ -422,11 +427,13 @@ export function AdminOrderDetailPage() {
             onChange={(event) => setNextStatus(event.target.value as OrderStatusValue)}
           >
             <option value="">{t.statuses[item.status]}</option>
-            {options.map((value) => (
-              <option key={value} value={value}>
-                {t.statuses[value]}
-              </option>
-            ))}
+            {options
+              .filter((value) => value !== 'CANCELLED')
+              .map((value) => (
+                <option key={value} value={value}>
+                  {t.statuses[value]}
+                </option>
+              ))}
           </select>
           <textarea
             value={clientMessage}
@@ -445,61 +452,30 @@ export function AdminOrderDetailPage() {
           {transition.error && <p className="form-error">{message(transition.error, t.error)}</p>}
         </article>
       </section>
-      <section className="admin-detail-grid">
-        <article className="admin-panel">
-          <h2>{t.history}</h2>
-          <ol className="timeline">
-            {item.statusHistory.map((entry) => (
-              <li key={entry.id}>
-                <strong>{t.statuses[entry.toStatus]}</strong>
-                <small>{new Date(entry.createdAt).toLocaleString()}</small>
-                {entry.clientVisibleMessage && <p>{entry.clientVisibleMessage}</p>}
-              </li>
-            ))}
-          </ol>
-        </article>
-        <article className="admin-panel">
-          <h2>{t.notes}</h2>
-          <textarea
-            value={noteBody}
-            onChange={(event) => setNoteBody(event.target.value)}
-            placeholder={t.notePlaceholder}
-            maxLength={2000}
-          />
-          <button
-            className="button"
-            type="button"
-            disabled={!noteBody.trim() || note.isPending}
-            onClick={saveNote}
-          >
-            {t.add}
-          </button>
-          <ul className="internal-notes">
-            {item.internalNotes.map((entry) => (
-              <li key={entry.id}>
-                <p>{entry.body}</p>
-                <small>
-                  {entry.admin?.email ?? 'Former admin'} ·{' '}
-                  {new Date(entry.createdAt).toLocaleString()}
-                </small>
-              </li>
-            ))}
-          </ul>
-        </article>
-      </section>
       <section className="admin-panel">
-        <h2>{t.responses}</h2>
-        {item.clientResponses.length ? (
-          item.clientResponses.map((response) => (
-            <p className="client-response" key={response.id}>
-              {response.body}
-              <small>{new Date(response.createdAt).toLocaleString()}</small>
-            </p>
-          ))
-        ) : (
-          <p>{t.noData}</p>
-        )}
+        <h2>{t.history}</h2>
+        <ol className="timeline">
+          {item.statusHistory.map((entry) => (
+            <li key={entry.id}>
+              <strong>{t.statuses[entry.toStatus]}</strong>
+              <small>{new Date(entry.createdAt).toLocaleString()}</small>
+              {entry.clientVisibleMessage && <p>{entry.clientVisibleMessage}</p>}
+            </li>
+          ))}
+        </ol>
       </section>
+      {canCancel ? (
+        <div className="admin-cancel-order">
+          <button
+            className="button button-danger"
+            type="button"
+            disabled={transition.isPending}
+            onClick={cancelOrder}
+          >
+            {t.cancelOrder}
+          </button>
+        </div>
+      ) : null}
     </main>
   );
 }

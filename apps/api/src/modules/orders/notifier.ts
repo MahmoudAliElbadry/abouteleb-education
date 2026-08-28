@@ -7,6 +7,7 @@ export function createOrderNotifier(emailProvider: EmailProvider) {
     reference: string;
     event: 'submitted' | 'status_changed';
     newStatus?: string;
+    clientVisibleMessage?: string;
   }) {
     try {
       await emailProvider.sendOrderNotification(input);
@@ -22,7 +23,11 @@ export function createOrderNotifier(emailProvider: EmailProvider) {
   return {
     notifySubmitted: (input: { recipient: string; reference: string }) =>
       notify({ ...input, event: 'submitted' }),
-    notifyStatusChanged: (input: { recipient: string; reference: string; newStatus: string }) =>
-      notify({ ...input, event: 'status_changed' }),
+    notifyStatusChanged: (input: {
+      recipient: string;
+      reference: string;
+      newStatus: string;
+      clientVisibleMessage?: string;
+    }) => notify({ ...input, event: 'status_changed' }),
   };
 }

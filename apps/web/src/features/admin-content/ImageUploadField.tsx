@@ -8,11 +8,13 @@ const MAX_SIZE_BYTES = 5 * 1024 * 1024;
 export function ImageUploadField({
   value,
   onChange,
+  onUploadingChange,
   label,
   required,
 }: {
   value: string | null;
   onChange: (url: string) => void;
+  onUploadingChange?: (isUploading: boolean) => void;
   label: string;
   required?: boolean;
 }) {
@@ -32,6 +34,7 @@ export function ImageUploadField({
       return;
     }
     setIsUploading(true);
+    onUploadingChange?.(true);
     try {
       const result = await uploadImage(file);
       onChange(result.secure_url);
@@ -39,6 +42,7 @@ export function ImageUploadField({
       setError(uploadError instanceof ApiError ? uploadError.message : 'Unable to upload image.');
     } finally {
       setIsUploading(false);
+      onUploadingChange?.(false);
     }
   }
 
@@ -60,6 +64,7 @@ export function ImageUploadField({
       {required ? `${label} *` : label}
       <div
         className={`image-upload-dropzone${isDragOver ? ' is-drag-over' : ''}`}
+        aria-busy={isUploading}
         onClick={() => inputRef.current?.click()}
         onDragOver={(event) => {
           event.preventDefault();
@@ -80,6 +85,7 @@ export function ImageUploadField({
           type="file"
           accept={ACCEPTED_TYPES.join(',')}
           onChange={onInputChange}
+          disabled={isUploading}
           hidden
         />
       </div>

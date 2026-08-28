@@ -56,6 +56,13 @@ const copy = {
     statusCompleted: 'مكتمل',
     statusRejected: 'مرفوض',
     statusCancelled: 'ملغى',
+    flowTitle: 'كيف يسير طلبك؟',
+    flowIntro: 'يمكنك متابعة كل تحديث من سجل الحالة داخل طلبك.',
+    flowNew: 'جديد — استلمنا طلبك وهو بانتظار المراجعة.',
+    flowContacted: 'تم التواصل — بدأ المستشار التواصل معك.',
+    flowProcessing: 'بانتظار ردك أو قيد المعالجة — نحتاج معلومات منك أو نعمل على طلبك.',
+    flowFinished: 'مكتمل — انتهت معالجة طلبك بنجاح.',
+    flowTerminal: 'قد يُغلق الطلب أيضاً بحالة مرفوض أو ملغى عند الحاجة.',
   },
   en: {
     home: 'Home',
@@ -83,6 +90,13 @@ const copy = {
     statusCompleted: 'Completed',
     statusRejected: 'Rejected',
     statusCancelled: 'Cancelled',
+    flowTitle: 'How does your order progress?',
+    flowIntro: 'You can follow every update in the status history inside your order.',
+    flowNew: 'New — we received your request and it is awaiting review.',
+    flowContacted: 'Contacted — your consultant has started contacting you.',
+    flowProcessing: 'Waiting for you or in progress — we need information or are processing it.',
+    flowFinished: 'Completed — your request has finished processing successfully.',
+    flowTerminal: 'A request may also close as rejected or cancelled when necessary.',
   },
   tr: {
     home: 'Ana sayfa',
@@ -110,6 +124,14 @@ const copy = {
     statusCompleted: 'Tamamlandı',
     statusRejected: 'Reddedildi',
     statusCancelled: 'İptal edildi',
+    flowTitle: 'Başvurunuz nasıl ilerler?',
+    flowIntro: 'Her güncellemeyi başvurunuzun durum geçmişinden takip edebilirsiniz.',
+    flowNew: 'Yeni — başvurunuzu aldık ve incelemeyi bekliyor.',
+    flowContacted: 'İletişim kuruldu — danışmanınız sizinle iletişime geçmeye başladı.',
+    flowProcessing:
+      'Yanıtınız bekleniyor veya işlemde — bilgi bekliyor ya da başvurunuzu işliyoruz.',
+    flowFinished: 'Tamamlandı — başvurunuz başarıyla sonuçlandı.',
+    flowTerminal: 'Gerektiğinde başvuru reddedilmiş veya iptal edilmiş olarak da kapanabilir.',
   },
 } as const satisfies Record<Language, Record<string, string>>;
 
@@ -270,6 +292,18 @@ export function AccountPage() {
                 <a href="#enroll">{t.emptyCta}</a>
               </div>
             ) : null}
+          </article>
+
+          <article className="account-card account-card-status-flow">
+            <h2>{t.flowTitle}</h2>
+            <p>{t.flowIntro}</p>
+            <ol>
+              <li>{t.flowNew}</li>
+              <li>{t.flowContacted}</li>
+              <li>{t.flowProcessing}</li>
+              <li>{t.flowFinished}</li>
+            </ol>
+            <p className="account-status-flow-note">{t.flowTerminal}</p>
           </article>
 
           <EnrollmentSection language={language} embedded />

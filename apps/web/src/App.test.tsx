@@ -7,6 +7,16 @@ import { LanguageProvider } from './features/i18n/LanguageContext.js';
 
 const queryState = vi.hoisted(() => ({
   universityRequestFailed: false,
+  testimonials: [] as Array<{
+    id: string;
+    clientNameAr: string;
+    clientNameEn: string;
+    clientNameTr: string;
+    quoteAr: string;
+    quoteEn: string;
+    quoteTr: string;
+    imageUrl: string | null;
+  }>,
   authUser: null as {
     id: string;
     email: string;
@@ -24,6 +34,7 @@ vi.mock('@tanstack/react-query', async () => {
     useQuery: (options: { queryKey?: string[] }) => {
       const universityRequest = options.queryKey?.[0] === 'public-universities';
       const authRequest = options.queryKey?.[0] === 'auth';
+      const testimonialRequest = options.queryKey?.[0] === 'public-testimonials';
       const socialRequest = options.queryKey?.[0] === 'public-social-links';
       const contactRequest = options.queryKey?.[0] === 'public-contact';
       return {
@@ -52,29 +63,31 @@ vi.mock('@tanstack/react-query', async () => {
             ? queryState.authUser
               ? { user: queryState.authUser }
               : null
-            : socialRequest
-              ? {
-                  items: [
-                    {
-                      id: 'whatsapp',
-                      platform: 'WhatsApp',
-                      labelAr: 'واتساب',
-                      labelEn: 'WhatsApp',
-                      labelTr: 'WhatsApp',
-                      url: 'https://wa.me/905015959880',
-                      iconKey: 'whatsapp',
-                    },
-                  ],
-                }
-              : contactRequest
+            : testimonialRequest
+              ? { items: queryState.testimonials }
+              : socialRequest
                 ? {
                     items: [
-                      { key: 'contact_email_primary', value: 'info@aboutalebeducation.com' },
-                      { key: 'contact_email_secondary', value: 'AboutalebEducation@gmail.com' },
-                      { key: 'contact_whatsapp', value: '+90 501 595 98 80' },
+                      {
+                        id: 'whatsapp',
+                        platform: 'WhatsApp',
+                        labelAr: 'واتساب',
+                        labelEn: 'WhatsApp',
+                        labelTr: 'WhatsApp',
+                        url: 'https://wa.me/905015959880',
+                        iconKey: 'whatsapp',
+                      },
                     ],
                   }
-                : { items: [] },
+                : contactRequest
+                  ? {
+                      items: [
+                        { key: 'contact_email_primary', value: 'info@aboutalebeducation.com' },
+                        { key: 'contact_email_secondary', value: 'AboutalebEducation@gmail.com' },
+                        { key: 'contact_whatsapp', value: '+90 501 595 98 80' },
+                      ],
+                    }
+                  : { items: [] },
       };
     },
   };
@@ -83,6 +96,7 @@ vi.mock('@tanstack/react-query', async () => {
 describe('App', () => {
   afterEach(() => {
     queryState.universityRequestFailed = false;
+    queryState.testimonials = [];
     queryState.authUser = null;
     vi.unstubAllGlobals();
     Object.defineProperty(window, 'scrollY', { configurable: true, value: 0 });
@@ -168,7 +182,7 @@ describe('App', () => {
       [...screen.getByRole('navigation').querySelectorAll('a')].map((link) =>
         link.getAttribute('href'),
       ),
-    ).toEqual(['#home', '#universities', '#services', '#steps', '#contact']);
+    ).toEqual(['#home', '#universities', '#who-we-are', '#services', '#steps', '#contact']);
     const whatsappLinks = screen.getAllByRole('link', { name: 'WhatsApp' });
     expect(whatsappLinks[0]).toHaveAttribute('href', 'https://wa.me/905015959880');
     expect(screen.queryByRole('link', { name: '+90 501 595 98 80' })).not.toBeInTheDocument();
@@ -184,6 +198,29 @@ describe('App', () => {
     expect(whatsappLinks[1]!.querySelector('img')).toHaveAttribute(
       'src',
       '/images/whatsapp-svgrepo-com.svg',
+    );
+  });
+
+  it('renders a published testimonial returned by the public API', () => {
+    queryState.testimonials = [
+      {
+        id: 'testimonial-1',
+        clientNameAr: 'عميل',
+        clientNameEn: 'Published client',
+        clientNameTr: 'Müşteri',
+        quoteAr: 'رأي',
+        quoteEn: 'Great support',
+        quoteTr: 'Yorum',
+        imageUrl: 'https://res.cloudinary.com/demo/image/upload/testimonial.png',
+      },
+    ];
+    renderApp();
+
+    expect(screen.getByRole('heading', { name: 'Customer reviews' })).toBeInTheDocument();
+    expect(screen.getByText('Published client')).toBeInTheDocument();
+    expect(document.querySelector('.reviews .review-card-media img')).toHaveAttribute(
+      'src',
+      'https://res.cloudinary.com/demo/image/upload/testimonial.png',
     );
   });
 

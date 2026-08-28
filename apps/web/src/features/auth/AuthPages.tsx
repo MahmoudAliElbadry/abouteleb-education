@@ -88,12 +88,24 @@ export function LoginPage() {
   const [email, setEmail] = useState(params.get('email') ?? '');
   const [password, setPassword] = useState('');
   const redirectParam = params.get('redirect');
+  const requiresEmailVerification =
+    auth.login.error instanceof ApiError && auth.login.error.code === 'EMAIL_NOT_VERIFIED';
   async function submit(event: FormEvent) {
     event.preventDefault();
     try {
       const { user } = await auth.login.mutateAsync({ email, password });
       const fallback = user.role === 'ADMIN' ? '/admin' : '/';
       navigate(redirectParam ?? fallback);
+    } catch {
+      /* rendered below */
+    }
+  }
+  async function verifyAccount() {
+    try {
+      await auth.resendVerification.mutateAsync(email);
+      navigate(
+        `/verify-email?email=${encodeURIComponent(email)}&lang=${encodeURIComponent(language)}`,
+      );
     } catch {
       /* rendered below */
     }
@@ -122,6 +134,17 @@ export function LoginPage() {
           />
         </label>
         <AuthError error={auth.login.error} fallback={t.error} />
+        {requiresEmailVerification && (
+          <button
+            className="button"
+            type="button"
+            onClick={verifyAccount}
+            disabled={auth.resendVerification.isPending}
+          >
+            {t.verifyAccount}
+          </button>
+        )}
+        <AuthError error={auth.resendVerification.error} fallback={t.error} />
         <button className="button" type="submit" disabled={auth.login.isPending}>
           {t.signIn}
         </button>

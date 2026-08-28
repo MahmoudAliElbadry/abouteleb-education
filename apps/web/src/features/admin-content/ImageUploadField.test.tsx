@@ -47,6 +47,27 @@ describe('ImageUploadField', () => {
     );
   });
 
+  it('reports when an upload starts and finishes', async () => {
+    let resolveUpload: ((value: { secure_url: string }) => void) | undefined;
+    mocks.uploadImage.mockImplementation(() => new Promise((resolve) => (resolveUpload = resolve)));
+    const onUploadingChange = vi.fn();
+    render(
+      <ImageUploadField
+        value={null}
+        onChange={vi.fn()}
+        onUploadingChange={onUploadingChange}
+        label="Logo"
+      />,
+    );
+
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+    fireEvent.change(input, { target: { files: [makeFile('logo.png', 'image/png')] } });
+    expect(onUploadingChange).toHaveBeenCalledWith(true);
+
+    resolveUpload?.({ secure_url: 'https://res.cloudinary.com/demo/a.png' });
+    await waitFor(() => expect(onUploadingChange).toHaveBeenCalledWith(false));
+  });
+
   it('shows an error message when the upload fails', async () => {
     mocks.uploadImage.mockRejectedValue(new ApiError('UPLOAD_FAILED', 503, 'Upload failed'));
     render(<ImageUploadField value={null} onChange={vi.fn()} label="Logo" />);
